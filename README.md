@@ -62,8 +62,8 @@ function xc() {
     
     [[ -z "$comment" ]] && { echo "✘ Cancelled"; return 1; }
 
-    # Using ' -> ' as the professional separator
-    echo "$cmd_to_save ' -> ' $comment" >> "$vault_file"
+    # Using ' ┃ ' as the professional separator
+    echo "$cmd_to_save  ->  $comment" >> "$vault_file"
     echo "✔ Saved."
 }
 
@@ -84,7 +84,7 @@ fzf-vault-widget() {
 
     if [ -n "$selected" ]; then
         # Grab only the command part for the terminal prompt
-        LBUFFER=$(echo "$selected" | awk -F ' -> ' '{print $1}')
+        LBUFFER=$(echo "$selected" | awk -F ' -> ' '{printf "%s", $1}' | sed 's/[[:space:]]*$//')
     fi
     zle reset-prompt
 }
