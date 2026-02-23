@@ -1,26 +1,46 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
-VAULT_FILE="$HOME/.local/share/cmd_vault.txt"
+# XC-Manager: A minimalist Zsh/FZF vault for commands
+# GitHub: https://github.com/Rakosn1cek/xc-manager
 
-# 1. Pipe file to rofi with improved visuals
-# We added -theme-str to make it look cleaner and more like a modern Arch TUI
-SELECTED=$(cat "$VAULT_FILE" | rofi -dmenu -i -p "󰆼 Vault" \
-    -theme-str 'window {width: 40%;} listview {lines: 10;}' \
-    -kb-custom-1 "Shift+Return")
+xc() {
+    local vault_file="$HOME/.local/share/cmd_vault.txt"
+    mkdir -p "$(dirname "$vault_file")"
 
-# Capture the exit code to see if Shift+Enter was pressed
-EXIT_CODE=$?
-
-if [ -n "$SELECTED" ]; then
-    CMD=$(echo "$SELECTED" | awk -F ' -> ' '{print $1}')
-    
-    # Logic: Shift+Enter (code 10) runs it, Enter (code 0) copies it
-    if [ "$EXIT_CODE" -eq 10 ]; then
-        # Launch in a terminal (assuming kitty, change to your favorite terminal if needed)
-        kitty sh -c "$CMD; exec $SHELL" &
-        notify-send "Vault" "Executing: $CMD"
+    local cmd_to_save
+    if [ $# -eq 0 ]; then
+        # Native Zsh history access (strips leading whitespace)
+        # ${var## #} removes leading spaces natively
+        cmd_to_save="${$(fc -ln -1)## #}"
     else
-        echo -n "$CMD" | wl-copy
-        notify-send "Vault" "Copied to clipboard"
+        cmd_to_save="$*"
     fi
-fi
+
+    echo -n "Description for '$cmd_to_save': "
+    read comment
+
+    if [ -n "$comment" ]; then
+        echo "$cmd_to_save -> $comment" >> "$vault_file"
+        echo "Saved to vault!"
+    else
+        echo "Cancelled. No description provided."
+    fi
+}
+
+fzf-vault-widget() {
+    local vault_file="$HOME/.local/share/cmd_vault.txt"
+    [ -f "$vault_file" ] || touch "$vault_file"
+
+    local selected=$(cat "$vault_file" | fzf --height 40% --layout=reverse --border --preview 'echo {2..}' --preview-window=up:3:wrap)
+
+    if [ -n "$selected" ]; then
+        # Native Zsh string splitting (Removes everything after ' -> ')
+        local cmd="${selected%% -> *}"
+        # Native Zsh whitespace trimming
+        LBUFFER="${cmd%"${cmd##*[![:space:]]}"}"
+    fi
+    zle redisplay
+}
+
+zle -N fzf-vault-widget
+bindkey '^G' fzf-vault-widget
