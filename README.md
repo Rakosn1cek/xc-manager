@@ -1,6 +1,6 @@
-# XC-Manager 󰆼
+# XC-Manager 
 
-A minimal, high-performance command vault for Zsh users. Stop searching through messy shell history; save the commands that actually work and retrieve them instantly.
+A minimal, high-performance command vault for Bash/Zsh users. Stop searching through messy shell history; save the commands that actually work and retrieve them instantly.
 
 ## 󰅂 Features
 * **Proactive Saving**: Run a command and save it immediately.
@@ -14,23 +14,33 @@ Ensure you have the following installed on your system:
 * **fzf**: For the fuzzy search interface.
 * **wl-clipboard** (Wayland) or **xsel** (X11): For clipboard functionality.
 * **A Nerd Font**: Recommended for best visual experience (ligatures).
-* fzf-vault-widget relies on Zsh's LBUFFER and zle.
+* **fzf-vault-widget** relies on Zsh's **LBUFFER** and **zle**.
 
 ## 󰅂 Installation
 
 1. Clone this repository:
-   ```bash
-   git clone [https://github.com/your-username/XC-Manager.git](https://github.com/your-username/XC-Manager.git) ~/arch-projects/XC-Manager
+
+```zsh
+   git clone https://github.com/Rakosn1cek/xc-manager.git ~/arch-projects/XC-Manager
+```
 
 2. Add the functions to your ~/.zshrc:
-# --- 1. HISTORY SETTINGS (Ensures 'xc' can see previous commands) ---
+
+## - 1. HISTORY SETTINGS (Ensures 'xc' can see previous commands) -
+
+```zsh
 HISTFILE=~/.zsh_history
+
 HISTSIZE=10000
+
 SAVEHIST=10000
+
 setopt appendhistory
+```
 
-# --- THE COMMAND VAULT (XC) ---
+## - THE COMMAND VAULT (XC) -
 
+```zsh
 function xc() {
     local vault_file="$HOME/.local/share/cmd_vault.txt"
     mkdir -p "$(dirname "$vault_file")"
@@ -52,7 +62,7 @@ function xc() {
     
     [[ -z "$comment" ]] && { echo "✘ Cancelled"; return 1; }
 
-    # Using ' ┃ ' as the professional separator
+    # Using ' -> ' as the professional separator
     echo "$cmd_to_save ' -> ' $comment" >> "$vault_file"
     echo "✔ Saved."
 }
@@ -78,19 +88,34 @@ fzf-vault-widget() {
     fi
     zle reset-prompt
 }
+zle -N fzf-vault-widget
+bindkey '^g' fzf-vault-widget
+```
 
-3. Reload your shell:
-'source ~/.zshrc'
+## 3. Reload your shell:
 
---- Usage ---
+```zsh
+source ~/.zshrc
+```
+
+## - Usage -
+
 Saving a command
+
 To run and save a command at once
-'xc sudo pacman -Syu'
+
+```zsh
+xc sudo pacman -Syu
+```
 
 To save the very last command you executed:
-'xc'
+
+```zsh
+xc
+```
 
 Retrieving a command:
+
 Press Ctrl + G anywhere in your terminal.
 
 Use the arrow keys or type to filter.
@@ -99,5 +124,6 @@ The description appears in the preview box at the top.
 
 Press Enter to load the command into your prompt.
 
---- License ---
+## - License -
+
 Distributed under the MIT License. See LICENSE for more information.
