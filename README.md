@@ -14,6 +14,7 @@ Ensure you have the following installed on your system:
 * **fzf**: For the fuzzy search interface.
 * **wl-clipboard** (Wayland) or **xsel** (X11): For clipboard functionality.
 * **A Nerd Font**: Recommended for best visual experience (ligatures).
+* fzf-vault-widget relies on Zsh's LBUFFER and zle.
 
 ## 󰅂 Installation
 
