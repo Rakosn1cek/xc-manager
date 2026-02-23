@@ -2,13 +2,13 @@
 
 A minimal, high-performance command vault for Bash/Zsh users. Stop searching through messy shell history; save the commands that actually work and retrieve them instantly.
 
-## 󰅂 Features
+## Features
 * **Proactive Saving**: Run a command and save it immediately.
 * **Retroactive Saving**: Save the last command you ran without retyping it.
 * **FZF Integration**: Search your vault with fuzzy finding and live previews.
 * **Ligature Friendly**: Uses standard ASCII `->` that renders as a sleek arrow in Nerd Fonts.
 
-## 󰅂 Dependencies
+## Dependencies:
 Ensure you have the following installed on your system:
 * **zsh**: The primary shell environment.
 * **fzf**: For the fuzzy search interface.
@@ -16,7 +16,7 @@ Ensure you have the following installed on your system:
 * **A Nerd Font**: Recommended for best visual experience (ligatures).
 * **fzf-vault-widget** relies on Zsh's **LBUFFER** and **zle**.
 
-## 󰅂 Installation
+## Installation:
 
 1. Clone this repository:
 
@@ -26,7 +26,7 @@ Ensure you have the following installed on your system:
 
 2. Add the functions to your ~/.zshrc:
 
-## - 1. HISTORY SETTINGS (Ensures 'xc' can see previous commands) -
+## HISTORY SETTINGS (Ensures 'xc' can see previous commands)
 
 ```zsh
 HISTFILE=~/.zsh_history
@@ -38,7 +38,7 @@ SAVEHIST=10000
 setopt appendhistory
 ```
 
-## - THE COMMAND VAULT (XC) -
+## THE COMMAND VAULT (XC)
 
 ```zsh
 function xc() {
@@ -92,15 +92,15 @@ zle -N fzf-vault-widget
 bindkey '^g' fzf-vault-widget
 ```
 
-## 3. Reload your shell:
+3. Reload your shell:
 
 ```zsh
 source ~/.zshrc
 ```
 
-## - Usage -
+## Usage:
 
-Saving a command
+4. Saving a command
 
 To run and save a command at once
 
@@ -114,7 +114,7 @@ To save the very last command you executed:
 xc
 ```
 
-Retrieving a command:
+5. Retrieving a command:
 
 Press Ctrl + G anywhere in your terminal.
 
@@ -124,6 +124,6 @@ The description appears in the preview box at the top.
 
 Press Enter to load the command into your prompt.
 
-## - License -
+## License
 
 Distributed under the MIT License. See LICENSE for more information.
