@@ -16,7 +16,7 @@ if [ -n "$SELECTED" ]; then
     
     # Logic: Shift+Enter (code 10) runs it, Enter (code 0) copies it
     if [ "$EXIT_CODE" -eq 10 ]; then
-        # Launch in a terminal (assuming foot, change to alacritty if needed)
+        # Launch in a terminal (assuming kitty, change to your favorite terminal if needed)
         kitty sh -c "$CMD; exec $SHELL" &
         notify-send "Vault" "Executing: $CMD"
     else
