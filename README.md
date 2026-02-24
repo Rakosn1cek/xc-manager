@@ -1,6 +1,19 @@
 # XC-Manager 
+VERSION = 0.1.1-beta
 
-A minimal, high-performance command vault for ZSH users. Stop searching through messy shell history; save the commands that actually work and retrieve them instantly.
+![XC-Manager Preview](preview.jpg)
+
+A minimalist, dependency-free Zsh vault for your most used (and most complex) commands.
+
+What's New in v0.1.1:
+
+**Clean UI**: The main list now shows only the commands, keeping your workspace clutter-free.
+
+**Smart Preview**: Detailed descriptions are instantly visible in a dedicated top-window preview.
+
+**Native Zsh Logic**: Zero external dependencies—no awk, no sed. It uses pure Zsh parameter expansion for maximum speed.
+
+**Custom Themes**: Full support for FZF color schemes via zstyle.
 
 ## Features
 * **Proactive Saving**: Run a command and save it immediately.
@@ -11,27 +24,22 @@ A minimal, high-performance command vault for ZSH users. Stop searching through 
 ## Requirements:
 
 **zsh**
+
 **fzf**
-**Nerd Font** (Optional, for the symbols)
 
 ## Installation:
 
-### Option 1: The Easy Way (Recommended)
-
-Clone this repo:
+1. Clone this repo:
  
 ```zsh
 git clone https://github.com/Rakosn1cek/xc-manager.git
 ```
 
-Add this line to your ~/.zshrc:
+2. Add this line to your ~/.zshrc:
 
 ```zsh
 source ~/xc-manager/xc-manager.sh
 ```
-
-Option 2: The Manual Way
-If you don't want an extra file, you can simply copy the functions from xc-manager.sh and paste them directly into your ~/.zshrc.
 
 ## HISTORY SETTINGS (Ensures 'xc' can see previous commands)
 
@@ -41,10 +49,17 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 ```
-3. Reload your shell:
+### Reload your shell:
 
 ```zsh
 source ~/.zshrc
+```
+3. Configuration (Optional)
+You can customize the look of your vault using Zsh's zstyle system:
+Customize FZF colors
+
+```zsh
+zstyle ':xc:*' fzf_colors "gutter:-1,border:8,header:4,info:2,pointer:5,marker:13,fg+:7,prompt:5,hl:12"
 ```
 
 ## Usage:
@@ -75,3 +90,33 @@ Press Enter to load the command into your prompt.
 ## License
 
 Distributed under the MIT License. See LICENSE for more information.
+
+### Changelog
+
+**v0.1.1-beta (Current)**
+
+Refined TUI: Implemented fzf delimiters for a cleaner list view.
+
+Smart Previews: Added a top-window preview showing only the description using native Zsh string expansion.
+
+Styling Hook: Added zstyle support for custom separators and fzf color schemes.
+
+Dependency-Free: Removed all external tool requirements (awk/sed) in favor of pure Zsh logic.
+
+Bug Fix: Resolved an issue where commands with multiple spaces were being truncated in the preview.
+
+**v0.1.0-alpha**
+
+Initial Release: Basic command vaulting and history integration.
+
+FZF Integration: Basic fuzzy search for stored commands.
+
+### Roadmap
+
+[ ] Native Delete Feature: Implement a keybinding (e.g., Alt+D) to remove entries directly from the FZF interface without opening the vault file.
+
+[ ] Vault Cleanup: A command to remove duplicate entries or empty descriptions automatically.
+
+[ ] Multi-Vault Support: Ability to switch between different vault files (e.g., work, personal, hyprland).
+
+[ ] Export to Alias: A way to export a frequently used vault command directly to your .zshrc as a permanent alias.
