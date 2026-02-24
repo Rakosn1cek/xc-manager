@@ -1,7 +1,7 @@
 # XC-Manager 
 VERSION = 0.1.1-beta
 
-![XC-Manager Preview](preview.jpg)
+![XC-Manager Preview](preview.png)
 
 A minimalist, dependency-free Zsh vault for your most used (and most complex) commands.
 
