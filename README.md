@@ -1,19 +1,17 @@
 # XC-Manager 
-VERSION = 0.1.1-beta
+VERSION = 0.2.1-beta
 
 ![XC-Manager Preview](preview.png)
 
-A minimalist, dependency-free Zsh vault for your most used (and most complex) commands.
+A high-performance, dependency-free Zsh vault for managing complex commands.
 
-What's New in v0.1.1:
+What's New in v0.2.1:
 
-**Clean UI**: The main list now shows only the commands, keeping your workspace clutter-free.
-
-**Smart Preview**: Detailed descriptions are instantly visible in a dedicated top-window preview.
-
-**Native Zsh Logic**: Zero external dependencies—no awk, no sed. It uses pure Zsh parameter expansion for maximum speed.
-
-**Custom Themes**: Full support for FZF color schemes via zstyle.
+## Features
+- **Instant Loading**: Uses Zsh `autoload` for near-zero impact on shell startup time.
+- **Professional TUI**: Clean command list with a dedicated description preview window.
+- **Pure Zsh**: No `awk`, `sed`, or external dependencies.
+- **Customizable**: Full support for `zstyle` themes and separators.
 
 ## Features
 * **Proactive Saving**: Run a command and save it immediately.
@@ -38,7 +36,13 @@ git clone https://github.com/Rakosn1cek/xc-manager.git
 2. Add this line to your ~/.zshrc:
 
 ```zsh
-source ~/xc-manager/xc-manager.sh
+# Add to function path and autoload
+fpath=(~/arch-projects/XC-Manager/autoload $fpath)
+autoload -Uz xc fzf-vault-widget
+
+# Initialize the widget
+zle -N fzf-vault-widget
+bindkey '^G' fzf-vault-widget
 ```
 
 ## HISTORY SETTINGS (Ensures 'xc' can see previous commands)
@@ -54,7 +58,13 @@ setopt appendhistory
 ```zsh
 source ~/.zshrc
 ```
-3. Configuration (Optional)
+
+3. Initialize the vault (First time only):
+```zsh
+xc init
+```
+
+5. Configuration (Optional)
 You can customize the look of your vault using Zsh's zstyle system:
 Customize FZF colors
 
@@ -64,20 +74,20 @@ zstyle ':xc:*' fzf_colors "gutter:-1,border:8,header:4,info:2,pointer:5,marker:1
 
 ## Usage:
 
-4. Save the command you JUST ran (Recommended)
+6. Save the command you JUST ran (Recommended)
 Just run any command as usual. If it works and you want to keep it, just type:
 
 ```zsh
 xc
 ```
-5. Run and Save at once
-If the command is simple, you can prefix it:
+7. Run and Save at once
+Save a specific command directly:
 
 ```zsh
-xc echo "Hello World"
+xc <command>
 ```
 
-6. Retrieving a command:
+8. Retrieving a command:
 
 Press Ctrl + G anywhere in your terminal.
 
@@ -87,13 +97,28 @@ The description appears in the preview box at the top.
 
 Press Enter to load the command into your prompt.
 
+9. Check version
+
+```zsh
+xc -v
+```
+ 
 ## License
 
 Distributed under the MIT License. See LICENSE for more information.
 
 ### Changelog
+**v0.2.1-betta (current)**
 
-**v0.1.1-beta (Current)**
+Instant Loading. Uses Zsh `autoload` for near-zero impact on shell startup time.
+
+Professional TUI. Clean command list with a dedicated description preview window.
+
+Pure Zsh. No `awk`, `sed`, or external dependencies.
+
+Full support for `zstyle` themes and separators.
+
+**v0.1.1-beta**
 
 Refined TUI: Implemented fzf delimiters for a cleaner list view.
 

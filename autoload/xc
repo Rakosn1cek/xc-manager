@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+# File: ~/arch-projects/XC-Manager/autoload/xc
+
+# Use the version variable we defined
+readonly XC_VERSION="0.2.1-beta"
+
+# Handle flags
+if [[ "$1" == "-v" || "$1" == "--version" ]]; then
+    echo "XC-Manager $XC_VERSION"
+    return 0
+elif [[ "$1" == "init" ]]; then
+    mkdir -p "$HOME/.local/share"
+    touch "$HOME/.local/share/cmd_vault.txt"
+    echo "Vault initialized at ~/.local/share/cmd_vault.txt"
+    return 0
+fi
+
+local vault_file="$HOME/.local/share/cmd_vault.txt"
+local cmd_to_save
+
+# Logic to capture command
+if [ $# -eq 0 ]; then
+    cmd_to_save="${$(fc -ln -1)## #}"
+else
+    cmd_to_save="$*"
+fi
+
+echo -n "Description for '$cmd_to_save': "
+read comment
+
+if [ -n "$comment" ]; then
+    echo "$cmd_to_save -> $comment" >> "$vault_file"
+    echo "Saved to vault!"
+else
+    echo "Cancelled. No description provided."
+fi
