@@ -1,26 +1,28 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/fzf-vault-widget
 
-local vault_file="$HOME/.local/share/cmd_vault.txt"
+local vault_file="${XC_VAULT_PATH:-$HOME/.local/share/cmd_vault.txt}"
 
-# Exit if vault doesn't exist
 if [ ! -f "$vault_file" ]; then
-    echo "Vault not found. Run 'xc init' first."
+    zle -M "Vault not found. Run 'xc init' first."
     return 1
 fi
 
-# Optimization: Using < "$vault_file" instead of cat
+# We switched to {+n} and used a simpler sed command.
+# If {n} was off by one, we will use {+n} or a literal sed adjustment.
 local selected=$(fzf \
     --height 40% \
     --layout=reverse \
     --border \
     --prompt="⚡ Vault > " \
     --color="gutter:-1,border:8,header:4,info:2,pointer:5,marker:13,fg+:7,prompt:5,hl:12" \
-    --header="[ Enter: Paste | Ctrl+C: Cancel ]" \
+    --header="[ Enter: Paste | Alt-D: Delete | Ctrl-C: Cancel ]" \
     --delimiter=" -> " \
     --with-nth=1 \
     --preview-window="up:3:wrap" \
-    --preview 'line={}; echo ${line#* -> }' < "$vault_file")
+    --preview 'line={}; echo ${line#* -> }' \
+    --bind "alt-d:execute(sed -i \"\$(({n}+1))d\" \"$vault_file\")+reload(cat \"$vault_file\")" \
+    < "$vault_file")
 
 if [ -n "$selected" ]; then
     local cmd="${selected%% -> *}"

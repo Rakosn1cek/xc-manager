@@ -1,24 +1,31 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/xc
 
-# Use the version variable we defined
-readonly XC_VERSION="0.2.1-beta"
+readonly XC_VERSION="0.2.2-beta"
+
+# Use XC_VAULT_PATH if set, otherwise default
+local vault_file="${XC_VAULT_PATH:-$HOME/.local/share/cmd_vault.txt}"
+local vault_dir="$(dirname "$vault_file")"
 
 # Handle flags
 if [[ "$1" == "-v" || "$1" == "--version" ]]; then
     echo "XC-Manager $XC_VERSION"
     return 0
 elif [[ "$1" == "init" ]]; then
-    mkdir -p "$HOME/.local/share"
-    touch "$HOME/.local/share/cmd_vault.txt"
-    echo "Vault initialized at ~/.local/share/cmd_vault.txt"
+    mkdir -p "$vault_dir"
+    # Pro Tip: -a doesn't change mtime if file exists
+    touch -a "$vault_file" 
+    echo "Vault initialized at $vault_file"
     return 0
 fi
 
-local vault_file="$HOME/.local/share/cmd_vault.txt"
-local cmd_to_save
+# Exit if not initialized
+if [[ ! -f "$vault_file" ]]; then
+    echo "Vault not found. Please run 'xc init' first."
+    return 1
+fi
 
-# Logic to capture command
+local cmd_to_save
 if [ $# -eq 0 ]; then
     cmd_to_save="${$(fc -ln -1)## #}"
 else
@@ -32,5 +39,5 @@ if [ -n "$comment" ]; then
     echo "$cmd_to_save -> $comment" >> "$vault_file"
     echo "Saved to vault!"
 else
-    echo "Cancelled. No description provided."
+    echo "Cancelled."
 fi
