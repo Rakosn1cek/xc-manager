@@ -1,7 +1,7 @@
 # XC-Manager 
 VERSION = 0.2.2-beta
 
-![XC-Manager Preview](preview.png)
+![XC-Manager Preview](preview-2.png)
 
 A high-performance, dependency-free Zsh vault for managing complex commands.
 
@@ -170,8 +170,9 @@ Initial Release: Basic command vaulting and history integration.
 FZF Integration: Basic fuzzy search for stored commands.
 
 ### Roadmap
+[x] Modular Architecture: Refactored to Zsh `autoload` for instant startup.
 
-[ ] Native Delete Feature: Implement a keybinding (e.g., Alt+D) to remove entries directly from the FZF interface without opening the vault file.
+[x] Native Delete Feature: Implement a keybinding (e.g., Alt+D) to remove entries directly from the FZF interface without opening the vault file.
 
 [ ] Vault Cleanup: A command to remove duplicate entries or empty descriptions automatically.
 
