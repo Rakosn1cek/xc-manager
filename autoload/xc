@@ -1,37 +1,102 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/xc
 
-readonly XC_VERSION="0.2.2-beta"
+readonly XC_VERSION="0.2.3-beta"
+setopt EXTENDED_GLOB
 
-# Use XC_VAULT_PATH if set, otherwise default
+# ==============================================================================
+# SECTION 1: CONFIGURATION & PATHS
+# ==============================================================================
 local vault_file="${XC_VAULT_PATH:-$HOME/.local/share/cmd_vault.txt}"
 local vault_dir="$(dirname "$vault_file")"
 
-# Handle flags
+# ==============================================================================
+# SECTION 2: UTILITY COMMANDS (Direct Exit)
+# These commands perform a task and exit the script immediately.
+# ==============================================================================
+
+# Check Version
 if [[ "$1" == "-v" || "$1" == "--version" ]]; then
     echo "XC-Manager $XC_VERSION"
     return 0
+
+# Initialize Vault
 elif [[ "$1" == "init" ]]; then
     mkdir -p "$vault_dir"
-    # Pro Tip: -a doesn't change mtime if file exists
     touch -a "$vault_file" 
     echo "Vault initialized at $vault_file"
     return 0
+
+# Clean Vault (Minimalist with Transparency)
+elif [[ "$1" == "clean" ]]; then
+    [[ ! -f "$vault_file" ]] && echo "Vault not found." && return 1
+    
+    local -A seen
+    local -a unique_lines
+    local line
+    local count=0
+
+    # Read the file and check each line
+    while IFS= read -r line; do
+        # 1. Catch empty descriptions
+        if [[ "$line" == *'->'([[:space:]]#) ]]; then
+            echo "Removing (No Description): $line"
+            ((count++))
+            continue
+        fi
+
+        # 2. Catch identical duplicates
+        if [[ -n "${seen[$line]}" ]]; then
+            echo "Removing (Duplicate):    $line"
+            ((count++))
+            continue
+        fi
+
+        # 3. If it's a good, unique line, keep it
+        unique_lines+=("$line")
+        seen[$line]=1
+    done < "$vault_file"
+
+    if [[ $count -gt 0 ]]; then
+        print -l "${unique_lines[@]}" > "$vault_file"
+        echo "--- Done. Removed $count total entries. ---"
+    else
+        echo "Vault is already clean. Nothing to remove."
+    fi
+    return 0
 fi
 
-# Exit if not initialized
+# ==============================================================================
+# SECTION 3: PRE-FLIGHT CHECK
+# Ensure the vault exists before proceeding to saving logic.
+# ==============================================================================
 if [[ ! -f "$vault_file" ]]; then
     echo "Vault not found. Please run 'xc init' first."
     return 1
 fi
 
+# ==============================================================================
+# SECTION 4: COMMAND CAPTURE (The "What")
+# This section decides which command we are about to save.
+# ==============================================================================
 local cmd_to_save
-if [ $# -eq 0 ]; then
+
+if [[ "$1" == "select" ]]; then
+    # Open history selector via FZF
+    cmd_to_save=$(fc -rl -100 | sed 's/^[ ]*[0-9]*[ ]*//' | fzf --height 40% --header="Select command to vault" --prompt="Vault > ")
+    [[ -z "$cmd_to_save" ]] && echo "Cancelled." && return 0
+elif [ $# -eq 0 ]; then
+    # Default: Grab the very last command run in shell
     cmd_to_save="${$(fc -ln -1)## #}"
 else
+    # Take arguments from command line: xc "sudo pacman -Syu"
     cmd_to_save="$*"
 fi
 
+# ==============================================================================
+# SECTION 5: DESCRIPTION & PERSISTENCE (The "Why")
+# Final step: Ask for a comment and write to the vault file.
+# ==============================================================================
 echo -n "Description for '$cmd_to_save': "
 read comment
 
@@ -41,3 +106,7 @@ if [ -n "$comment" ]; then
 else
     echo "Cancelled."
 fi
+
+# ==============================================================================
+# END OF SCRIPT
+# ==============================================================================

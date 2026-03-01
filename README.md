@@ -1,33 +1,33 @@
 # XC-Manager 
-VERSION = 0.2.2-beta
+VERSION = 0.2.3-beta
 
 ![XC-Manager Preview](preview-2.png)
 
 A high-performance, dependency-free Zsh vault for managing complex commands.
 
-What's New in v0.2.2:
-## New in v0.2.2-beta
-- **Delete Feature**: Highlight a command in the vault and hit `Alt-D` to remove it instantly.
-- **Configurable Paths**: Set `export XC_VAULT_PATH="~/my/path.txt"` in your `.zshrc` to move your vault.
-- **Optimized Init**: Faster setup and smarter file handling.
+## New in v0.2.3-beta
 
-## Features
-- **Instant Loading**: Uses Zsh `autoload` for near-zero impact on shell startup time.
-- **Professional TUI**: Clean command list with a dedicated description preview window.
-- **Minimal Dependencies**: Uses only Zsh and standard Unix `sed` for high-speed file manipulation.
-- **Customizable**: Support for `XC_VAULT_PATH` and custom `fzf` themes.
+The Time Machine (xc select): Added a history selector. You can now pick from your last 100 commands using fzf if you forgot to save a command immediately.
+
+Intelligent Cleanup (xc clean): A new maintenance command that identifies and removes exact duplicates and "ghost" entries (commands without descriptions).
+
+Transparent Logging: The cleanup process now prints exactly what it is removing, so you never lose data by accident.
 
 ## Features
 * **Proactive Saving**: Run a command and save it immediately.
 * **Retroactive Saving**: Save the last command you ran without retyping it.
 * **FZF Integration**: Search your vault with fuzzy finding and live previews.
 * **Ligature Friendly**: Uses standard ASCII `->` that renders as a sleek arrow in Nerd Fonts.
+* **Zero-Lag**: Uses Zsh autoload for near-instant shell startup.
+* **Smart History**: Save the last command or select from your recent history.
+* **Fuzzy Search**: Instant TUI with command previews via fzf.
+* **Safe Maintenance**: Built-in transparent cleanup for duplicates.
+* **Distro Agnostic**: Works on Arch, Fedora, Debian, and macOS.
 
 ## Requirements:
 
-**zsh**
-
-**fzf**
+* **zsh**
+* **fzf**
 
 ## Installation:
 
@@ -84,14 +84,15 @@ Just run any command as usual. If it works and you want to keep it, just type:
 ```zsh
 xc
 ```
-7. Run and Save at once
-Save a specific command directly:
-
+7. Search your last 100 commands to save one.
 ```zsh
-xc <command>
+xc select
 ```
-
-8. Retrieving a command:
+8. Scrub duplicates and empty entries from the vault.
+```
+xc clean
+```
+9. Retrieving a command:
 
 Press Ctrl + G anywhere in your terminal.
 
@@ -101,80 +102,28 @@ The description appears in the preview box at the top.
 
 Press Enter to load the command into your prompt.
 
-9. Check version
-
+10. Check version
 ```zsh
 xc -v
 ```
-10. (Inside Vault) Delete selected entry.
+11. (Inside Vault) Delete selected entry.
 ```zsh
 Alt + D: 
 ``` 
+
 ## License
 
 Distributed under the MIT License. See LICENSE for more information.
 
 ### Changelog
-**v0.2.2-betta**
-
-Hardening & Management Update"
-
-**New Features**
-
-Live Deletion: Added the ability to delete entries directly within the fzf interface using Alt-D or Ctrl-X.
-
-Configurable Vault Path: Users can now define a custom location for their command vault by exporting XC_VAULT_PATH in their .zshrc.
-
-Surgical Initialization: Refactored xc init to use touch -a, ensuring file creation without resetting existing modification timestamps.
-
-**Architecture & Refactoring**
-
-Modular Autoloading: Successfully transitioned from a monolithic script to a modular fpath architecture for instant shell startup.
-
-Direct File Manipulation: Implemented sed for high-speed, in-place line deletion, replacing complex subshell logic.
-
-Variable Centralization: Removed hardcoded strings in favor of local variables for better maintainability.
-
-**Bug Fixes & Optimizations**
-
-Off-by-One Resolution: Fixed a line-indexing bug in the fzf widget that caused the wrong command to be deleted.
-
-Search-Safe Deletion: Deletion now targets the absolute line index ({n}), ensuring the correct command is removed even when the list is filtered.
-
-**v0.2.1-betta**
-
-Instant Loading. Uses Zsh `autoload` for near-zero impact on shell startup time.
-
-Professional TUI. Clean command list with a dedicated description preview window.
-
-
-
-Full support for `zstyle` themes and separators.
-
-**v0.1.1-beta**
-
-Refined TUI: Implemented fzf delimiters for a cleaner list view.
-
-Smart Previews: Added a top-window preview showing only the description using native Zsh string expansion.
-
-Styling Hook: Added zstyle support for custom separators and fzf color schemes.
-
-Dependency-Free: Removed all external tool requirements (awk/sed) in favor of pure Zsh logic.
-
-Bug Fix: Resolved an issue where commands with multiple spaces were being truncated in the preview.
-
-**v0.1.0-alpha**
-
-Initial Release: Basic command vaulting and history integration.
-
-FZF Integration: Basic fuzzy search for stored commands.
+For a detailed history of changes and version milestones, please see [CHANGELOG.md](./CHANGELOG.md).
 
 ### Roadmap
 [x] Modular Architecture: Refactored to Zsh `autoload` for instant startup.
 
 [x] Native Delete Feature: Implement a keybinding (e.g., Alt+D) to remove entries directly from the FZF interface without opening the vault file.
 
-[ ] Vault Cleanup: A command to remove duplicate entries or empty descriptions automatically.
+[x] Vault Cleanup: A command to remove duplicate entries or empty descriptions automatically.
 
 [ ] Multi-Vault Support: Ability to switch between different vault files (e.g., work, personal, hyprland).
 
