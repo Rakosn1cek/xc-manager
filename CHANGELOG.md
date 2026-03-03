@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0-beta] - 2026-03-02
+
+### Added
+- **Multi-Vault System**: Introduced the ability to switch between different command silos (e.g., work, home, projects).
+- **Contextual State Tracking**: Added a state tracker in ~/.cache/xc_active_vault to persist the active vault across terminal sessions.
+_ **Smart Switcher**: New xc use <name> command to list, create, and switch between vaults.
+- **TUI Awareness**: The Ctrl+G widget now displays the active vault name in the header and dynamically loads the correct source file.
+- **Visual Active Indicator**: The xc use list now marks the current vault with an asterisk (*) and an (active) label.
+
+### Changed
+- **Directory Migration**: Moved vault storage from ~/.local/share/cmd_vault.txt to a dedicated directory at ~/.local/share/xc/.
+- **Code Optimization**: Replaced external calls to ls and sed in the core logic with native Zsh globbing (*.txt(N)) and string modifiers (${f:t:r}).
+- **Improved Error Handling**: Added checks to ensure the vault directory and state files exist before execution, preventing shell hangs.
+
+## Fixed
+- Fixed a parse error in the if/elif chain where extra fi tags were breaking the command logic.
+- Resolved an issue where the fzf-vault-widget would fail if the default vault file was missing.
+
 ## [0.2.3-beta] - 2026-03-01
 
 ### Added

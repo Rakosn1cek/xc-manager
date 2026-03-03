@@ -1,14 +1,25 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/xc
 
-readonly XC_VERSION="0.2.3-beta"
+readonly XC_VERSION="0.3.0-beta"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
 # SECTION 1: CONFIGURATION & PATHS
 # ==============================================================================
-local vault_file="${XC_VAULT_PATH:-$HOME/.local/share/cmd_vault.txt}"
-local vault_dir="$(dirname "$vault_file")"
+# --- SECTION 1: DYNAMIC CONFIG ---
+local vault_dir="${XC_VAULT_DIR:-$HOME/.local/share/xc}"
+local state_file="$HOME/.cache/xc_active_vault"
+
+# Ensure the vault directory exists (The Arch way: don't assume, verify)
+[[ ! -d "$vault_dir" ]] && mkdir -p "$vault_dir"
+
+# Read the name of the active vault (default to 'main' if file is missing)
+local active_name="main"
+[[ -f "$state_file" ]] && active_name=$(<"$state_file")
+
+# This is our actual working file for this session
+local vault_file="$vault_dir/${active_name}.txt"
 
 # ==============================================================================
 # SECTION 2: UTILITY COMMANDS (Direct Exit)
@@ -64,8 +75,39 @@ elif [[ "$1" == "clean" ]]; then
         echo "Vault is already clean. Nothing to remove."
     fi
     return 0
-fi
 
+# --- Switch or Show Active Vault (v0.3.0 Pro) ---
+elif [[ "$1" == "use" ]]; then
+    if [[ -z "$2" ]]; then
+        echo "Active Vault: [${active_name}]"
+        echo "Available Vaults:"
+        # Look for all .txt files in the vault directory
+        for f in "$vault_dir"/*.txt; do
+            # Skip if no files exist (handles the literal *.txt string)
+            [[ ! -e "$f" ]] && continue
+            
+            # Get just the name (e.g., 'work' from '/path/to/work.txt')
+            local v_name="${f:t:r}"
+            
+            if [[ "$v_name" == "$active_name" ]]; then
+                echo "  * $v_name (active)"
+            else
+                echo "    $v_name"
+            fi
+        done
+    else
+        # Update the state file and switched vault
+        echo "$2" > "$state_file"
+        echo "Switched to vault: $2"
+        [[ ! -f "$vault_dir/$2.txt" ]] && touch "$vault_dir/$2.txt"
+    fi
+    return 0
+        
+# --- THE FINAL CLOSING TAG ---
+else
+    echo "Usage: xc {add|list|select|clean|use} [args]"
+fi
+   
 # ==============================================================================
 # SECTION 3: PRE-FLIGHT CHECK
 # Ensure the vault exists before proceeding to saving logic.
