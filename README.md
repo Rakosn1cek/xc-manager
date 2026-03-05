@@ -73,7 +73,7 @@ XC-Manager allows you to isolate commands into different vaults.
 * **Delete**: Press `Alt + D` inside the TUI to delete the selected entry.
 
 **Search across all vaults**
-* **Global Search**: Pressing Ctrl-A while in the TUI (Ctrl-G) will expand your search to every vault in your collection. This mode is sellect command or read-only for safety. Delete (Alt-D) is disabled by default.
+* **Global Search**: Pressing `Ctrl-A` while in the TUI (Ctrl-G) will expand your search to every vault in your collection. This mode is select command or read-only for safety. Delete (Alt-D) is disabled by default.
 
 **Utilities**
 * **Check version**: `xc -v`
