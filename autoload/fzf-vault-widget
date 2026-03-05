@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/fzf-vault-widget
 
-# --- Identify Active Vault (v0.3.0 logic) ---
+# --- Identify Active Vault (v0.4.0 logic) ---
 local vault_dir="${XC_VAULT_DIR:-$HOME/.local/share/xc}"
 local state_file="$HOME/.cache/xc_active_vault"
 local active_name="main"
@@ -16,7 +16,7 @@ if [[ ! -f "$vault_file" ]]; then
     return 1
 fi
 
-# We switched to {+n} and used a simpler sed command.
+# I switched to {+n} and used a simpler sed command.
 # If {n} was off by one, we will use {+n} or a literal sed adjustment.
 local selected=$(fzf \
     --height 40% \
@@ -24,12 +24,14 @@ local selected=$(fzf \
     --border \
     --prompt="⚡ Vault > " \
     --color="gutter:-1,border:8,header:4,info:2,pointer:5,marker:13,fg+:7,prompt:5,hl:12" \
-    --header "Vault: [$active_name] | Enter: Paste | Alt-D: Delete" \
+    --header "Vault: [$active_name] | Enter: Paste | Alt-D: Delete | Ctrl-A: Global Search" \
     --delimiter=" -> " \
     --with-nth=1 \
     --preview-window="up:3:wrap" \
     --preview 'line={}; echo ${line#* -> }' \
     --bind "alt-d:execute(sed -i \"\$(({n}+1))d\" \"$vault_file\")+reload(cat \"$vault_file\")" \
+    --bind "ctrl-a:unbind(alt-d)+change-header(GLOBAL SEARCH (READ-ONLY) -- Press Ctrl-R to go back | Enter: Use selected command)+reload(grep -h '.*' $vault_dir/*.txt)" \
+    --bind "ctrl-r:rebind(alt-d)+change-header(Vault: [$active_name] | Alt-D: Delete | Ctrl-A: All Vaults)+reload(cat \"$vault_file\")" \
     < "$vault_file")
 
 if [ -n "$selected" ]; then

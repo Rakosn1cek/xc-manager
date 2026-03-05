@@ -1,12 +1,10 @@
 ## XC-Manager
-**Version: 0.3.0-beta**
+**Version: 0.4.0-beta**
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
 
-## New in v0.3.0-beta
-* **Multi-Vault Support**: Separate commands into logical groups (e.g., work, home, projects).
-* **Context Switching**: Use `xc use <name>` to toggle the active vault. Your Ctrl+G widget and xc commands automatically target the selected context.
-* **Visual Indicators**: The TUI and CLI clearly display which vault is currently active to prevent accidental command execution or deletion.
+## New in v0.4.0-beta
+* **Global Search**: Pressing Ctrl-A while in the TUI will expand your search to every vault in your collection. Press (Ctrl-R) return to active vault. This mode is select command or read-only for safety. Delete (Alt-D) is disabled by default.
 
 ## Features
 * **Proactive Saving**: Run a command and save it immediately.
@@ -17,10 +15,13 @@ A high-performance, minimal dependency Zsh vault for managing complex commands.
 * **Smart History**: Save the last command or select from your recent history.
 * **Safe Maintenance**: Built-in transparent cleanup for duplicates.
 * **Distro Agnostic**: Works on Arch, Fedora, Debian, and macOS.
+* **Toggable Search**: Seamlessly switch between local vault and global search using Ctrl-A and Ctrl-R without exiting the TUI.
 
 ## Requirements
 * **zsh**
 * **fzf**
+* **sed** (The line-editor for deletions)
+* **grep** (The standard search tool)
 
 ## Installation
 **Clone the repository**:
@@ -70,6 +71,9 @@ XC-Manager allows you to isolate commands into different vaults.
 * **Filter**: Type to fuzzy search. The description appears in the preview box.
 * **Execute**: Press Enter to load the command into your prompt.
 * **Delete**: Press `Alt + D` inside the TUI to delete the selected entry.
+
+**Search across all vaults**
+* **Global Search**: Pressing Ctrl-A while in the TUI (Ctrl-G) will expand your search to every vault in your collection. This mode is sellect command or read-only for safety. Delete (Alt-D) is disabled by default.
 
 **Utilities**
 * **Check version**: `xc -v`

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0-beta] - 2026-03-05
+
+### Added
+- **Global Search Mode**: Toggle between active vault and global view using Ctrl-A and Ctrl-R.
+- **Dynamic TUI Headers**: The header now updates in real-time to show available actions based on search mode.
+- **Read-Only Safety**: Deletion is automatically disabled in Global Search to protect data across vaults.
+
 ## [0.3.0-beta] - 2026-03-02
 
 ### Added

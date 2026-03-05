@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/xc
 
-readonly XC_VERSION="0.3.0-beta"
+readonly XC_VERSION="0.4.0-beta"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -76,7 +76,7 @@ elif [[ "$1" == "clean" ]]; then
     fi
     return 0
 
-# --- Switch or Show Active Vault (v0.3.0 Pro) ---
+# --- Switch or Show Active Vault (v0.3.0 beta) ---
 elif [[ "$1" == "use" ]]; then
     if [[ -z "$2" ]]; then
         echo "Active Vault: [${active_name}]"
@@ -102,7 +102,29 @@ elif [[ "$1" == "use" ]]; then
         [[ ! -f "$vault_dir/$2.txt" ]] && touch "$vault_dir/$2.txt"
     fi
     return 0
-        
+
+# --- Global Search. Search all vaults at once (v0.4.0 beta)
+elif [[ "$1" == "search" ]]; then
+    # Global search across all vaults
+    local selected
+    # I use 'grep' to prefix the filename to each line
+    selected=$(grep -H ".*" "$vault_dir"/*.txt(N) | fzf \
+        --height 40% \
+        --layout=reverse \
+        --delimiter=":" \
+        --with-nth=2.. \
+        --preview "echo {1} | sed 's/.*\/\(.*\)\.txt/\1/' | xargs printf 'Vault: [%s]\n\n'; echo {2..}" \
+        --header "Global Search (All Vaults)")
+
+    [[ -z "$selected" ]] && return 0
+
+    # Extract the command (everything after the first '->' in the fzf line)
+    local cmd=$(echo "$selected" | sed 's/.*-> //')
+    
+    # Load it into the buffer
+    LBUFFER+="$cmd"
+    return 0
+            
 # --- THE FINAL CLOSING TAG ---
 else
     echo "Usage: xc {add|list|select|clean|use} [args]"
