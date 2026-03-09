@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.5.0-beta] - 2026-03-09
+
+### Major Features
+- **Alias Export Engine**: Convert any saved command into a permanent Zsh alias with `Alt-E`.
+- **Modular Storage**: Support for `~/.zsh_aliases` to keep your `.zshrc` clean.
+- **User Choice**: New environment variable XC_ALIAS_TARGET allows users to choose where aliases are saved.
+- **Safety First**: Built-in Collision Detection prevents overwriting system commands or existing aliases.
+- **Visual Feedback**: Restored terminal echo during alias naming to prevent typos.
+
+### Fixed
+- **Terminal Echo Visibility**: Restored `stty echo` during the alias naming process so users can see what they are typing without exiting the TUI.
+- **String Parsing**: Resolved an issue where trailing comments in the alias file would break the shell's ability to source the alias.
+
+### Improved
+- **Marker System**: Aliases are neatly grouped under a # --- XC-Manager Aliases --- header.
+- **Instant Activation**: New aliases are available in the current session immediately after creation.
+
+---
 
 ## [0.4.0-beta] - 2026-03-05
 
@@ -11,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Global Search Mode**: Toggle between active vault and global view using Ctrl-A and Ctrl-R.
 - **Dynamic TUI Headers**: The header now updates in real-time to show available actions based on search mode.
 - **Read-Only Safety**: Deletion is automatically disabled in Global Search to protect data across vaults.
+
+---
 
 ## [0.3.0-beta] - 2026-03-02
 
@@ -29,6 +49,8 @@ _ **Smart Switcher**: New xc use <name> command to list, create, and switch betw
 ## Fixed
 - Fixed a parse error in the if/elif chain where extra fi tags were breaking the command logic.
 - Resolved an issue where the fzf-vault-widget would fail if the default vault file was missing.
+
+---
 
 ## [0.2.3-beta] - 2026-03-01
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/xc
 
-readonly XC_VERSION="0.4.0-beta"
+readonly XC_VERSION="0.5.0-beta"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -124,7 +124,28 @@ elif [[ "$1" == "search" ]]; then
     # Load it into the buffer
     LBUFFER+="$cmd"
     return 0
-            
+
+elif [[ "$1" == "alias" ]]; then
+    local alias_file="$vault_dir/aliases.zsh"
+    touch "$alias_file"
+
+    # Use fzf to pick the command you want to turn into an alias
+    local selected=$(fzf --height 40% --layout=reverse --header "Select command to ALIAS" < "$vault_file")
+    [[ -z "$selected" ]] && return 0
+
+    # Extract command part
+    local cmd="${selected%% -> *}"
+    
+    # Ask for the alias name
+    echo -n "Enter alias name for '$cmd': "
+    read alias_name
+    [[ -z "$alias_name" ]] && return 0
+
+    # Append to the alias file
+    echo "alias $alias_name='$cmd'" >> "$alias_file"
+    echo "Alias '$alias_name' added. Restart shell or run 'source $alias_file'"
+    return 0
+                
 # --- THE FINAL CLOSING TAG ---
 else
     echo "Usage: xc {add|list|select|clean|use} [args]"
@@ -141,7 +162,7 @@ fi
 
 # ==============================================================================
 # SECTION 4: COMMAND CAPTURE (The "What")
-# This section decides which command we are about to save.
+# This section decides which command is about to save.
 # ==============================================================================
 local cmd_to_save
 

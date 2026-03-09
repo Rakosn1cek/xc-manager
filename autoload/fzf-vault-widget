@@ -1,41 +1,88 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/fzf-vault-widget
 
-# --- Identify Active Vault (v0.4.0 logic) ---
+# --- 1. User Configuration ---
+# Users can set XC_ALIAS_TARGET in their .zshrc. Default is ~/.zsh_aliases
+local alias_target="${XC_ALIAS_TARGET:-$HOME/.zsh_aliases}"
+local marker="# --- XC-Manager Aliases ---"
+
+# --- 2. Helper Function: The Alias Engine ---
+_xc_add_alias() {
+    local cmd="${1%% -> *}"
+    local target="$2"
+    local marker="$3"
+
+    # Ensure the target file exists (especially if it's a new .zsh_aliases)
+    [[ ! -f "$target" ]] && touch "$target"
+
+    # VISIBILITY: Ensure keyboard echo is ON
+    stty echo
+    printf "\n\e[32mXC-Manager\e[0m Saving to: \e[2m%s\e[0m\n" "$target" > /dev/tty
+    printf "\e[32mXC-Manager\e[0m Alias Name: " > /dev/tty
+    read alias_name < /dev/tty
+    stty -echo
+
+    [[ -z "$alias_name" ]] && return 0
+
+    # SAFETY: Check if alias already exists in the target file
+    if grep -qE "^alias $alias_name=" "$target"; then
+        printf "\e[31m[!] Error:\e[0m '%s' already exists in %s\n" "$alias_name" "$target" > /dev/tty
+        sleep 1; return 1
+    fi
+
+    # SAFETY: Check if it's a system command/builtin
+    if type "$alias_name" >/dev/null 2>&1; then
+        printf "\e[31m[!] Error:\e[0m '%s' is a system command.\n" "$alias_name" > /dev/tty
+        sleep 1; return 1
+    fi
+
+    # INITIALIZE: Add the header marker if missing
+    if ! grep -qF "$marker" "$target"; then
+        printf "\n%s\n" "$marker" >> "$target"
+    fi
+
+    # WRITE: Clean alias line
+    echo "alias $alias_name=\"$cmd\"" >> "$target"
+    
+    # ACTIVATE: Live in current session
+    alias "$alias_name"="$cmd"
+
+    printf "\e[32mSuccess!\e[0m Alias '\e[1m%s\e[0m' is live.\n" "$alias_name" > /dev/tty
+    sleep 0.5
+}
+
+# --- 3. Main Widget Logic ---
 local vault_dir="${XC_VAULT_DIR:-$HOME/.local/share/xc}"
 local state_file="$HOME/.cache/xc_active_vault"
 local active_name="main"
 
-# Identify which vault is active
 [[ -f "$state_file" ]] && active_name=$(<"$state_file")
 local vault_file="$vault_dir/${active_name}.txt"
 
-# If the file doesn't exist, show a helpful message and exit
 if [[ ! -f "$vault_file" ]]; then
-    zle -M "Vault '$active_name' not found in $vault_dir"
+    zle -M "Vault '$active_name' not found."
     return 1
 fi
 
-# I switched to {+n} and used a simpler sed command.
-# If {n} was off by one, we will use {+n} or a literal sed adjustment.
+# --- 4. The TUI ---
+# Pass alias_target and marker into the function call
 local selected=$(fzf \
-    --height 40% \
-    --layout=reverse \
-    --border \
+    --height 40% --layout=reverse --border \
     --prompt="⚡ Vault > " \
     --color="gutter:-1,border:8,header:4,info:2,pointer:5,marker:13,fg+:7,prompt:5,hl:12" \
-    --header "Vault: [$active_name] | Enter: Paste | Alt-D: Delete | Ctrl-A: Global Search" \
-    --delimiter=" -> " \
-    --with-nth=1 \
+    --header "Vault: [$active_name] | Alt-E: Alias | Alt-D: Delete | Ctrl-A: Global" \
+    --delimiter=" -> " --with-nth=1 \
     --preview-window="up:3:wrap" \
     --preview 'line={}; echo ${line#* -> }' \
     --bind "alt-d:execute(sed -i \"\$(({n}+1))d\" \"$vault_file\")+reload(cat \"$vault_file\")" \
-    --bind "ctrl-a:unbind(alt-d)+change-header(GLOBAL SEARCH (READ-ONLY) -- Press Ctrl-R to go back | Enter: Use selected command)+reload(grep -h '.*' $vault_dir/*.txt)" \
-    --bind "ctrl-r:rebind(alt-d)+change-header(Vault: [$active_name] | Alt-D: Delete | Ctrl-A: All Vaults)+reload(cat \"$vault_file\")" \
+    --bind "alt-e:execute($(declare -f _xc_add_alias); _xc_add_alias {} \"$alias_target\" \"$marker\")+reload(cat \"$vault_file\")" \
+    --bind "ctrl-a:unbind(alt-d,alt-e)+change-header(GLOBAL SEARCH - READ ONLY -- Ctrl-R: Back)+reload(grep -h '.*' $vault_dir/*.txt)" \
+    --bind "ctrl-r:rebind(alt-d,alt-e)+change-header(Vault: [$active_name] | Alt-E: Alias | Alt-D: Delete | Ctrl-A: Global)+reload(cat \"$vault_file\")" \
     < "$vault_file")
 
 if [ -n "$selected" ]; then
     local cmd="${selected%% -> *}"
     LBUFFER="${cmd%"${cmd##*[![:space:]]}"}"
 fi
+
 zle redisplay
