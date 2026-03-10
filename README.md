@@ -129,6 +129,17 @@ If you want an easy way to browse and run your newly created aliases using `fzf`
 
 [x] Global Search: Search across all vaults simultaneously.
 
+## Maintenance & Stability
+This project follows the KISS (Keep It Simple, Stupid) principle. Because it relies on standard Unix tools and native Zsh functions, it is designed to be "set and forget".
+- **Feature Complete**: v0.5.0-beta contains the core intended workflow. I don't plan on adding heavy dependencies or feature bloat.
+- **Long-term Support**: As an Arch user, I use this tool daily. I will provide active maintenance for bug fixes and Zsh compatibility updates.
+- **Plain Text Forever**: Your vaults are stored in simple .txt files. Your data remains portable and human readable regardless of the tool.
+
+## Support & Feedback
+- **Bug Reports**: If something isn't working, especially with the Alias Export engine, please open an [Issue](https://github.com/Rakosn1cek/XC-Manager/issues).
+- **Feature Ideas**: To discuss the roadmap or suggest a polish, head over to the[Discussions](https://github.com/Rakosn1cek/XC-Manager/discussions) tab.
+- **Community Snippets**: Have a complex one-liner you've vaulted? Share it in the "Show and Tell" discussion.
+
 ## License
 Distributed under the MIT License. See LICENSE for more information.
 
@@ -137,5 +148,7 @@ For a detailed history of changes and version milestones, please see CHANGELOG.m
 
 ## Support the Project
 If XC-Manager makes your workflow faster or your `.zshrc` cleaner, please consider giving it a Star on GitHub! It helps other Arch users find the project and keeps the development of features like v0.5.0-beta going.
+
+*Project Note: This documentation and parts of the shell optimization were proofread and refined with the help of LLMs to ensure clarity and performance.*
 
 [**⭐ Star XC-Manager on GitHub**](https://github.com/Rakosn1cek/XC-Manager)
