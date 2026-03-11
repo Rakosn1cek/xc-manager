@@ -152,3 +152,5 @@ If XC-Manager makes your workflow faster or your `.zshrc` cleaner, please consid
 *Project Note: This documentation and parts of the shell optimization were proofread and refined with the help of LLMs to ensure clarity and performance.*
 
 [**⭐ Star XC-Manager on GitHub**](https://github.com/Rakosn1cek/XC-Manager)
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/Rakosn1cek)
