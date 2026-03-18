@@ -1,6 +1,8 @@
 ## XC-Manager
 **Version: 0.5.3-beta**
 
+![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
+
 A high-performance, minimal dependency Zsh vault for managing complex commands.
 
 ## What's New in v0.5.3-beta
