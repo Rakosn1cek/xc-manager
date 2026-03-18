@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.5.3-beta] - 2026-03-17
+
+### Added
+- **xc alias**: New command to promote any vaulted entry to a permanent Zsh alias in ~/.local/share/xc/aliases.zsh.
+- **xc search**: Global search functionality to query all .txt vaults simultaneously using fzf and grep.
+- **xc --help**: Integrated help menu with command usage and option flags.
+- **Argument Routing**: Refactored the main logic to correctly handle list, select, and add without overlapping.
+
+### Fixed (Critical)
+- **TTY State Recovery**: Resolved a major regression where the terminal remained in raw mode after fzf exited. Replaced stty echo with stty sane in the ZLE widget to restore the kernel line discipline.
+- **Backspace/Enter Unresponsiveness**: Fixed the "Dead Key" bug by ensuring the terminal returns to canonical mode after TUI interactions.
+- **Input Buffer Contamination**: Implemented a TTY "drain" loop (read -t 0.05) to prevent ghost \n characters from skipping the Description prompt after a selection.
+
+### Changed
+- **Default Behavior**: Running xc with no arguments now consistently grabs the last executed command from history.
+- **Version Tracking**: Updated internal variables and help output to reflect v0.5.3-beta.
+
+---
+
 ## [0.5.0-beta] - 2026-03-09
 
 ### Major Features

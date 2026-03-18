@@ -16,11 +16,11 @@ _xc_add_alias() {
     [[ ! -f "$target" ]] && touch "$target"
 
     # VISIBILITY: Ensure keyboard echo is ON
-    stty echo
+    stty sane </dev/tty   # canonical mode + echo restored — backspace works, fix in (v0.5.3-beta)
     printf "\n\e[32mXC-Manager\e[0m Saving to: \e[2m%s\e[0m\n" "$target" > /dev/tty
     printf "\e[32mXC-Manager\e[0m Alias Name: " > /dev/tty
     read alias_name < /dev/tty
-    stty -echo
+    stty -echo < /dev/tty
 
     [[ -z "$alias_name" ]] && return 0
 

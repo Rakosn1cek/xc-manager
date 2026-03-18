@@ -1,24 +1,20 @@
 #!/usr/bin/env zsh
 # File: ~/arch-projects/XC-Manager/autoload/xc
 
-readonly XC_VERSION="0.5.0-beta"
+readonly XC_VERSION="0.5.3-beta"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
 # SECTION 1: CONFIGURATION & PATHS
 # ==============================================================================
-# --- SECTION 1: DYNAMIC CONFIG ---
 local vault_dir="${XC_VAULT_DIR:-$HOME/.local/share/xc}"
 local state_file="$HOME/.cache/xc_active_vault"
 
-# Ensure the vault directory exists (The Arch way: don't assume, verify)
 [[ ! -d "$vault_dir" ]] && mkdir -p "$vault_dir"
 
-# Read the name of the active vault (default to 'main' if file is missing)
 local active_name="main"
 [[ -f "$state_file" ]] && active_name=$(<"$state_file")
 
-# This is our actual working file for this session
 local vault_file="$vault_dir/${active_name}.txt"
 
 # ==============================================================================
@@ -26,8 +22,34 @@ local vault_file="$vault_dir/${active_name}.txt"
 # These commands perform a task and exit the script immediately.
 # ==============================================================================
 
+# --- Fast Track Help Check ---
+# Only triggers on explicit flags or if the user asks for help.
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    cat << EOF
+XC-Manager $XC_VERSION
+A functional vault for command execution and alias management.
+
+Usage: xc <command> [arguments]
+
+Commands:
+  add       Vault a new command or one-liner.
+  list      Display all vaulted commands in a searchable TUI.
+  select    Open fzf to execute or promote a command to a system alias.
+  clean     Interactively remove entries with a safety lock.
+  use       Switch between different vault files.
+  search    Global search across all vaults.
+  alias     Promote a vaulted command to a permanent Zsh alias.
+
+Options:
+  -v, --version  Show version information.
+  -h, --help     Show this help message.
+
+For feedback or bug reports: https://github.com/Rakosn1cek/XC-Manager
+EOF
+    return 0
+
 # Check Version
-if [[ "$1" == "-v" || "$1" == "--version" ]]; then
+elif [[ "$1" == "-v" || "$1" == "--version" ]]; then
     echo "XC-Manager $XC_VERSION"
     return 0
 
@@ -38,7 +60,15 @@ elif [[ "$1" == "init" ]]; then
     echo "Vault initialized at $vault_file"
     return 0
 
-# Clean Vault (Minimalist with Transparency)
+# List Commands (TUI)
+elif [[ "$1" == "list" ]]; then
+    [[ ! -f "$vault_file" ]] && echo "Vault not found." && return 1
+    local selected=$(fzf --height 40% --layout=reverse --header "Select command to EXECUTE" < "$vault_file")
+    [[ -z "$selected" ]] && return 0
+    LBUFFER+="${selected%% -> *}"
+    return 0
+
+# Clean Vault
 elif [[ "$1" == "clean" ]]; then
     [[ ! -f "$vault_file" ]] && echo "Vault not found." && return 1
     
@@ -47,23 +77,19 @@ elif [[ "$1" == "clean" ]]; then
     local line
     local count=0
 
-    # Read the file and check each line
     while IFS= read -r line; do
-        # 1. Catch empty descriptions
         if [[ "$line" == *'->'([[:space:]]#) ]]; then
             echo "Removing (No Description): $line"
             ((count++))
             continue
         fi
 
-        # 2. Catch identical duplicates
         if [[ -n "${seen[$line]}" ]]; then
             echo "Removing (Duplicate):    $line"
             ((count++))
             continue
         fi
 
-        # 3. If it's a good, unique line, keep it
         unique_lines+=("$line")
         seen[$line]=1
     done < "$vault_file"
@@ -76,39 +102,25 @@ elif [[ "$1" == "clean" ]]; then
     fi
     return 0
 
-# --- Switch or Show Active Vault (v0.3.0 beta) ---
+# Switch or Show Active Vault
 elif [[ "$1" == "use" ]]; then
     if [[ -z "$2" ]]; then
         echo "Active Vault: [${active_name}]"
         echo "Available Vaults:"
-        # Look for all .txt files in the vault directory
-        for f in "$vault_dir"/*.txt; do
-            # Skip if no files exist (handles the literal *.txt string)
-            [[ ! -e "$f" ]] && continue
-            
-            # Get just the name (e.g., 'work' from '/path/to/work.txt')
+        for f in "$vault_dir"/*.txt(N); do
             local v_name="${f:t:r}"
-            
-            if [[ "$v_name" == "$active_name" ]]; then
-                echo "  * $v_name (active)"
-            else
-                echo "    $v_name"
-            fi
+            [[ "$v_name" == "$active_name" ]] && echo "  * $v_name (active)" || echo "    $v_name"
         done
     else
-        # Update the state file and switched vault
         echo "$2" > "$state_file"
         echo "Switched to vault: $2"
         [[ ! -f "$vault_dir/$2.txt" ]] && touch "$vault_dir/$2.txt"
     fi
     return 0
 
-# --- Global Search. Search all vaults at once (v0.4.0 beta)
+# Global Search
 elif [[ "$1" == "search" ]]; then
-    # Global search across all vaults
-    local selected
-    # I use 'grep' to prefix the filename to each line
-    selected=$(grep -H ".*" "$vault_dir"/*.txt(N) | fzf \
+    local selected=$(grep -H ".*" "$vault_dir"/*.txt(N) | fzf \
         --height 40% \
         --layout=reverse \
         --delimiter=":" \
@@ -117,43 +129,31 @@ elif [[ "$1" == "search" ]]; then
         --header "Global Search (All Vaults)")
 
     [[ -z "$selected" ]] && return 0
-
-    # Extract the command (everything after the first '->' in the fzf line)
-    local cmd=$(echo "$selected" | sed 's/.*-> //')
-    
-    # Load it into the buffer
-    LBUFFER+="$cmd"
+    LBUFFER+="$(echo "$selected" | sed 's/.*-> //')"
     return 0
 
+# Alias Promotion
 elif [[ "$1" == "alias" ]]; then
     local alias_file="$vault_dir/aliases.zsh"
     touch "$alias_file"
-
-    # Use fzf to pick the command you want to turn into an alias
     local selected=$(fzf --height 40% --layout=reverse --header "Select command to ALIAS" < "$vault_file")
     [[ -z "$selected" ]] && return 0
-
-    # Extract command part
     local cmd="${selected%% -> *}"
-    
-    # Ask for the alias name
     echo -n "Enter alias name for '$cmd': "
     read alias_name
     [[ -z "$alias_name" ]] && return 0
-
-    # Append to the alias file
     echo "alias $alias_name='$cmd'" >> "$alias_file"
-    echo "Alias '$alias_name' added. Restart shell or run 'source $alias_file'"
+    echo "Alias '$alias_name' added."
     return 0
-                
-# --- THE FINAL CLOSING TAG ---
-else
-    echo "Usage: xc {add|list|select|clean|use} [args]"
+
+# Final Catch-all for unrecognized flags/commands in Section 2
+elif [[ "$1" == -* ]]; then
+    echo "Unrecognized option: $1. Use --help for usage."
+    return 1
 fi
-   
+    
 # ==============================================================================
 # SECTION 3: PRE-FLIGHT CHECK
-# Ensure the vault exists before proceeding to saving logic.
 # ==============================================================================
 if [[ ! -f "$vault_file" ]]; then
     echo "Vault not found. Please run 'xc init' first."
@@ -162,36 +162,30 @@ fi
 
 # ==============================================================================
 # SECTION 4: COMMAND CAPTURE (The "What")
-# This section decides which command is about to save.
 # ==============================================================================
 local cmd_to_save
 
 if [[ "$1" == "select" ]]; then
-    # Open history selector via FZF
     cmd_to_save=$(fc -rl -100 | sed 's/^[ ]*[0-9]*[ ]*//' | fzf --height 40% --header="Select command to vault" --prompt="Vault > ")
     [[ -z "$cmd_to_save" ]] && echo "Cancelled." && return 0
-elif [ $# -eq 0 ]; then
-    # Default: Grab the very last command run in shell
+elif [[ "$1" == "add" ]]; then
+    shift
+    cmd_to_save="$*"
+elif [[ -z "$1" ]]; then
     cmd_to_save="${$(fc -ln -1)## #}"
 else
-    # Take arguments from command line: xc "sudo pacman -Syu"
     cmd_to_save="$*"
 fi
 
 # ==============================================================================
 # SECTION 5: DESCRIPTION & PERSISTENCE (The "Why")
-# Final step: Ask for a comment and write to the vault file.
 # ==============================================================================
 echo -n "Description for '$cmd_to_save': "
 read comment
 
-if [ -n "$comment" ]; then
+if [[ -n "$comment" ]]; then
     echo "$cmd_to_save -> $comment" >> "$vault_file"
     echo "Saved to vault!"
 else
     echo "Cancelled."
 fi
-
-# ==============================================================================
-# END OF SCRIPT
-# ==============================================================================

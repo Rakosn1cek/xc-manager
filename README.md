@@ -3,6 +3,20 @@
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
 
+## What's New in v0.5.3-beta
+### New Commands:
+
+- **xc alias**: Promote any vaulted command to a permanent Zsh alias.
+- **xc search**: Search across all your vault files simultaneously.
+- **xc --help**: Added a proper help menu for easier navigation.
+
+### Critical Fixes:
+- **TTY Restoration**: Fixed a major bug where the terminal would remain in "raw mode" after exiting the TUI, causing unresponsive Backspace and Enter keys.
+- **Input Buffer Draining**: Implemented a "drain" loop to prevent the shell from skipping description prompts after an fzf selection.
+- **Refined Routing**: Improved argument handling to ensure select and list function correctly without falling through to default capture logic.
+
+For a detailed deep dive into the TTY/Canonical mode fix, see [Issue #6](https://github.com/Rakosn1cek/xc-manager/issues/6).
+
 ## New in v0.5.0-beta
 ### The "Alias Export" Update ⚡
 Convert your saved commands into permanent Zsh aliases instantly with Alt-E.
