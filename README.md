@@ -1,5 +1,5 @@
 ## XC-Manager
-**Version: 0.5.0-beta**
+**Version: 0.5.3-beta**
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
 
