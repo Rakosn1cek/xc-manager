@@ -1,0 +1,12 @@
+docker ps -a -> List all containers (Including stopped ones)
+docker images -> List all locally stored images and their sizes
+docker exec -it <container_id> /bin/bash -> Open an interactive Shell inside a running container
+docker logs -f <container_id> -> Follow container logs in real-time (Live Debugging)
+docker system prune -a --volumes -> The "Nuclear Option": Remove all unused containers, networks, and volumes
+docker stop $(docker ps -q) -> Stop all currently running containers
+docker rm $(docker ps -a -q) -> Remove all stopped containers
+docker rmi $(docker images -f "dangling=true" -q) -> Remove all "ghost" (dangling) images
+docker inspect <container_id> -> View detailed JSON configuration (IPs, Mounts, Env Vars)
+docker-compose up -d -> Start a multi-container app in the Background
+docker-compose down -> Stop and remove containers/networks defined in a Compose file
+docker stats -> Real-time CPU, Memory, and Network usage for all containers

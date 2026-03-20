@@ -1,0 +1,10 @@
+systemctl --user stop pipewire pipewire-pulse wireplumber && systemctl --user start pipewire pipewire-pulse wireplumber -> Hard Reset Wayland Audio Stack
+killall xdg-desktop-portal-hyprland; killall xdg-desktop-portal; /usr/lib/xdg-desktop-portal-hyprland & -> Force Restart Portals (Fixes Screen Sharing)
+hyprctl monitors all -> Detailed Monitor Specs (Resolution, Refresh Rate, Reserved Space)
+hyprctl activewindow -> Get Class and Title of focused window (Essential for Window Rules)
+hyprctl keyword monitor DP-1,1920x1080@144,0x0,1 -> Live Update Monitor Config (No Restart Needed)
+hyprctl reload -> Force Reload Config and Multi-Monitor Layouts
+export WLR_NO_HARDWARE_CURSORS=1 -> Fix Invisible Cursor on NVIDIA/Wayland
+hyprctl setcursor Bibata-Modern-Classic 24 -> Force Update Cursor Theme and Size
+hyprctl layers -> List all active Layer Shell surfaces (Bars, Notifications, Wallpapers)
+hyprctl instances -> List active Hyprland sessions and their Socket addresses

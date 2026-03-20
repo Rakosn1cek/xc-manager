@@ -1,0 +1,7 @@
+:%s/old/new/g -> Search and Replace "old" with "new" in the entire file
+:set relativepnu -> Enable Relative Line Numbers (Essential for motions)
+:vsplit -> Split the window Vertically
+:checkhealth -> Run Neovim health check for provider/plugin issues
+:Tutor -> Open the built-in Vim Tutorial
+:g/pattern/d -> Delete all lines matching a specific pattern
+:qa! -> Force Quit all open buffers and exit without saving

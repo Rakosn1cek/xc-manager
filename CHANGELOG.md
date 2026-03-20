@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-03-20
+### Added
+- **Vault Sync Engine**: Integrated `xc sync` to pull remote definitions from GitHub.
+- **Power Library**: 8 new community-curated vaults (Arch, Hyprland, Git, Docker, etc.).
+- **Zsh/Fzf Protocol**: Optimized `LBUFFER` handling for synced command execution.
+
+### Fixed
+- Resolved ordering issue where descriptions were appearing before commands in synced files.
+- Hardened `xc use` to prevent directory traversal when switching vaults.
+
+---
+
 ## [0.5.3-beta] - 2026-03-17
 
 ### Added

@@ -1,0 +1,9 @@
+nmcli device wifi list -> Scan for available WiFi networks
+nmcli device wifi connect "SSID" password "PASSWORD" -> Connect to WiFi via terminal
+ip -brief addr show -> Quick overview of all Network Interfaces and IPs
+mtr google.com -> Combined Ping and Traceroute (Live Network Diagnostics)
+dig +short google.com -> Quick DNS lookup for an A record
+sudo nmap -sn 192.168.1.0/24 -> Scan Local Network for active devices
+sudo tcpdump -i any icmp -> Monitor all incoming/outgoing Ping requests
+curl ifconfig.me -> Get your Public IP address instantly
+speedtest-cli --simple -> Run a quick Internet Speed Test from terminal

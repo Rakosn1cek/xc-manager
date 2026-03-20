@@ -1,9 +1,26 @@
 ## XC-Manager
-**Version: 0.5.3-beta**
+**Version: 0.6.0**
+[![Awesome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
+
+### What's New in v0.6.0
+## Community Sync
+
+Stop searching the web for the same syntax. XC-Manager now includes a built-in sync engine to pull curated, Arch Wiki-verified "Problem-Solution" vaults directly from this repository.
+
+| Vault | Command | Description |
+| :--- | :--- | :--- |
+| **Arch Linux** | `xc sync arch` | Fixes for PGP keyrings, .pacnew merges, and kernel maintenance. |
+| **General Nix** | `xc sync general-nix` | Essential POSIX utilities for permissions, disk usage, and IO. |
+| **Hyprland** | `xc sync hyprland` | Wayland specific fixes for NVIDIA, portals, and window rules. |
+| **Git Pro** | `xc sync git-pro` | Advanced recovery, reflog navigation, and surgical commit tools. |
+| **Docker Dev** | `xc sync docker-dev` | Container lifecycle management and aggressive resource cleanup. |
+| **Networking** | `xc sync networking` | Connectivity diagnostics, DNS lookups, and interface auditing. |
+| **Vim/Neovim** | `xc sync vim-neovim` | High-speed motions, global search/replace, and health checks. |
+| **Security Audit** | `xc sync security-audit` | Local hardening, SUID discovery, and system integrity logs. |
 
 ## What's New in v0.5.3-beta
 ### New Commands:
@@ -84,8 +101,14 @@ source ~/.zshrc
 xc init
 ```
 ## Usage
-**Managing Contexts (Multi-Vault)**
 
+**Community Sync (v0.6.0)**
+XC-Manager now features a built-in sync engine to pull curated "Problem-Solution" vaults directly from the community repository.
+* **Sync a Vault**: Run xc sync <category> (e.g., xc sync arch or xc sync hyprland).
+* **Available Categories**: arch, hyprland, general-nix, git-pro, docker-dev, networking, vim-neovim, security-audit.
+* **Update**: Re-running sync will pull the latest verified fixes from the upstream repo.
+
+**Managing Contexts (Multi-Vault)**
 XC-Manager allows you to isolate commands into different vaults.
 * **Switch or Create**: Use `xc use <name>` to toggle your active context.
 * **Example**: `xc use work` (If it doesn't exist, a new work.txt is created automatically).
@@ -144,6 +167,12 @@ If you want an easy way to browse and run your newly created aliases using `fzf`
 [x] Export to Alias: Export vault commands directly to .zshrc as permanent aliases.
 
 [x] Global Search: Search across all vaults simultaneously.
+
+[x] Community Sync Engine (v0.6.0): Built-in distribution system to pull curated, Wiki-verified vaults (Arch, Hyprland, Git, etc.) directly from GitHub.
+
+[ ] Encrypted Vaults: Support for gpg or age encrypted .txt files for sensitive commands.
+
+[ ] Dynamic Placeholders: Support for {{variable}} prompting within vaulted commands.
 
 ## Maintenance & Stability
 This project follows the KISS (Keep It Simple, Stupid) principle. Because it relies on standard Unix tools and native Zsh functions, it is designed to be "set and forget".

@@ -1,0 +1,18 @@
+sudo pacman -Sy archlinux-keyring && sudo pacman-key --refresh-keys -> Fix PGP Keyring / Signature Errors
+reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syu -> Update System and Sync Mirrors
+sudo pacman -Rs $(pacman -Qdtq) -> Cleanup Orphaned Packages (Save Space)
+systemctl --user restart pipewire pipewire-pulse wireplumber -> Reset Pipewire Audio Services
+sudo rm -rf /var/cache/pacman/pkg/* && sudo pacman -Sc -> Clear Corrupted Pacman Cache
+sudo grub-mkconfig -o /boot/grub/grub.cfg -> Fix Dual Boot / Windows Not Showing in GRUB
+expac "%u %n" | sort -n | tail -n 10 -> List Top 10 Largest Installed Packages
+sudo mkinitcpio -P -> Rebuild Initramfs (Kernel Update Fix)
+sudo pacman -Sy archlinux-keyring && sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys -> Comprehensive PGP Keyring Reset
+find /etc -name "*.pacnew" -> Locate all .pacnew files (Manual merge required)
+sudo DIFFPROG=meld pacdiff -> Interactively manage and merge .pacnew files
+journalctl -p 3 -xb -> View only high-priority Errors (Level 3) from current boot
+paccache -r -k 2 -> Clean Pacman cache (Keep only the 2 most recent versions)
+sudo systemctl --failed -> List all Systemd services that failed to start
+sudo cat /var/log/Xorg.0.log | grep EE -> Check Xorg logs for critical errors
+lsblk -f -> List all partitions with UUIDs and File System types
+cat /proc/cmdline -> Check current Kernel Boot Parameters
+sudo ntpdate pool.ntp.org -> Manual Time Sync (Fixes SSL/Handshake errors)

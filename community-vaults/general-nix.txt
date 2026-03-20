@@ -1,0 +1,22 @@
+sudo chown -R $USER:$USER . -> Take Ownership of current directory and subfolders
+chmod +x filename.sh -> Make script executable
+du -ah --max-depth=1 | sort -rh -> Find what is eating your Disk Space (Current Folder)
+df -h -> Check Disk Space and Partition Mount Points
+ps aux --sort=-%mem | head -n 10 -> List Top 10 Memory-Hungry Processes
+tar -cvzf archive.tar.gz /path/to/folder -> Compress folder into a .tar.gz archive
+tar -xvzf archive.tar.gz -> Decompress .tar.gz archive
+ip addr show -> Check Local IP and Network Interface status
+ssh-keygen -t ed25519 -C "your_email@example.com" -> Generate secure SSH Key
+sudo lsof -i :8080 -> Find which process is using Port 8080
+ln -s /path/to/target /path/to/link -> Create a Symbolic Link (Symlink)
+grep -r "search_term" . -> Recursive Search for text in all files in current folder
+tail -f /var/log/syslog -> Follow System Logs in real-time (Live Debugging)
+watch -n 1 nvidia-smi -> Monitor GPU Usage every second
+ss -tulpn -> List all active Network Connections and Listening Ports
+sudo fuser -v /dev/snd/* -> Find which process is locking the Audio Device
+rsync -ahP --info=progress2 source/ dest/ -> Sync folders with Resume and Progress Bar
+ls -lhS | head -n 20 -> List Top 20 Largest Files in current directory
+find . -type f -mtime -1 -> Find all files modified in the last 24 hours
+history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 10 -> Show your Top 10 most used Terminal Commands
+curl -I https://google.com -> Fetch HTTP Headers only (Check Website Status)
+echo "text" | sudo tee -a /etc/file.conf -> Append text to a Root-protected file

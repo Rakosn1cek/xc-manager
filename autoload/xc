@@ -1,7 +1,13 @@
 #!/usr/bin/env zsh
+# ==============================================================================
+# XC-Manager: A functional vault for command execution.
+# Copyright (c) 2026 Lukas Grumlik - (Rakosn1cek)
+# License: MIT
+# Part of the Awesome-Zsh-Plugins collection.
 # File: ~/arch-projects/XC-Manager/autoload/xc
+# ==============================================================================
 
-readonly XC_VERSION="0.5.3-beta"
+readonly XC_VERSION="0.6.0"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -37,6 +43,7 @@ Commands:
   select    Open fzf to execute or promote a command to a system alias.
   clean     Interactively remove entries with a safety lock.
   use       Switch between different vault files.
+  sync      Download community-curated fix vaults.
   search    Global search across all vaults.
   alias     Promote a vaulted command to a permanent Zsh alias.
 
@@ -118,6 +125,28 @@ elif [[ "$1" == "use" ]]; then
     fi
     return 0
 
+# Sync Community Vaults / New in v0.6.0
+elif [[ "$1" == "sync" ]]; then
+    local category="$2"
+    local remote_base="https://raw.githubusercontent.com/Rakosn1cek/XC-Manager/main/community-vaults"
+    
+    if [[ -z "$category" ]]; then
+        echo "Usage: xc sync <category> (e.g., arch, hyprland, macos)"
+        return 1
+    fi
+
+    echo "Fetching [$category] vault from community repository..."
+    
+    # Use curl -f to ensure we don't save 404 error pages as text files
+    if curl -s -f "$remote_base/${category}.txt" -o "$vault_dir/${category}.txt"; then
+        echo "Successfully synced: ${category}.txt"
+        echo "Currently using: [${active_name}]. Run 'xc use $category' to switch."
+    else
+        echo "Error: Community vault '$category' not found or network failure."
+        return 1
+    fi
+    return 0
+    
 # Global Search
 elif [[ "$1" == "search" ]]; then
     local selected=$(grep -H ".*" "$vault_dir"/*.txt(N) | fzf \

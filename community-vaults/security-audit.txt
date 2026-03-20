@@ -1,0 +1,5 @@
+sudo rkhunter --check -> Scan for Rootkits and local exploits
+sudo lynis audit system -> Perform a comprehensive Linux Security Audit
+sudo ufw status numbered -> List Firewall rules with ID numbers for easy deletion
+find / -perm -4000 2>/dev/null -> Find all SUID files (Potential privilege escalation vectors)
+last -a | head -n 10 -> Check the last 10 logged-in users and their IP addresses
