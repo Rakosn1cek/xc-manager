@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2026-03-20
+### Fixed
+- **Duplicate Prevention**: Added a literal string guard (`grep -Fxq`) to prevent saving the same command multiple times into a single vault.
+- **Global Search Noise**: Implemented `awk` deduplication in the Global Search (`Ctrl+A`) to ensure unique commands across overlapping vaults.
+
+### Changed
+- **Global Search Policy**: Reinforced "Read-Only" mode for Global Search as a safety measure to prevent accidental buffer injection of sensitive maintenance commands.
+
+---
+
 ## [0.6.0] - 2026-03-20
 ### Added
 - **Vault Sync Engine**: Integrated `xc sync` to pull remote definitions from GitHub.

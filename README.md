@@ -1,10 +1,31 @@
 ## XC-Manager
-**Version: 0.6.0**
+**Version: 0.6.1**
 [![Awesome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
 
+### XC-Manager in Action
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/d67640fb-4e9e-4d36-b7a1-d588a24ab9a6" width="700" controls muted autoplay loop>
+    Your browser does not support the video tag.
+  </video>
+</p>
+
 A high-performance, minimal dependency Zsh vault for managing complex commands.
+
+### What's New in v0.6.1
+## Signal Over Noise
+This hotfix focuses on data integrity and TUI clarity. After the v0.6.0 launch, community feedback highlighted potential "visual noise" when syncing multiple overlapping vaults. v0.6.1 solves this.
+
+**Smart-Save Guard**
+The add and select functions now include a literal string check.
+* **The Logic**: Before appending to a vault, xc verifies the command doesn't already exist using grep -Fxq.
+* **The Benefit**: No more duplicate entries cluttering your TUI if you accidentally save the same one-liner twice.
+
+**Global Search Deduplication**
+Searching across all vaults (Ctrl+A) is now cleaner and faster.
+* **The Logic**: Results are piped through an awk filter that removes redundant commands while preserving the original file-source context in the preview window.
+* **The Benefit**: If sudo pacman -Syu exists in both your arch and personal vaults, you will only see it once in the Global Search list.
 
 ### What's New in v0.6.0
 ## Community Sync
@@ -128,6 +149,8 @@ XC-Manager allows you to isolate commands into different vaults.
 
 **Search across all vaults**
 * **Global Search**: Pressing `Ctrl-A` while in the TUI (Ctrl-G) will expand your search to every vault in your collection. This mode is for searching and selecting commands only for safety. Delete (Alt-D) is disabled by default.
+* **Deduplication**: As of v0.6.1, redundant commands across multiple vaults are filtered out to reduce visual noise.
+* **Safety First**: Global Search remains **Read-Only**. Because this search can pull from high-risk maintenance vaults (like `arch` or `security`), it serves as a reference to prevent accidental execution of sensitive commands.
 
 **Exporting Aliases (v0.5.0+)**
 * **Open the vault**: `Ctrl-G`(or your custom binding).

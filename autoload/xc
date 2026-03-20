@@ -7,7 +7,7 @@
 # File: ~/arch-projects/XC-Manager/autoload/xc
 # ==============================================================================
 
-readonly XC_VERSION="0.6.0"
+readonly XC_VERSION="0.6.1"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -149,7 +149,9 @@ elif [[ "$1" == "sync" ]]; then
     
 # Global Search
 elif [[ "$1" == "search" ]]; then
-    local selected=$(grep -H ".*" "$vault_dir"/*.txt(N) | fzf \
+    # We grab the file:command, dedup by command, and send to fzf
+    local selected=$(grep -H ".*" "$vault_dir"/*.txt(N) | \
+        awk -F: '!visited[$2]++' | fzf \
         --height 40% \
         --layout=reverse \
         --delimiter=":" \
@@ -158,7 +160,11 @@ elif [[ "$1" == "search" ]]; then
         --header "Global Search (All Vaults)")
 
     [[ -z "$selected" ]] && return 0
-    LBUFFER+="$(echo "$selected" | sed 's/.*-> //')"
+
+    # The Fix: Use awk to grab everything after the first colon safely
+    local cmd_to_buffer=$(echo "$selected" | awk -F: '{sub(/[^:]*:/, ""); print}')
+    
+    LBUFFER+="$cmd_to_buffer"
     return 0
 
 # Alias Promotion
@@ -205,6 +211,18 @@ elif [[ -z "$1" ]]; then
 else
     cmd_to_save="$*"
 fi
+
+# --- NEW: Duplicate Guard Logic ---
+local current_vault="$XC_VAULTS_DIR/$XC_CURRENT_VAULT.txt"
+
+if [[ -f "$current_vault" ]] && grep -Fxq "$cmd_to_save" "$current_vault"; then
+    print -P "%F{yellow}ℹ Command already exists in [$XC_CURRENT_VAULT]. Skipping.%f"
+    return 0
+fi
+
+# Proceed with saving if it's a new command
+echo "$cmd_to_save" >> "$current_vault"
+print -P "%F{green}✔ Command saved to [$XC_CURRENT_VAULT].%f"
 
 # ==============================================================================
 # SECTION 5: DESCRIPTION & PERSISTENCE (The "Why")
