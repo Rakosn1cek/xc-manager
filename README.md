@@ -1,5 +1,5 @@
 ## XC-Manager
-**Version: 0.6.1**
+**Version: 0.6.2**
 [![Awesome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
@@ -12,6 +12,15 @@
 </p>
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
+
+### What's New in v0.6.2
+**Semantic Command Normalization**
+* The `xc add` logic now tokenizes input to collapse redundant whitespace. This means `ls  -la` and `ls -la` are treated as the same entry, preventing duplicate commands from cluttering your vaults.
+
+**Improved Duplicate Detection**
+* Refined the guard logic to specifically match commands at the start of the line, ensuring the check works correctly even when descriptions are already present in the vault file.
+
+---
 
 ### What's New in v0.6.1
 ## Signal Over Noise
@@ -26,6 +35,8 @@ The add and select functions now include a literal string check.
 Searching across all vaults (Ctrl+A) is now cleaner and faster.
 * **The Logic**: Results are piped through an awk filter that removes redundant commands while preserving the original file-source context in the preview window.
 * **The Benefit**: If sudo pacman -Syu exists in both your arch and personal vaults, you will only see it once in the Global Search list.
+
+---
 
 ### What's New in v0.6.0
 ## Community Sync
@@ -43,6 +54,8 @@ Stop searching the web for the same syntax. XC-Manager now includes a built-in s
 | **Vim/Neovim** | `xc sync vim-neovim` | High-speed motions, global search/replace, and health checks. |
 | **Security Audit** | `xc sync security-audit` | Local hardening, SUID discovery, and system integrity logs. |
 
+---
+
 ## What's New in v0.5.3-beta
 ### New Commands:
 
@@ -56,6 +69,8 @@ Stop searching the web for the same syntax. XC-Manager now includes a built-in s
 - **Refined Routing**: Improved argument handling to ensure select and list function correctly without falling through to default capture logic.
 
 For a detailed deep dive into the TTY/Canonical mode fix, see [Issue #6](https://github.com/Rakosn1cek/xc-manager/issues/6).
+
+---
 
 ## New in v0.5.0-beta
 ### The "Alias Export" Update ⚡
