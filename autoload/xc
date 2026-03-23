@@ -7,7 +7,7 @@
 # File: ~/arch-projects/XC-Manager/autoload/xc
 # ==============================================================================
 
-readonly XC_VERSION="0.6.1"
+readonly XC_VERSION="0.6.2"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -196,7 +196,7 @@ if [[ ! -f "$vault_file" ]]; then
 fi
 
 # ==============================================================================
-# SECTION 4: COMMAND CAPTURE (The "What")
+# SECTION 4: COMMAND CAPTURE & NORMALIZATION (The "What")
 # ==============================================================================
 local cmd_to_save
 
@@ -212,17 +212,16 @@ else
     cmd_to_save="$*"
 fi
 
-# --- NEW: Duplicate Guard Logic ---
-local current_vault="$XC_VAULTS_DIR/$XC_CURRENT_VAULT.txt"
+# --- NEW: Semantic Normalization ---
+# Collapses spaces but keeps the variable name you used
+cmd_to_save="${(j: :)${(z)cmd_to_save}}"
 
-if [[ -f "$current_vault" ]] && grep -Fxq "$cmd_to_save" "$current_vault"; then
-    print -P "%F{yellow}ℹ Command already exists in [$XC_CURRENT_VAULT]. Skipping.%f"
+# --- NEW: Duplicate Guard Logic ---
+# Using the vault_file path defined in Section 1
+if [[ -f "$vault_file" ]] && grep -q "^${cmd_to_save} ->" "$vault_file"; then
+    print -P "%F{yellow}ℹ Command already exists in [${active_name}]. Skipping.%f"
     return 0
 fi
-
-# Proceed with saving if it's a new command
-echo "$cmd_to_save" >> "$current_vault"
-print -P "%F{green}✔ Command saved to [$XC_CURRENT_VAULT].%f"
 
 # ==============================================================================
 # SECTION 5: DESCRIPTION & PERSISTENCE (The "Why")
