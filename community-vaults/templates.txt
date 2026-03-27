@@ -1,0 +1,23 @@
+# --- GIT OPERATIONS ---
+git commit -m "{{message}}" -> Commit changes with a custom message
+git push origin {{branch}} -> Push current work to a specific remote branch
+git checkout -b {{new_feature}} -> Create and switch to a new branch
+git tag -a v{{version}} -m "{{release_notes}}" -> Create a signed release tag
+
+# --- DOCKER & CONTAINERS ---
+docker exec -it {{container_id}} /bin/bash -> Drop into a running container's shell
+docker stop {{name}} && docker rm {{name}} -> Stop and completely remove a container
+docker logs -f --tail {{lines}} {{container}} -> Follow the last N lines of container logs
+docker build -t {{image_name}}:{{tag}} . -> Build a local image with custom tagging
+
+# --- NETWORKING & SSH ---
+ssh {{user}}@{{host}} -p {{port}} -> Connect to a remote server on a custom port
+scp {{file}} {{user}}@{{host}}:{{path}} -> Securely copy a file to a remote server
+nmap -sV {{ip_range}} -> Scan a range of IPs for service versions
+curl -X {{METHOD}} -H "Content-Type: application/json" -d '{{json_data}}' {{url}} -> Test a REST API endpoint
+
+# --- ARCH LINUX & SYSTEM ---
+sudo pacman -S {{package}} -> Install a specific package from the repos
+paccache -rk {{keep_count}} -> Clean the pacman cache, keeping only N versions
+tar -cvzf {{archive_name}}.tar.gz {{folder}} -> Create a compressed gzip archive
+find {{path}} -name "*{{extension}}*" -> Find files by extension in a specific path

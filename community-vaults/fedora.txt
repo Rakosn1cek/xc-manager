@@ -1,0 +1,15 @@
+sudo dnf history list {{package}} && sudo dnf history rollback {{id}} -> View package transaction history and rollback to a specific state.
+sudo dnf repoquery --requires --resolve {{package}} -> List all resolved dependencies required by a specific package.
+sudo dnf autoremove -> Interactively remove all orphaned packages and unused dependencies.
+sudo dnf config-manager --set-enabled {{repo_id}} -> Enable a specific repository from the command line.
+dnf info {{package}} | grep -i "Source" -> Identify the source RPM or repository for a specific package.
+dnf list installed {{package}} -> Check if a specific package is installed and view its version and repository source.
+sudo dnf history info {{transaction_id}} -> Provide detailed metadata and impact reports for a specific system change.
+dnf search {{terms}} | fzf -m --preview "dnf info {1} | head -n 20" -> Interactive package search with a live metadata preview window.
+dnf check-update --security -> Search for and list all available security-related updates for the system.
+sudo dnf upgrade-minimal -> Apply only the specific updates that fix bugs or security issues.
+ostree remote refs fedora | grep {{variant:silverblue}} -> Check all available rebase targets (Silverblue/Kinoite)
+rpm-ostree rebase fedora:fedora/{{version:40}}/x86_64/{{variant:silverblue}} -> Rebase to a specific Fedora version
+sudo ostree admin pin {{index:0}} -> Unpin a specific deployment index
+rpm-ostree rollback -> Rollback to the previous working deployment
+rpm-ostree status -> List all pending and active deployments

@@ -1,5 +1,5 @@
 ## XC-Manager
-**Version: 0.6.2**
+**Version: 0.7.0**
 [![Awesome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
@@ -13,32 +13,27 @@
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
 
-### What's New in v0.6.2
-**Semantic Command Normalization**
-* The `xc add` logic now tokenizes input to collapse redundant whitespace. This means `ls  -la` and `ls -la` are treated as the same entry, preventing duplicate commands from cluttering your vaults.
+## What's New in v0.7.0 
+### Interactive Templating & Sync Engine
+The v0.7.0 release transforms XC-Manager from a static command vault into a dynamic template engine. 
 
-**Improved Duplicate Detection**
-* Refined the guard logic to specifically match commands at the start of the line, ensuring the check works correctly even when descriptions are already present in the vault file.
+### Interactive Placeholders
+You can now save commands with `{{variables}}`. When you execute a templated command, XC-Manager will intelligently prompt you for input.
+* **Smart Global Swap**: If you use the same placeholder name multiple times (e.g., `cp {{file}} {{file}}.bak`), the engine only asks you once and updates all instances globally.
+* **Manual Control**: Use different names (e.g., `mv {{old}} {{new}}`) to be prompted for each individual value.
 
----
+### Community "Package Manager"
+The `sync` command has been completely redesigned. 
+* **`xc sync`**: Now pulls an interactive index from the community repository. You can discover, preview, and install curated vaults via `fzf` without needing to manually track remote filenames.
+* **Expanded Vaults**: New curated vaults for Docker, Security Auditing, Nix, and Neovim are now available.
+* **macOS Power Kit**: Massive thanks to the r/MacOS community for contributing the "Graybeard" BSD one-liners that make this the most comprehensive macOS vault in the engine.
 
-### What's New in v0.6.1
-## Signal Over Noise
-This hotfix focuses on data integrity and TUI clarity. After the v0.6.0 launch, community feedback highlighted potential "visual noise" when syncing multiple overlapping vaults. v0.6.1 solves this.
-
-**Smart-Save Guard**
-The add and select functions now include a literal string check.
-* **The Logic**: Before appending to a vault, xc verifies the command doesn't already exist using grep -Fxq.
-* **The Benefit**: No more duplicate entries cluttering your TUI if you accidentally save the same one-liner twice.
-
-**Global Search Deduplication**
-Searching across all vaults (Ctrl+A) is now cleaner and faster.
-* **The Logic**: Results are piped through an awk filter that removes redundant commands while preserving the original file-source context in the preview window.
-* **The Benefit**: If sudo pacman -Syu exists in both your arch and personal vaults, you will only see it once in the Global Search list.
+### Core Improvements
+* **Surgical Logic**: Refined string manipulation for faster placeholder swapping.
+* **Duplicate Guards**: Improved logic to prevent identical commands from cluttering your vaults.
 
 ---
 
-### What's New in v0.6.0
 ## Community Sync
 
 Stop searching the web for the same syntax. XC-Manager now includes a built-in sync engine to pull curated, Arch Wiki-verified "Problem-Solution" vaults directly from this repository.
@@ -46,43 +41,25 @@ Stop searching the web for the same syntax. XC-Manager now includes a built-in s
 | Vault | Command | Description |
 | :--- | :--- | :--- |
 | **Arch Linux** | `xc sync arch` | Fixes for PGP keyrings, .pacnew merges, and kernel maintenance. |
-| **General Nix** | `xc sync general-nix` | Essential POSIX utilities for permissions, disk usage, and IO. |
-| **Hyprland** | `xc sync hyprland` | Wayland specific fixes for NVIDIA, portals, and window rules. |
-| **Git Pro** | `xc sync git-pro` | Advanced recovery, reflog navigation, and surgical commit tools. |
+| **Debian** | `xc sync debian` | Apt repository tracking, kernel upgrades, and package maintenance. |
 | **Docker Dev** | `xc sync docker-dev` | Container lifecycle management and aggressive resource cleanup. |
+| **Fedora** | `xc sync fedora` | DNF transaction history, security updates, and repository management. |
+| **General Nix** | `xc sync general-nix` | Essential POSIX utilities for permissions, disk usage, and IO. |
+| **Git Pro** | `xc sync git-pro` | Advanced recovery, reflog navigation, and surgical commit tools. |
+| **Hyprland** | `xc sync hyprland` | Wayland specific fixes for NVIDIA, portals, and window rules. |
+| **MacOS** | `xc sync macos` | High-utility BSD maintenance, Gatekeeper fixes, and hidden system tweaks |
 | **Networking** | `xc sync networking` | Connectivity diagnostics, DNS lookups, and interface auditing. |
-| **Vim/Neovim** | `xc sync vim-neovim` | High-speed motions, global search/replace, and health checks. |
+| **OpenSUSE** | `xc sync opensuse` | Zypper distribution upgrades, process tracking, and system repair. |
 | **Security Audit** | `xc sync security-audit` | Local hardening, SUID discovery, and system integrity logs. |
+| **Templates** | `xc sync templates` | Interactive snippets using placeholders for Git, SSH, and more. |
+| **Vim/Neovim** | `xc sync vim-neovim` | High-speed motions, global search/replace, and health checks. |
 
 ---
-
-## What's New in v0.5.3-beta
-### New Commands:
-
-- **xc alias**: Promote any vaulted command to a permanent Zsh alias.
-- **xc search**: Search across all your vault files simultaneously.
-- **xc --help**: Added a proper help menu for easier navigation.
-
-### Critical Fixes:
-- **TTY Restoration**: Fixed a major bug where the terminal would remain in "raw mode" after exiting the TUI, causing unresponsive Backspace and Enter keys.
-- **Input Buffer Draining**: Implemented a "drain" loop to prevent the shell from skipping description prompts after an fzf selection.
-- **Refined Routing**: Improved argument handling to ensure select and list function correctly without falling through to default capture logic.
-
-For a detailed deep dive into the TTY/Canonical mode fix, see [Issue #6](https://github.com/Rakosn1cek/xc-manager/issues/6).
-
----
-
-## New in v0.5.0-beta
-### The "Alias Export" Update ⚡
-Convert your saved commands into permanent Zsh aliases instantly with Alt-E.
-* **Modular by Default**: Keeps your .zshrc clean by saving to ~/.zsh_aliases.
-* **User Choice**: Prefer a single config? Set `export XC_ALIAS_TARGET="$HOME/.zshrc"` to save directly to your main file.
-* **Safety First**: Built-in collision detection prevents overwriting system commands or existing aliases.
-* **Instant Activation**: New aliases are live the second you create them—no shell restart required.
-
-Existing users: To enable this feature, simply add `[[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases` to your `.zshrc`.
 
 ## Features
+* **Interactive Template Engine**: Support for {{placeholders}} that prompt for user input during execution. [v0.7.0]
+* **Global Variable Mapping**: Identical placeholder names trigger a single prompt to save keystrokes. [v0.7.0]
+* **Vault Package Manager**: Interactive sync interface to browse and download community-curated vaults. [v0.7.0]
 * **Proactive Saving**: Run a command and save it immediately.
 * **Retroactive Saving**: Save the last command you ran without retyping it.
 * **FZF Integration**: Search your vault with fuzzy finding and live previews.
@@ -97,13 +74,13 @@ Existing users: To enable this feature, simply add `[[ -f ~/.zsh_aliases ]] && s
 * **Distro Agnostic**: Works on Arch, Fedora, Debian, and macOS.
 * **Toggable Search**: Seamlessly switch between local vault and global search using Ctrl-A and Ctrl-R without exiting the TUI.
 
-## Requirements
+### Requirements
 * **zsh**
 * **fzf**
 * **sed** (The line-editor for deletions)
 * **grep** (The standard search tool)
 
-## Installation
+### Installation
 **Clone the repository**:
 ```zsh
 git clone https://github.com/Rakosn1cek/xc-manager.git
@@ -111,7 +88,7 @@ git clone https://github.com/Rakosn1cek/xc-manager.git
 **Add to your ~/.zshrc**:
 ```zsh
 # Add to function path and autoload
-fpath=(~/arch-projects/XC-Manager/autoload $fpath)
+fpath=(/path/to/XC-Manager/autoload $fpath)
 autoload -Uz xc fzf-vault-widget
 
 # Initialize the widget
@@ -136,12 +113,22 @@ source ~/.zshrc
 ```zsh
 xc init
 ```
-## Usage
+### Usage
+
+**Community Sync (v0.7.0)**
+* **Interactive Sync**: Run xc sync without arguments to browse and select from the community index via fzf.
+* **Templates**: Run xc sync templates to download pre-configured interactive snippets for Git, SSH, and Docker.
+
+**Interactive Templating (New in v0.7.0)**
+* **Dynamic Prompts**: Save commands with {{var}} syntax. Selecting these will trigger interactive prompts for each unique variable.
+* **Global Mapping**: Identical placeholder names (e.g., cp {{file}} {{file}}.bak) will only prompt you once and swap all instances globally.
+* **Integration**: Placeholder logic is fully supported in both the standard TUI (Ctrl-G) and Global Search.
+* **Safety Guard**: Hitting Enter on an empty prompt will cancel the execution, keeping your command line clean and preventing syntax errors.
 
 **Community Sync (v0.6.0)**
 XC-Manager now features a built-in sync engine to pull curated "Problem-Solution" vaults directly from the community repository.
 * **Sync a Vault**: Run xc sync <category> (e.g., xc sync arch or xc sync hyprland).
-* **Available Categories**: arch, hyprland, general-nix, git-pro, docker-dev, networking, vim-neovim, security-audit.
+* **Available Categories**: arch, hyprland, general-nix, git-pro, docker-dev, networking, vim-neovim, security-audit, templates.
 * **Update**: Re-running sync will pull the latest verified fixes from the upstream repo.
 
 **Managing Contexts (Multi-Vault)**
@@ -181,12 +168,12 @@ export XC_ALIAS_TARGET="$HOME/.zshrc"
 **Utilities**
 * **Check version**: `xc -v`
 
-## Configuration (Optional)
+### Configuration (Optional)
 **Customize the look of your vault using Zsh's zstyle system**:
 ```zsh
 zstyle ':xc:*' fzf_colors "gutter:-1,border:8,header:4,info:2,pointer:5,marker:13,fg+:7,prompt:5,hl:12"
 ```
-## Recommended Integrations
+### Recommended Integrations
 **Alias Browser (als)**
 If you want an easy way to browse and run your newly created aliases using `fzf`, I highly recommend checking out my show-aliases.sh script. It searches both your .zshrc and .zsh_aliases to give you a unified, interactive menu.
 
@@ -208,9 +195,11 @@ If you want an easy way to browse and run your newly created aliases using `fzf`
 
 [x] Community Sync Engine (v0.6.0): Built-in distribution system to pull curated, Wiki-verified vaults (Arch, Hyprland, Git, etc.) directly from GitHub.
 
+[x] Dynamic Placeholders: Support for {{variable}} prompting within vaulted commands.
+
 [ ] Encrypted Vaults: Support for gpg or age encrypted .txt files for sensitive commands.
 
-[ ] Dynamic Placeholders: Support for {{variable}} prompting within vaulted commands.
+[ ] Cross-Shell Research: Investigating a POSIX-compliant core for Bash and Fish support.
 
 ## Maintenance & Stability
 This project follows the KISS (Keep It Simple, Stupid) principle. Because it relies on standard Unix tools and native Zsh functions, it is designed to be "set and forget".

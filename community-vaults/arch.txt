@@ -16,3 +16,5 @@ sudo cat /var/log/Xorg.0.log | grep EE -> Check Xorg logs for critical errors
 lsblk -f -> List all partitions with UUIDs and File System types
 cat /proc/cmdline -> Check current Kernel Boot Parameters
 sudo ntpdate pool.ntp.org -> Manual Time Sync (Fixes SSL/Handshake errors)
+yay -S $(yay -Sl | fzf -m --preview="yay -Si {2}" | awk '{print $2}') -> Interactive package search and install with a live metadata preview window.
+sudo pacman -S $(pacman -Sl | fzf -m --preview="pacman -Si {2}" | awk '{print $2}') -> Native interactive search and install for official repositories using fzf previews.

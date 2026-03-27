@@ -1,0 +1,10 @@
+sudo zypper dup --dry-run | grep -i {{package}} -> Simulate a distribution upgrade and filter for specific package changes.
+sudo zypper se --provides {{file_path}} -> Search the repositories for which package provides a specific file or library path.
+sudo zypper ps -s -> List all running processes still using deleted files from a previous update.
+sudo zypper purge-kernels -> Remove old, unused kernel versions to reclaim space in the boot partition.
+sudo zypper ll -> List all active package locks that are currently preventing updates or removals.
+zypper info {{package}} -> View detailed package metadata, including repository source and installation status.
+zypper search --requires {{package}} -> Identify all available packages that depend on a specific library or binary.
+zypper search {{terms}} | fzf -m --preview "zypper info {1} | head -n 20" -> Interactive search with a live preview pane for package details.
+sudo zypper verify -> Check the system for broken dependencies and suggest repairs for installed packages.
+zypper patches -> List all available formal patches for the current distribution version.

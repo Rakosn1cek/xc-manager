@@ -1,0 +1,25 @@
+chflags hidden {{target}} -> Hide a file or folder from the Finder and UI.
+chflags nohidden {{target}} -> Reveal a previously hidden file or folder.
+sudo xattr -rd com.apple.quarantine {{app_path}} -> Strip Gatekeeper quarantine attribute to fix "App is damaged" errors.
+sudo xattr -cr {{target_path}} -> Recursively clear all extended attributes from a file or application.
+sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder -> Flush the System DNS cache (macOS Ventura and later).
+sudo mdutil -E {{volume_path}} -> Erase and rebuild the Spotlight search index for a specific volume (use / for boot).
+sudo mdutil -i {{state}} {{volume_path}} -> Toggle Spotlight indexing on or off for a specific volume (on/off).
+sudo purge -> Force the OS to flush inactive memory and disk caches to reclaim resources.
+pmset -g assertions -> Check which processes or drivers are currently preventing the Mac from sleeping.
+caffeinate -{{flag}} -> Prevent system sleep (flags: -d display, -i idle, -m disk, -s AC power).
+caffeinate -is {{command}} -> Run a specific command while preventing the system from sleeping until it finishes.
+networksetup -setdnsservers "Wi-Fi" {{dns_primary}} {{dns_secondary}} -> Set manual DNS servers for the Wi-Fi interface.
+defaults write com.apple.finder AppleShowAllFiles -bool {{state}} && killall Finder -> Toggle visibility of hidden files in Finder (true/false).
+defaults write com.apple.finder ShowPathbar -bool {{state}} && killall Finder -> Toggle the Finder path bar visibility (true/false).
+defaults write com.apple.Safari AutoFillPasswords -bool {{state}} -> Toggle Safari password autofill via CLI (true/false).
+atsutil databases -removeUser && killall ATSServer -> Remove user-level font databases and restart the font server.
+lsappinfo list -> List every front-end and back-end process currently registered with the UI server.
+diskutil apfs listUsers {{volume}} -> List all cryptographic users authorized for an APFS volume.
+sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z -> Disassociate from the current Wi-Fi network (Force disconnect).
+defaults write NSGlobalDomain NSWindowResizeTime -float {{speed}} -> Adjust window resize speed (Note: More effective on Intel/Legacy AppKit windows).
+defaults write com.apple.dock expose-animation-duration -float {{speed}} && killall Dock -> Adjust Mission Control speed (Varying results on modern macOS).
+defaults write com.apple.finder DisableAllAnimations -bool {{state}} && killall Finder -> Toggle all Finder animations for a faster UI (true/false).
+defaults write -g NSWindowShouldDragOnGesture -bool true -> Enable "Command+Control+Click" anywhere to drag windows (Requires log-out).
+defaults delete -g NSWindowShouldDragOnGesture -> Disable the "Click anywhere to drag" window gesture and return to default.
+sudo scutil --set HostName {{name}}; sudo scutil --set LocalHostName {{name}}; sudo scutil --set ComputerName {{name}}; dscacheutil -flushcache -> Force a complete system-wide hostname and broadcast name reset (Requires reboot).

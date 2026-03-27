@@ -20,3 +20,4 @@ find . -type f -mtime -1 -> Find all files modified in the last 24 hours
 history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 10 -> Show your Top 10 most used Terminal Commands
 curl -I https://google.com -> Fetch HTTP Headers only (Check Website Status)
 echo "text" | sudo tee -a /etc/file.conf -> Append text to a Root-protected file
+grep -Eir " os |áis |éis | vosotr| vuestr|abaís |íais |asteis |isteis " {{path}} -> Detect if Spanish text files use European (Peninsular) or Latin-American dialect.

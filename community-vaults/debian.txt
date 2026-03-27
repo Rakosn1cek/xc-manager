@@ -1,0 +1,10 @@
+sudo apt -dy upgrade -> Download all available updates without performing the installation.
+sudo apt autoclean -> Clear the local apt cache of out-of-date package files.
+dpkg --search $(which {{binary}}) -> Locate the specific package that owns a binary or command.
+apt-cache policy $(dpkg --search $(which {{binary}}) | cut -f1 -d:) -> Identify the repository origin and version status for a specific command.
+sudo apt-mark showmanual | grep -vP '^(ubuntu-desktop|gnome-desktop)' | xargs -r sudo apt-get purge -y {{package_name}} -> Identify manually installed packages and purge a specific one with its config files.
+sudo apt update && sudo apt full-upgrade -> Perform a complete system and kernel upgrade.
+sudo apt autoremove --purge -> Remove unused dependency packages and their configuration files.
+sudo apt-cache search {{terms}} -> Search for packages in the repository using specific keywords.
+dpkg -l | grep '^rc' | awk '{print $2}' | xargs -r sudo apt-get purge -> Purge all 'rc' (removed but configured) packages from the system.
+apt-cache search {{terms}} | fzf -m --preview "apt-cache show {1} | grep -E '^(Package|Version|Description|Section):'" | awk '{print $1}' | xargs -r sudo apt-get install -y -> Interactive package search and install with a clean metadata preview.

@@ -1,0 +1,13 @@
+arch:Essential maintenance and pacman commands for Arch Linux.
+debian:Apt repository tracking, kernel upgrades, and package maintenance.
+docker-dev:Container orchestration, development environments, and cleanup.
+fedora:DNF transaction history, security updates, and repository management.
+general-nix:Universal Nix/Linux utilities for file management and system info.
+git-pro:Advanced version control workflows, stashing, and remote management.
+hyprland:Window manager binds, monitor configurations, and workspace tweaks.
+macos:High-utility BSD maintenance, Gatekeeper fixes, and hidden system tweaks
+networking:IP scanning, SSH tunneling, and API testing tools.
+opensuse:Zypper distribution upgrades, process tracking, and system repair.
+security-audit:Security scanning, permissions checking, and basic hardening.
+templates:Interactive snippets using placeholders for Git, SSH, and more.
+vim-neovim:Quick configurations and plugin management for terminal editors.

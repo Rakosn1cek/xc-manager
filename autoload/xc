@@ -7,7 +7,7 @@
 # File: ~/arch-projects/XC-Manager/autoload/xc
 # ==============================================================================
 
-readonly XC_VERSION="0.6.2"
+readonly XC_VERSION="0.7.0"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -23,13 +23,32 @@ local active_name="main"
 
 local vault_file="$vault_dir/${active_name}.txt"
 
+# --- Placeholder Processor Helper ---
+__xc_fill_placeholders() {
+    local cmd="$1"
+    while [[ "$cmd" == *"{{"*"}}"* ]]; do
+        local front="${cmd%%\}\}*}"
+        local var_name="${front##*\{\{}"
+        echo -n "Value for {{$var_name}} (or press Ctrl+C to cancel): "
+        read user_input
+        
+        # Hardening: Check for empty input to prevent syntax errors
+        if [[ -z "$user_input" ]]; then
+            echo "Error: Placeholder cannot be empty. Execution cancelled." >&2
+            return 1
+        fi
+
+        # Global swap: replaces all identical placeholder names at once
+        cmd="${cmd//\{\{$var_name\}\}/$user_input}"
+    done
+    echo "$cmd"
+}
+
 # ==============================================================================
 # SECTION 2: UTILITY COMMANDS (Direct Exit)
-# These commands perform a task and exit the script immediately.
 # ==============================================================================
 
 # --- Fast Track Help Check ---
-# Only triggers on explicit flags or if the user asks for help.
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     cat << EOF
 XC-Manager $XC_VERSION
@@ -39,13 +58,18 @@ Usage: xc <command> [arguments]
 
 Commands:
   add       Vault a new command or one-liner.
-  list      Display all vaulted commands in a searchable TUI.
-  select    Open fzf to execute or promote a command to a system alias.
+  list      Searchable TUI for executing commands. Supports {{placeholders}}.
+  select    Open fzf to vault a command from your history.
   clean     Interactively remove entries with a safety lock.
   use       Switch between different vault files.
-  sync      Download community-curated fix vaults.
-  search    Global search across all vaults.
+  sync      Interactive "Package Manager" for community vaults.
+  search    Global search across all vaults. Supports {{placeholders}}.
   alias     Promote a vaulted command to a permanent Zsh alias.
+
+Templating:
+  Use {{var}} in your commands to create interactive prompts.
+  Example: "ssh {{user}}@{{host}}" will ask for user and host on execution.
+  Download templates: Run 'xc sync templates' to get started.  
 
 Options:
   -v, --version  Show version information.
@@ -60,7 +84,7 @@ elif [[ "$1" == "-v" || "$1" == "--version" ]]; then
     echo "XC-Manager $XC_VERSION"
     return 0
 
-# Initialize Vault
+# Initialise Vault
 elif [[ "$1" == "init" ]]; then
     mkdir -p "$vault_dir"
     touch -a "$vault_file" 
@@ -70,9 +94,20 @@ elif [[ "$1" == "init" ]]; then
 # List Commands (TUI)
 elif [[ "$1" == "list" ]]; then
     [[ ! -f "$vault_file" ]] && echo "Vault not found." && return 1
+    
+    # Keep your original fzf flags exactly as they are in your screenshot
     local selected=$(fzf --height 40% --layout=reverse --header "Select command to EXECUTE" < "$vault_file")
+    
     [[ -z "$selected" ]] && return 0
-    LBUFFER+="${selected%% -> *}"
+    
+    local raw_cmd="${selected%% -> *}"
+    
+    # Logic Hardening: Verify the placeholders were actually filled
+    local filled_cmd=$(__xc_fill_placeholders "$raw_cmd")
+    
+    # Only update the command line if the result is valid
+    [[ -n "$filled_cmd" ]] && LBUFFER+="$filled_cmd"
+    
     return 0
 
 # Clean Vault
@@ -125,31 +160,54 @@ elif [[ "$1" == "use" ]]; then
     fi
     return 0
 
-# Sync Community Vaults / New in v0.6.0
+# Sync Community Vaults (v0.7.0 Package Manager Style)
 elif [[ "$1" == "sync" ]]; then
-    local category="$2"
+    local sub_cmd="$2"
     local remote_base="https://raw.githubusercontent.com/Rakosn1cek/XC-Manager/main/community-vaults"
+    local category
     
-    if [[ -z "$category" ]]; then
-        echo "Usage: xc sync <category> (e.g., arch, hyprland, macos)"
-        return 1
+    # If no argument is provided, fetch the index and show fzf for selection
+    if [[ -z "$sub_cmd" ]]; then
+        echo "Fetching available community vaults..."
+        local index=$(curl -s -f "$remote_base/index.txt")
+        
+        if [[ -z "$index" ]]; then
+            echo "Error: Could not retrieve vault index. Check your connection or repository."
+            return 1
+        fi
+
+        # User selects from the index; It only cares about the category name before the colon
+        local selected=$(echo "$index" | fzf --height 40% --layout=reverse --header "Select a vault to SYNC" --prompt="Sync > ")
+        [[ -z "$selected" ]] && return 0
+        category="${selected%%:*}"
+    else
+        category="$sub_cmd"
     fi
 
-    echo "Fetching [$category] vault from community repository..."
+    echo "Downloading [$category]..."
+        local local_target="$vault_dir/${category}.txt"
     
-    # Use curl -f to ensure we don't save 404 error pages as text files
-    if curl -s -f "$remote_base/${category}.txt" -o "$vault_dir/${category}.txt"; then
-        echo "Successfully synced: ${category}.txt"
-        echo "Currently using: [${active_name}]. Run 'xc use $category' to switch."
-    else
-        echo "Error: Community vault '$category' not found or network failure."
-        return 1
-    fi
-    return 0
+        # Safety Check: Prevent accidental data loss of local customisations
+        if [[ -f "$local_target" ]]; then
+            echo -n "Vault '${category}' already exists locally. Overwrite with community version? [y/N]: "
+            read confirm
+            if [[ "$confirm" != [yY] ]]; then
+                echo "Sync cancelled. Local vault preserved."
+                return 0
+            fi
+        fi
+    
+        if curl -s -f "$remote_base/${category}.txt" -o "$local_target"; then
+            echo "Successfully synchronised: ${category}.txt"
+            echo "Run 'xc use $category' to switch to this vault."
+        else
+            echo "Error: Community vault '$category' not found at $remote_base/${category}.txt"
+            return 1
+        fi
+        return 0
     
 # Global Search
 elif [[ "$1" == "search" ]]; then
-    # We grab the file:command, dedup by command, and send to fzf
     local selected=$(grep -H ".*" "$vault_dir"/*.txt(N) | \
         awk -F: '!visited[$2]++' | fzf \
         --height 40% \
@@ -161,10 +219,10 @@ elif [[ "$1" == "search" ]]; then
 
     [[ -z "$selected" ]] && return 0
 
-    # The Fix: Use awk to grab everything after the first colon safely
-    local cmd_to_buffer=$(echo "$selected" | awk -F: '{sub(/[^:]*:/, ""); print}')
-    
-    LBUFFER+="$cmd_to_buffer"
+    # Extract the command, then strip description BEFORE processing placeholders
+    local entry=$(echo "$selected" | awk -F: '{sub(/[^:]*:/, ""); print}')
+    local raw_cmd="${entry%% -> *}"
+    LBUFFER+="$(__xc_fill_placeholders "$raw_cmd")"
     return 0
 
 # Alias Promotion
@@ -181,7 +239,7 @@ elif [[ "$1" == "alias" ]]; then
     echo "Alias '$alias_name' added."
     return 0
 
-# Final Catch-all for unrecognized flags/commands in Section 2
+# Final Catch-all for unrecognised flags/commands
 elif [[ "$1" == -* ]]; then
     echo "Unrecognized option: $1. Use --help for usage."
     return 1
@@ -196,7 +254,7 @@ if [[ ! -f "$vault_file" ]]; then
 fi
 
 # ==============================================================================
-# SECTION 4: COMMAND CAPTURE & NORMALIZATION (The "What")
+# SECTION 4: COMMAND CAPTURE & NORMALISATION
 # ==============================================================================
 local cmd_to_save
 
@@ -212,19 +270,15 @@ else
     cmd_to_save="$*"
 fi
 
-# --- NEW: Semantic Normalization ---
-# Collapses spaces but keeps the variable name you used
 cmd_to_save="${(j: :)${(z)cmd_to_save}}"
 
-# --- NEW: Duplicate Guard Logic ---
-# Using the vault_file path defined in Section 1
 if [[ -f "$vault_file" ]] && grep -q "^${cmd_to_save} ->" "$vault_file"; then
     print -P "%F{yellow}ℹ Command already exists in [${active_name}]. Skipping.%f"
     return 0
 fi
 
 # ==============================================================================
-# SECTION 5: DESCRIPTION & PERSISTENCE (The "Why")
+# SECTION 5: DESCRIPTION & PERSISTENCE
 # ==============================================================================
 echo -n "Description for '$cmd_to_save': "
 read comment

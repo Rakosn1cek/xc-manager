@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-03-27
+
+### Added
+- **Interactive Template Engine**: Support for `{{placeholder}}` syntax in vaulted commands.
+- **Global Variable Swapping**: Logic to detect matching placeholder names and prompt the user only once per unique variable.
+- **Interactive Sync List**: `xc sync` now fetches an `index.txt` and provides an `fzf` interface for vault discovery.
+- **New Community Vaults**: Added `docker-dev`, `security-audit`, `vim-neovim`, `git-pro`, and `templates`.
+
+### Changed
+- **LBUFFER Integration**: Updated `list` and `search` functions to process placeholders before sending commands to the Zsh Line Editor.
+- **Help Menu**: Expanded the help output to include a "Templating" guide and updated command descriptions.
+- **Sync Logic**: Standardised on `.txt` extensions for all remote vault files to ensure predictable downloads.
+
+### Fixed
+- Fixed a bug where `search` would accidentally include vault descriptions in the placeholder processing logic.
+- Improved the duplicate guard to handle semantic spacing variations in commands.
+
+---
+
 ## [0.6.2] - 2026-03-23
 ### Added
 - Implemented Zsh-native semantic normalization using (z) and (j: :) expansion to collapse extra spaces in captured commands.
