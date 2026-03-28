@@ -1,10 +1,10 @@
-## XC-Manager
+## XC manager
 **Version: 0.7.0**
 [![Awesome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
 
-### XC-Manager in Action
+### XC manager in Action
 <p align="center">
   <video src="https://github.com/user-attachments/assets/d67640fb-4e9e-4d36-b7a1-d588a24ab9a6" width="700" controls muted autoplay loop>
     Your browser does not support the video tag.
@@ -15,10 +15,10 @@ A high-performance, minimal dependency Zsh vault for managing complex commands.
 
 ## What's New in v0.7.0 
 ### Interactive Templating & Sync Engine
-The v0.7.0 release transforms XC-Manager from a static command vault into a dynamic template engine. 
+The v0.7.0 release transforms XC from a static command vault into a dynamic template engine. 
 
 ### Interactive Placeholders
-You can now save commands with `{{variables}}`. When you execute a templated command, XC-Manager will intelligently prompt you for input.
+You can now save commands with `{{variables}}`. When you execute a templated command, XC will intelligently prompt you for input.
 * **Smart Global Swap**: If you use the same placeholder name multiple times (e.g., `cp {{file}} {{file}}.bak`), the engine only asks you once and updates all instances globally.
 * **Manual Control**: Use different names (e.g., `mv {{old}} {{new}}`) to be prompted for each individual value.
 
@@ -36,7 +36,7 @@ The `sync` command has been completely redesigned.
 
 ## Community Sync
 
-Stop searching the web for the same syntax. XC-Manager now includes a built-in sync engine to pull curated, Arch Wiki-verified "Problem-Solution" vaults directly from this repository.
+Stop searching the web for the same syntax. XC now includes a built-in sync engine to pull curated, Arch Wiki-verified "Problem-Solution" vaults directly from this repository.
 
 | Vault | Command | Description |
 | :--- | :--- | :--- |
@@ -88,7 +88,7 @@ git clone https://github.com/Rakosn1cek/xc-manager.git
 **Add to your ~/.zshrc**:
 ```zsh
 # Add to function path and autoload
-fpath=(/path/to/XC-Manager/autoload $fpath)
+fpath=(/path/to/xc-manager/autoload $fpath)
 autoload -Uz xc fzf-vault-widget
 
 # Initialize the widget
@@ -132,7 +132,7 @@ XC-Manager now features a built-in sync engine to pull curated "Problem-Solution
 * **Update**: Re-running sync will pull the latest verified fixes from the upstream repo.
 
 **Managing Contexts (Multi-Vault)**
-XC-Manager allows you to isolate commands into different vaults.
+XC allows you to isolate commands into different vaults.
 * **Switch or Create**: Use `xc use <name>` to toggle your active context.
 * **Example**: `xc use work` (If it doesn't exist, a new work.txt is created automatically).
 * **Automatic Selection**: Once a vault is active, any command saved via `xc` or `xc select` is instantly routed to that specific file.
@@ -178,7 +178,7 @@ zstyle ':xc:*' fzf_colors "gutter:-1,border:8,header:4,info:2,pointer:5,marker:1
 If you want an easy way to browse and run your newly created aliases using `fzf`, I highly recommend checking out my show-aliases.sh script. It searches both your .zshrc and .zsh_aliases to give you a unified, interactive menu.
 
 * **View Script**: on GitHub [Show-Aliases Script](https://github.com/Rakosn1cek/dotfiles-rk1/tree/main/shell-common/custom-scripts/Show-Aliases)
-* **Key Feature**: Seamlessly displays XC-Manager exports alongside your manual system aliases.
+* **Key Feature**: Seamlessly displays XC exports alongside your manual system aliases.
 
 ## Roadmap
 [x] Modular Architecture: Refactored to Zsh autoload for instant startup.
@@ -219,7 +219,7 @@ Distributed under the MIT License. See LICENSE for more information.
 For a detailed history of changes and version milestones, please see CHANGELOG.md.
 
 ## Support the Project
-If XC-Manager makes your workflow faster or your `.zshrc` cleaner, please consider giving it a Star on GitHub! It helps other Arch users find the project and keeps the development of features like v0.5.0-beta going.
+If XC makes your workflow faster or your `.zshrc` cleaner, please consider giving it a Star on GitHub! It helps other Arch users find the project and keeps the development of features like v0.5.0-beta going.
 
 *Project Note: This documentation and parts of the shell optimization were proofread and refined with the help of LLMs to ensure clarity and performance.*
 
