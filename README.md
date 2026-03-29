@@ -81,6 +81,12 @@ Stop searching the web for the same syntax. XC now includes a built-in sync engi
 * **grep** (The standard search tool)
 
 ### Installation
+### Arch Linux (AUR)
+**The package is available in the AUR as** `xc-manager-git`.
+```zsh
+yay -S xc-manager-git
+```
+### All other linux distros and MacOS
 **Clone the repository**:
 ```zsh
 git clone https://github.com/Rakosn1cek/xc-manager.git ~/.zsh-plugins/xc-manager
@@ -88,20 +94,31 @@ git clone https://github.com/Rakosn1cek/xc-manager.git ~/.zsh-plugins/xc-manager
 **Add to your ~/.zshrc**:
 ```zsh
 # Add to function path and autoload
+# For AUR users: 
+source /usr/share/zsh/plugins/xc-manager/xc.plugin.zsh
+
+# For Manual users: 
 source ~/.zsh-plugins/xc-manager/xc.plugin.zsh
 
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
+# All distros including MacOS
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 ```
+# Optional UI Customisation
+```zsh
+zstyle ':xc:*' separator "->" 
+zstyle ':xc:*' fzf_colors "fg:7,hl:4,fg+:15,hl+:12,info:2,prompt:5,pointer:12"
+```
+
 **Reload your shell**:
 ```zsh
 source ~/.zshrc
 ```
-**Initialize the vault (First time only)**:
+**Initialise the vault (First time only)**:
 ```zsh
 xc init
 ```
@@ -161,7 +178,7 @@ export XC_ALIAS_TARGET="$HOME/.zshrc"
 * **Check version**: `xc -v`
 
 ### Configuration (Optional)
-**Customize the look of your vault using Zsh's zstyle system**:
+**Customise the look of your vault using Zsh's zstyle system**:
 ```zsh
 zstyle ':xc:*' fzf_colors "gutter:-1,border:8,header:4,info:2,pointer:5,marker:13,fg+:7,prompt:5,hl:12"
 ```
@@ -213,7 +230,7 @@ For a detailed history of changes and version milestones, please see CHANGELOG.m
 ## Support the Project
 If XC makes your workflow faster or your `.zshrc` cleaner, please consider giving it a Star on GitHub! It helps other Arch users find the project and keeps the development of features like v0.5.0-beta going.
 
-*Project Note: This documentation and parts of the shell optimization were proofread and refined with the help of LLMs to ensure clarity and performance.*
+*Project Note: This documentation and parts of the shell optimisation were proofread and refined with the help of LLMs to ensure clarity and performance.*
 
 [**⭐ Star XC-Manager on GitHub**](https://github.com/Rakosn1cek/XC-Manager)
 
