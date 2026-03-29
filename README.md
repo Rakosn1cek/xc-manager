@@ -65,8 +65,8 @@ Stop searching the web for the same syntax. XC now includes a built-in sync engi
 * **FZF Integration**: Search your vault with fuzzy finding and live previews.
 * **Alias Export Engine**: Convert any saved command into a permanent Zsh alias instantly with Alt-E.
 * **Collision Detection**: Built-in safety checks prevent you from accidentally overwriting system commands or existing aliases.
-* **Modular Configuration**: Choose your "Source of Truth"—save to ~/.zshrc or keep it clean with a dedicated ~/.zsh_aliases file.
-* **Instant Activation**: Exported aliases are injected into your current session immediately—no shell restart required.
+* **Modular Configuration**: Choose your "Source of Truth" save to ~/.zshrc or keep it clean with a dedicated ~/.zsh_aliases file.
+* **Instant Activation**: Exported aliases are injected into your current session immediately, no shell restart required.
 * **Ligature Friendly**: Uses standard ASCII -> that renders as a sleek arrow in Nerd Fonts.
 * **Zero-Lag**: Uses Zsh autoload for near-instant shell startup.
 * **Smart History**: Save the last command or select from your recent history.
