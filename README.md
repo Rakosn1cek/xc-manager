@@ -1,6 +1,6 @@
 ## XC manager
 **Version: 0.7.0**
-[![Awesome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
+[![Asome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
 
@@ -83,27 +83,19 @@ Stop searching the web for the same syntax. XC now includes a built-in sync engi
 ### Installation
 **Clone the repository**:
 ```zsh
-git clone https://github.com/Rakosn1cek/xc-manager.git
+git clone https://github.com/Rakosn1cek/xc-manager.git ~/.zsh-plugins/xc-manager
 ```
 **Add to your ~/.zshrc**:
 ```zsh
 # Add to function path and autoload
-fpath=(/path/to/xc-manager/autoload $fpath)
-autoload -Uz xc fzf-vault-widget
+source ~/.zsh-plugins/xc-manager/xc.plugin.zsh
 
-# Initialize the widget
-zle -N fzf-vault-widget
-bindkey 'Ctrl-G' fzf-vault-widget
+[[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
-# Ensure history settings allow xc to see previous commands
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
-```
-**To enable the Alias feature, add to your .zshrc.** 
-```zsh
-[[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 ```
 **Reload your shell**:
 ```zsh

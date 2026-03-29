@@ -1,6 +1,6 @@
 # Contributing to XC-Manager Community Vaults
 
-We welcome community-curated vaults! To ensure your contributions work seamlessly with the `xc sync` engine and the v0.7.0 placeholder logic, please follow these guidelines.
+I welcome community-curated vaults! To ensure your contributions work seamlessly with the `xc sync` engine and the v0.7.0 placeholder logic, please follow these guidelines.
 
 ## 1. File Naming & Structure
 * **File Extension**: All vault files must end in `.txt` (e.g., `kubernetes.txt`).
@@ -9,7 +9,7 @@ We welcome community-curated vaults! To ensure your contributions work seamlessl
 * **Encoding**: Ensure files are UTF-8 encoded with Unix-style line endings (LF).
 
 ## 2. Interactive Templating
-We encourage the use of placeholders to make commands dynamic.
+I encourage the use of placeholders to make commands dynamic.
 * Use double curly braces for variables: `{{variable_name}}`.
 * **Global Naming**: If a command requires the same value in multiple places, use the exact same variable name. XC-Manager will only prompt the user once.
   * *Example*: `cp {{file}} {{file}}.bak`
