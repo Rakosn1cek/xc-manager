@@ -1,5 +1,5 @@
 ## XC manager
-**Version: 0.7.0**
+**Version: 0.7.1**
 [![Asome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
@@ -12,6 +12,12 @@
 </p>
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
+
+## [0.7.1] - 2026-03-31
+### Fixed
+- Resolved an issue where placeholders ({{variable}}) were injected into the ZLE buffer without user input.
+- Switched to a direct TTY read method to ensure interactive prompts work correctly within Zsh widgets.
+- Improved trailing whitespace trimming for vault commands.
 
 ## What's New in v0.7.0 
 ### Interactive Templating & Sync Engine

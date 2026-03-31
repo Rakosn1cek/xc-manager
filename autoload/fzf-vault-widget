@@ -10,34 +10,26 @@ _xc_add_alias() {
     local cmd="${1%% -> *}"
     local target="$2"
     local marker="$3"
-
     [[ ! -f "$target" ]] && touch "$target"
-
-    stty sane </dev/tty   # canonical mode + echo restored - backspace works, fix in (v0.5.3-beta)
+    stty sane </dev/tty
     printf "\n\e[32mXC-Manager\e[0m Saving to: \e[2m%s\e[0m\n" "$target" > /dev/tty
     printf "\e[32mXC-Manager\e[0m Alias Name: " > /dev/tty
     read alias_name < /dev/tty
     stty -echo < /dev/tty
-
     [[ -z "$alias_name" ]] && return 0
-
     if grep -qE "^alias $alias_name=" "$target"; then
         printf "\e[31m[!] Error:\e[0m '%s' already exists in %s\n" "$alias_name" "$target" > /dev/tty
         sleep 1; return 1
     fi
-
     if type "$alias_name" >/dev/null 2>&1; then
         printf "\e[31m[!] Error:\e[0m '%s' is a system command.\n" "$alias_name" > /dev/tty
         sleep 1; return 1
     fi
-
     if ! grep -qF "$marker" "$target"; then
         printf "\n%s\n" "$marker" >> "$target"
     fi
-
     echo "alias $alias_name=\"$cmd\"" >> "$target"
     alias "$alias_name"="$cmd"
-
     printf "\e[32mSuccess!\e[0m Alias '\e[1m%s\e[0m' is live.\n" "$alias_name" > /dev/tty
     sleep 0.5
 }
@@ -46,7 +38,6 @@ _xc_add_alias() {
 local vault_dir="${XC_VAULT_DIR:-$HOME/.local/share/xc}"
 local state_file="$HOME/.cache/xc_active_vault"
 local active_name="main"
-
 [[ -f "$state_file" ]] && active_name=$(<"$state_file")
 local vault_file="$vault_dir/${active_name}.txt"
 
@@ -70,27 +61,35 @@ local selected=$(fzf \
     --bind "ctrl-r:rebind(alt-d,alt-e)+change-header(Vault: [$active_name] | Alt-E: Alias | Alt-D: Delete | Ctrl-A: Global)+reload(cat \"$vault_file\")" \
     < "$vault_file")
 
-if [ -n "$selected" ]; then
+# --- 5. Integrated Placeholder Logic ---
+if [[ -n "$selected" ]]; then
     local cmd="${selected%% -> *}"
     local clean_cmd="${cmd%"${cmd##*[![:space:]]}"}"
 
-    # --- 5. Integrated Placeholder Logic ---
-    while [[ "$clean_cmd" == *"{{"*"}}"* ]]; do
-        # Extract only the text between the first {{ and }}
-        local var_part="${clean_cmd#*\{\{}"
-        local var_name="${var_part%%\}\}*}"
-        local user_input=""
-        
-        # vared for a clean, interactive prompt
-        vared -p "Value for {{$var_name}}: " user_input
-        
-        # Abort if user hits enter without typing or cancels
-        [[ -z "$user_input" ]] && break
-        
-        # Replace the placeholder with the input
-        clean_cmd="${clean_cmd//\{\{$var_name\}\}/$user_input}"
-    done
+    # Check for placeholders
+    if [[ "$clean_cmd" == *"{{"* ]]; then
+        # Pause ZLE so we can talk to the terminal directly
+        zle -I
 
+        while [[ "$clean_cmd" == *"{{"*"}}"* ]]; do
+            # Extract the placeholder name
+            local var_part="${clean_cmd#*\{\{}"
+            local var_name="${var_part%%\}\}*}"
+            [[ "$var_part" == "$clean_cmd" ]] && break
+
+            # Direct terminal prompt (bypasses ZLE restrictions)
+            local user_input=""
+            printf "\e[32mXC-\e[0m Enter value for {{%s}}: " "$var_name" > /dev/tty
+            
+            # Read from the terminal, not the shell buffer
+            read user_input < /dev/tty
+            
+            # Replace the placeholder
+            clean_cmd="${clean_cmd//\{\{$var_name\}\}/$user_input}"
+        done
+    fi
+
+    # Inject the final command into the buffer
     LBUFFER="$clean_cmd"
 fi
 

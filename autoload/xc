@@ -7,7 +7,7 @@
 # File: ~/arch-projects/XC-Manager/autoload/xc
 # ==============================================================================
 
-readonly XC_VERSION="0.7.0"
+readonly XC_VERSION="0.7.1"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
