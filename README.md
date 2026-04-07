@@ -107,10 +107,13 @@ Aliases are saved by default to ~/.zsh_aliases. If you prefer to save them direc
 Vaults are saved by default in `$HOME/.local/share/xc`.
 The active state (which vault you are currently using) is tracked in `$HOME/.cache/xc_active_vault`*
 
-Roadmap
+**Roadmap**
 [x] Community Sync Engine
+
 [x] Dynamic Placeholders
+
 [ ] Encrypted Vaults (GPG/age support)
+
 [ ] Cross-Shell Research (Bash/Fish wrappers)
 
 **License**
