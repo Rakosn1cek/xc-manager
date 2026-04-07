@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.2] - 2026-04-07
+### Fixed
+- `xc search` has been removed from menu. Use CTRL+A within the widget to search globaly.
+- Sellected commands ara now injecting into the buffer correctly.
+- Interactive commands with {{placeholder}} are now prompting for input.
+- `xc list` is now correctly displaying list of available vaults on users system with the currently in use marked with *.
+
+
 ## [0.7.1] - 2026-03-31
 ### Fixed
 - Resolved an issue where placeholders ({{variable}}) were injected into the ZLE buffer without user input.

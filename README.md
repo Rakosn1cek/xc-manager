@@ -1,5 +1,6 @@
 ## XC manager
-**Version: 0.7.1**
+
+**Version: 0.7.2**
 [![Asome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
@@ -13,15 +14,18 @@
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
 
+## [0.7.2] - 2026-04-07
+### Fixed
+- `xc search` has been removed from menu. Use CTRL+A within the widget to search globaly.
+- Sellected commands ara now injecting into the buffer correctly.
+- Interactive commands with {{placeholder}} are now prompting for input.
+- `xc list` is now correctly displaying list of available vaults on users system with the currently in use marked with *.
+
 ## [0.7.1] - 2026-03-31
 ### Fixed
 - Resolved an issue where placeholders ({{variable}}) were injected into the ZLE buffer without user input.
 - Switched to a direct TTY read method to ensure interactive prompts work correctly within Zsh widgets.
 - Improved trailing whitespace trimming for vault commands.
-
-## What's New in v0.7.0 
-### Interactive Templating & Sync Engine
-The v0.7.0 release transforms XC from a static command vault into a dynamic template engine. 
 
 ### Interactive Placeholders
 You can now save commands with `{{variables}}`. When you execute a templated command, XC will intelligently prompt you for input.

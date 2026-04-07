@@ -7,7 +7,7 @@
 # File: ~/arch-projects/XC-Manager/autoload/xc
 # ==============================================================================
 
-readonly XC_VERSION="0.7.1"
+readonly XC_VERSION="0.7.2"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -58,12 +58,11 @@ Usage: xc <command> [arguments]
 
 Commands:
   add       Vault a new command or one-liner.
-  list      Searchable TUI for executing commands. Supports {{placeholders}}.
+  list      List of available vaults with current vault in use marked with *.
   select    Open fzf to vault a command from your history.
   clean     Interactively remove entries with a safety lock.
   use       Switch between different vault files.
   sync      Interactive "Package Manager" for community vaults.
-  search    Global search across all vaults. Supports {{placeholders}}.
   alias     Promote a vaulted command to a permanent Zsh alias.
 
 Templating:
@@ -91,23 +90,17 @@ elif [[ "$1" == "init" ]]; then
     echo "Vault initialized at $vault_file"
     return 0
 
-# List Commands (TUI)
+# List Available Vaults (Inventory Check)
 elif [[ "$1" == "list" ]]; then
-    [[ ! -f "$vault_file" ]] && echo "Vault not found." && return 1
-    
-    # Keep your original fzf flags exactly as they are in your screenshot
-    local selected=$(fzf --height 40% --layout=reverse --header "Select command to EXECUTE" < "$vault_file")
-    
-    [[ -z "$selected" ]] && return 0
-    
-    local raw_cmd="${selected%% -> *}"
-    
-    # Logic Hardening: Verify the placeholders were actually filled
-    local filled_cmd=$(__xc_fill_placeholders "$raw_cmd")
-    
-    # Only update the command line if the result is valid
-    [[ -n "$filled_cmd" ]] && LBUFFER+="$filled_cmd"
-    
+    echo "Available Vaults in $vault_dir:"
+    for f in "$vault_dir"/*.txt(N); do
+        local v_name="${f:t:r}"
+        if [[ "$v_name" == "$active_name" ]]; then
+            echo "  * $v_name (active)"
+        else
+            echo "    $v_name"
+        fi
+    done
     return 0
 
 # Clean Vault
@@ -217,7 +210,9 @@ elif [[ "$1" == "search" ]]; then
         --preview "echo {1} | sed 's/.*\/\(.*\)\.txt/\1/' | xargs printf 'Vault: [%s]\n\n'; echo {2..}" \
         --header "Global Search (All Vaults)")
 
+
     [[ -z "$selected" ]] && return 0
+
 
     # Extract the command, then strip description BEFORE processing placeholders
     local entry=$(echo "$selected" | awk -F: '{sub(/[^:]*:/, ""); print}')

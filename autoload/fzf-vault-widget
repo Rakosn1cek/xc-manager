@@ -63,33 +63,32 @@ local selected=$(fzf \
 
 # --- 5. Integrated Placeholder Logic ---
 if [[ -n "$selected" ]]; then
-    local cmd="${selected%% -> *}"
-    local clean_cmd="${cmd%"${cmd##*[![:space:]]}"}"
-
-    # Check for placeholders
-    if [[ "$clean_cmd" == *"{{"* ]]; then
-        # Pause ZLE so we can talk to the terminal directly
-        zle -I
-
-        while [[ "$clean_cmd" == *"{{"*"}}"* ]]; do
-            # Extract the placeholder name
-            local var_part="${clean_cmd#*\{\{}"
-            local var_name="${var_part%%\}\}*}"
-            [[ "$var_part" == "$clean_cmd" ]] && break
-
-            # Direct terminal prompt (bypasses ZLE restrictions)
-            local user_input=""
+    # Strip the description
+    local clean_cmd="${selected%% -> *}"
+    
+    # If the command contains {{...}}
+    if [[ "$clean_cmd" == *"{{"*"}}"* ]]; then
+        zle -I  # Clear the line for the prompt
+        
+        # While there are still placeholders to fill
+        while [[ "$clean_cmd" =~ "\{\{([^}]+)\}\}" ]]; do
+            # The name is captured in the match group
+            local var_name="${match[1]}"
+            
+            # Ask the user directly on the terminal
             printf "\e[32mXC-\e[0m Enter value for {{%s}}: " "$var_name" > /dev/tty
+            local user_input
+            read -r user_input < /dev/tty
             
-            # Read from the terminal, not the shell buffer
-            read user_input < /dev/tty
+            # If user cancels/leaves empty, stop the process
+            [[ -z "$user_input" ]] && return 1
             
-            # Replace the placeholder
-            clean_cmd="${clean_cmd//\{\{$var_name\}\}/$user_input}"
+            # Replace the FIRST occurrence found
+            clean_cmd="${clean_cmd/\{\{$var_name\}\}/$user_input}"
         done
     fi
 
-    # Inject the final command into the buffer
+    # Put the final command on the line
     LBUFFER="$clean_cmd"
 fi
 
