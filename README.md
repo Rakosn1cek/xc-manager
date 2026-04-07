@@ -108,6 +108,7 @@ Vaults are saved by default in `$HOME/.local/share/xc`.
 The active state (which vault you are currently using) is tracked in `$HOME/.cache/xc_active_vault`*
 
 **Roadmap**
+
 [x] Community Sync Engine
 
 [x] Dynamic Placeholders
