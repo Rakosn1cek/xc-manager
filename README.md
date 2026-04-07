@@ -1,11 +1,14 @@
-## XC manager
-
+## XC Manager
 **Version: 0.7.2**
-[![Asome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
+
+[![Awesome Zsh Plugins](https://img.shields.io/badge/Awesome-Zsh%20Plugins-brightgreen)](https://github.com/unixorn/awesome-zsh-plugins)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Shell](https://img.shields.io/badge/shell-zsh-brightgreen.svg)](https://github.com/Rakosn1cek/xc-manager)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Rakosn1cek/xc-manager)](https://github.com/Rakosn1cek/xc-manager/releases)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
 
-### XC manager in Action
+**XC manager in Action:**
 <p align="center">
   <video src="https://github.com/user-attachments/assets/d67640fb-4e9e-4d36-b7a1-d588a24ab9a6" width="700" controls muted autoplay loop>
     Your browser does not support the video tag.
@@ -14,39 +17,19 @@
 
 A high-performance, minimal dependency Zsh vault for managing complex commands.
 
-## [0.7.2] - 2026-04-07
-### Fixed
-- `xc search` has been removed from menu. Use CTRL+A within the widget to search globaly.
-- Sellected commands ara now injecting into the buffer correctly.
-- Interactive commands with {{placeholder}} are now prompting for input.
-- `xc list` is now correctly displaying list of available vaults on users system with the currently in use marked with *.
+**Recent Fixes** [0.7.2]
+- Buffer Injection: Selected commands now inject into the Zsh buffer correctly.
+- Placeholders: Commands with {{variable}} now correctly prompt for input via TTY.
+- Vault Inventory: xc list now shows available vaults on your system and marks the active one with an asterisk.
+- Menu Cleanup: xc search has been removed from the standalone menu. Use Ctrl+A within the TUI for global search.
 
-## [0.7.1] - 2026-03-31
-### Fixed
-- Resolved an issue where placeholders ({{variable}}) were injected into the ZLE buffer without user input.
-- Switched to a direct TTY read method to ensure interactive prompts work correctly within Zsh widgets.
-- Improved trailing whitespace trimming for vault commands.
+**Interactive Placeholders**
+- Save commands with {{variables}} to create templates. XC prompts for input during execution.
+- Global Swap: Using the same name (e.g. cp {{file}} {{file}}.bak) prompts once and updates all instances.
+- Individual Control: Use unique names (e.g. mv {{old}} {{new}}) to prompt for each value separately.
 
-### Interactive Placeholders
-You can now save commands with `{{variables}}`. When you execute a templated command, XC will intelligently prompt you for input.
-* **Smart Global Swap**: If you use the same placeholder name multiple times (e.g., `cp {{file}} {{file}}.bak`), the engine only asks you once and updates all instances globally.
-* **Manual Control**: Use different names (e.g., `mv {{old}} {{new}}`) to be prompted for each individual value.
-
-### Community "Package Manager"
-The `sync` command has been completely redesigned. 
-* **`xc sync`**: Now pulls an interactive index from the community repository. You can discover, preview, and install curated vaults via `fzf` without needing to manually track remote filenames.
-* **Expanded Vaults**: New curated vaults for Docker, Security Auditing, Nix, and Neovim are now available.
-* **macOS Power Kit**: Massive thanks to the r/MacOS community for contributing the "Graybeard" BSD one-liners that make this the most comprehensive macOS vault in the engine.
-
-### Core Improvements
-* **Surgical Logic**: Refined string manipulation for faster placeholder swapping.
-* **Duplicate Guards**: Improved logic to prevent identical commands from cluttering your vaults.
-
----
-
-## Community Sync
-
-Stop searching the web for the same syntax. XC now includes a built-in sync engine to pull curated, Arch Wiki-verified "Problem-Solution" vaults directly from this repository.
+**Community Sync:**
+Pull curated, Arch Wiki-verified "Problem-Solution" vaults directly from the repository.
 
 | Vault | Command | Description |
 | :--- | :--- | :--- |
@@ -66,182 +49,83 @@ Stop searching the web for the same syntax. XC now includes a built-in sync engi
 
 ---
 
-## Features
-* **Interactive Template Engine**: Support for {{placeholders}} that prompt for user input during execution. [v0.7.0]
-* **Global Variable Mapping**: Identical placeholder names trigger a single prompt to save keystrokes. [v0.7.0]
-* **Vault Package Manager**: Interactive sync interface to browse and download community-curated vaults. [v0.7.0]
-* **Proactive Saving**: Run a command and save it immediately.
-* **Retroactive Saving**: Save the last command you ran without retyping it.
-* **FZF Integration**: Search your vault with fuzzy finding and live previews.
-* **Alias Export Engine**: Convert any saved command into a permanent Zsh alias instantly with Alt-E.
-* **Collision Detection**: Built-in safety checks prevent you from accidentally overwriting system commands or existing aliases.
-* **Modular Configuration**: Choose your "Source of Truth" save to ~/.zshrc or keep it clean with a dedicated ~/.zsh_aliases file.
-* **Instant Activation**: Exported aliases are injected into your current session immediately, no shell restart required.
-* **Ligature Friendly**: Uses standard ASCII -> that renders as a sleek arrow in Nerd Fonts.
-* **Zero-Lag**: Uses Zsh autoload for near-instant shell startup.
-* **Smart History**: Save the last command or select from your recent history.
-* **Safe Maintenance**: Built-in transparent cleanup for duplicates.
-* **Distro Agnostic**: Works on Arch, Fedora, Debian, and macOS.
-* **Toggable Search**: Seamlessly switch between local vault and global search using Ctrl-A and Ctrl-R without exiting the TUI.
+**Features:**
+- Template Engine: Support for {{placeholders}} with interactive prompts.
+- Alias Export: Convert any vaulted command into a permanent Zsh alias with Alt+E.
+- Global Search: Toggle between local vault and global search using Ctrl+A and Ctrl+R.
+- Proactive Saving: Run xc to save the command you just executed.
+- FZF Integration: Fuzzy search with live previews.
+- Distro Agnostic: Works on Arch, Fedora, Debian, and macOS.
 
-### Requirements
-* **zsh**
-* **fzf**
-* **sed** (The line-editor for deletions)
-* **grep** (The standard search tool)
+**Installation:**
 
-### Installation
-### Arch Linux (AUR)
-**The package is available in the AUR as** `xc-manager-git`.
-```zsh
-yay -S xc-manager-git
-```
-### All other linux distros and MacOS
-**Clone the repository**:
-```zsh
-git clone https://github.com/Rakosn1cek/xc-manager.git ~/.zsh-plugins/xc-manager
-```
-**Add to your ~/.zshrc**:
-```zsh
-# Add to function path and autoload
-# For AUR users: 
-source /usr/share/zsh/plugins/xc-manager/xc.plugin.zsh
+Arch Linux (AUR)
+`yay -S xc-manager-git`
 
-# For Manual users: 
+**Manual Installation**
+Clone the repository:
+`git clone https://github.com/Rakosn1cek/xc-manager.git ~/.zsh-plugins/xc-manager`
+
+**Add to ~/.zshrc:**
+```zsh
 source ~/.zsh-plugins/xc-manager/xc.plugin.zsh
-
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
+```
 
-# All distros including MacOS
+**All distros including MacOS**
+```zsh
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 ```
-# Optional UI Customisation
+**Optional UI Customisation**
 ```zsh
 zstyle ':xc:*' separator "->" 
 zstyle ':xc:*' fzf_colors "fg:7,hl:4,fg+:15,hl+:12,info:2,prompt:5,pointer:12"
 ```
 
-**Reload your shell**:
-```zsh
-source ~/.zshrc
-```
-**Initialise the vault (First time only)**:
-```zsh
-xc init
-```
-### Usage
+**Initialise (First time only):**
+`xc init`
 
-**Community Sync (v0.7.0)**
-* **Interactive Sync**: Run xc sync without arguments to browse and select from the community index via fzf.
-* **Templates**: Run xc sync templates to download pre-configured interactive snippets for Git, SSH, and Docker.
+**Usage Guide:**
 
-**Interactive Templating (New in v0.7.0)**
-* **Dynamic Prompts**: Save commands with {{var}} syntax. Selecting these will trigger interactive prompts for each unique variable.
-* **Global Mapping**: Identical placeholder names (e.g., cp {{file}} {{file}}.bak) will only prompt you once and swap all instances globally.
-* **Integration**: Placeholder logic is fully supported in both the standard TUI (Ctrl-G) and Global Search.
-* **Safety Guard**: Hitting Enter on an empty prompt will cancel the execution, keeping your command line clean and preventing syntax errors.
+- Launch TUI: Press Ctrl+G anywhere in your terminal.
+- Switch Vault: Use `xc use <name>` to change your active context (e.g. xc use work).
+- List Vaults: Run `xc list` to see your available vault files.
+- Delete Entry: Press `Alt+D` inside the TUI.
+- Global Search: Press `Ctrl+A` to search across all vaults inside the TUI.
+- Create Aliases: Select command to export -> press `Alt+E` -> Enter alias name -> Save 
+- Sync Vaults: Run `xc sync` to browse the community index.
+- Save Command: Run `xc` after successful command -> Enter descriptions -> Save
+- Select Command from History: Run `xc select` -> choose command to save -> Enter descriptions -> Save
+- Check Version: Run `xc -v` 
 
-**Community Sync (v0.6.0)**
-XC-Manager now features a built-in sync engine to pull curated "Problem-Solution" vaults directly from the community repository.
-* **Sync a Vault**: Run xc sync <category> (e.g., xc sync arch or xc sync hyprland).
-* **Available Categories**: arch, hyprland, general-nix, git-pro, docker-dev, networking, vim-neovim, security-audit, templates.
-* **Update**: Re-running sync will pull the latest verified fixes from the upstream repo.
-
-**Managing Contexts (Multi-Vault)**
-XC allows you to isolate commands into different vaults.
-* **Switch or Create**: Use `xc use <name>` to toggle your active context.
-* **Example**: `xc use work` (If it doesn't exist, a new work.txt is created automatically).
-* **Automatic Selection**: Once a vault is active, any command saved via `xc` or `xc select` is instantly routed to that specific file.
-* **Visual Confirmation**: Running `xc use` without arguments highlights the active vault.
-
-**Saving Commands**
-* **Capture last command**: Run `xc` to save the command you just executed.
-* **Select from history**: Run `xc select` to browse your last 100 commands for saving.
-* **Cleanup**: Run `xc clean` to scrub duplicates and empty entries from the active vault.
-
-**Retrieving Commands**
-* **Launch TUI**: Press `Ctrl + G` anywhere in your terminal.
-* **Filter**: Type to fuzzy search. The description appears in the preview box.
-* **Execute**: Press Enter to load the command into your prompt.
-* **Delete**: Press `Alt + D` inside the TUI to delete the selected entry.
-
-**Search across all vaults**
-* **Global Search**: Pressing `Ctrl-A` while in the TUI (Ctrl-G) will expand your search to every vault in your collection. This mode is for searching and selecting commands only for safety. Delete (Alt-D) is disabled by default.
-* **Deduplication**: As of v0.6.1, redundant commands across multiple vaults are filtered out to reduce visual noise.
-* **Safety First**: Global Search remains **Read-Only**. Because this search can pull from high-risk maintenance vaults (like `arch` or `security`), it serves as a reference to prevent accidental execution of sensitive commands.
-
-**Exporting Aliases (v0.5.0+)**
-* **Open the vault**: `Ctrl-G`(or your custom binding).
-* **Highlight a command**: and press `Alt-E`.
-* **Type a name for your alias and hit Enter.**
-* **The alias is now saved and active!**
-**Remember, as of v0.5.0-beta**
+> *Note 1:
 Aliases are saved by default to ~/.zsh_aliases. If you prefer to save them directly into your main config file, add this to your .zshrc:
-```zsh
-export XC_ALIAS_TARGET="$HOME/.zshrc"
-```
+`export XC_ALIAS_TARGET="$HOME/.zshrc"`
+Vaults are saved by default in `$HOME/.local/share/xc`.
+The active state (which vault you are currently using) is tracked in `$HOME/.cache/xc_active_vault`*
 
-**Utilities**
-* **Check version**: `xc -v`
+Roadmap
+[x] Community Sync Engine
+[x] Dynamic Placeholders
+[ ] Encrypted Vaults (GPG/age support)
+[ ] Cross-Shell Research (Bash/Fish wrappers)
 
-### Configuration (Optional)
-**Customise the look of your vault using Zsh's zstyle system**:
-```zsh
-zstyle ':xc:*' fzf_colors "gutter:-1,border:8,header:4,info:2,pointer:5,marker:13,fg+:7,prompt:5,hl:12"
-```
-### Recommended Integrations
-**Alias Browser (als)**
-If you want an easy way to browse and run your newly created aliases using `fzf`, I highly recommend checking out my show-aliases.sh script. It searches both your .zshrc and .zsh_aliases to give you a unified, interactive menu.
-
-* **View Script**: on GitHub [Show-Aliases Script](https://github.com/Rakosn1cek/dotfiles-rk1/tree/main/shell-common/custom-scripts/Show-Aliases)
-* **Key Feature**: Seamlessly displays XC exports alongside your manual system aliases.
-
-## Roadmap
-[x] Modular Architecture: Refactored to Zsh autoload for instant startup.
-
-[x] Native Delete Feature: Alt+D keybinding to remove entries directly from the TUI.
-
-[x] Vault Cleanup: Automatic removal of duplicates or empty descriptions.
-
-[x] Multi-Vault Support: Ability to switch between different context files.
-
-[x] Export to Alias: Export vault commands directly to .zshrc as permanent aliases.
-
-[x] Global Search: Search across all vaults simultaneously.
-
-[x] Community Sync Engine (v0.6.0): Built-in distribution system to pull curated, Wiki-verified vaults (Arch, Hyprland, Git, etc.) directly from GitHub.
-
-[x] Dynamic Placeholders: Support for {{variable}} prompting within vaulted commands.
-
-[ ] Encrypted Vaults: Support for gpg or age encrypted .txt files for sensitive commands.
-
-[ ] Cross-Shell Research: Investigating a POSIX-compliant core for Bash and Fish support.
-
-## Maintenance & Stability
-This project follows the KISS (Keep It Simple, Stupid) principle. Because it relies on standard Unix tools and native Zsh functions, it is designed to be "set and forget".
-- **Feature Complete**: v0.5.0-beta contains the core intended workflow. I don't plan on adding heavy dependencies or feature bloat.
-- **Long-term Support**: As an Arch user, I use this tool daily. I will provide active maintenance for bug fixes and Zsh compatibility updates.
-- **Plain Text Forever**: Your vaults are stored in simple .txt files. Your data remains portable and human readable regardless of the tool.
-
-## Support & Feedback
-- **Bug Reports**: If something isn't working, especially with the Alias Export engine, please open an [Issue](https://github.com/Rakosn1cek/XC-Manager/issues).
-- **Feature Ideas**: To discuss the roadmap or suggest a polish, head over to the[Discussions](https://github.com/Rakosn1cek/XC-Manager/discussions) tab.
-- **Community Snippets**: Have a complex one-liner you've vaulted? Share it in the "Show and Tell" discussion.
-
-## License
+**License**
 Distributed under the MIT License. See LICENSE for more information.
 
-## Changelog
-For a detailed history of changes and version milestones, please see CHANGELOG.md.
+⭐ Star XC-Manager on GitHub
 
-## Support the Project
-If XC makes your workflow faster or your `.zshrc` cleaner, please consider giving it a Star on GitHub! It helps other Arch users find the project and keeps the development of features like v0.5.0-beta going.
+> *Note 2:
+**Optional Integrations**
+Alias Browser (als)
+If you want an easy way to browse and run your newly created aliases using `fzf`, Check out my show-aliases.sh script.
+It searches both your .zshrc and .zsh_aliases to give you a unified, interactive menu.
+View Script: on GitHub [Show-Aliases Script](https://github.com/Rakosn1cek/dotfiles-rk1/tree/main/shell-common/custom-scripts/Show-Aliases)*
 
-*Project Note: This documentation and parts of the shell optimisation were proofread and refined with the help of LLMs to ensure clarity and performance.*
-
-[**⭐ Star XC-Manager on GitHub**](https://github.com/Rakosn1cek/XC-Manager)
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/Rakosn1cek)
+**Support & Feedback**
+- Bug Reports: If something isn't working, please open an [Issue](https://github.com/Rakosn1cek/XC-Manager/issues).
+- Feature Ideas: To discuss the roadmap or suggest a polish, head over to the[Discussions](https://github.com/Rakosn1cek/XC-Manager/discussions) tab.
+- Community Snippets: Have a complex one-liner you've vaulted? Share it in the "Show and Tell" discussion.
