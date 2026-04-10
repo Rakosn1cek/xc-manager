@@ -7,7 +7,7 @@
 # File: ~/arch-projects/XC-Manager/autoload/xc
 # ==============================================================================
 
-readonly XC_VERSION="0.7.2"
+readonly XC_VERSION="0.8.0"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -57,13 +57,14 @@ A functional vault for command execution and alias management.
 Usage: xc <command> [arguments]
 
 Commands:
-  add       Vault a new command or one-liner.
-  list      List of available vaults with current vault in use marked with *.
-  select    Open fzf to vault a command from your history.
-  clean     Interactively remove entries with a safety lock.
-  use       Switch between different vault files.
-  sync      Interactive "Package Manager" for community vaults.
-  alias     Promote a vaulted command to a permanent Zsh alias.
+  add        Vault a new command or one-liner.
+  add --raw  Paste raw text (use for curl, jq). Finish with Enter then Ctrl+D.
+  list       List of available vaults with current vault in use marked with *.
+  select     Open fzf to vault a command from your history.
+  clean      Interactively remove entries with a safety lock.
+  use        Switch between different vault files.
+  sync       Interactive "Package Manager" for community vaults.
+  alias      Promote a vaulted command to a permanent Zsh alias.
 
 Templating:
   Use {{var}} in your commands to create interactive prompts.
@@ -257,14 +258,28 @@ if [[ "$1" == "select" ]]; then
     cmd_to_save=$(fc -rl -100 | sed 's/^[ ]*[0-9]*[ ]*//' | fzf --height 40% --header="Select command to vault" --prompt="Vault > ")
     [[ -z "$cmd_to_save" ]] && echo "Cancelled." && return 0
 elif [[ "$1" == "add" ]]; then
-    shift
-    cmd_to_save="$*"
+    if [[ "$2" == "--raw" ]]; then
+        # Capture raw input without shell expansion
+        printf "\e[32mXC-\e[0m Paste your command below and press Ctrl+D on a new line:\n" > /dev/tty
+        # Read from stdin until EOF
+        local raw_input=$(cat)
+        
+        # Flatten multi-line pastes into a one-liner
+        cmd_to_save="${raw_input//\\$'\n'/ }" # Remove backslash at end of line
+        cmd_to_save="${cmd_to_save//$'\n'/ }"  # Remove remaining newlines
+        
+        [[ -z "${cmd_to_save// /}" ]] && echo "Cancelled: No input detected." && return 0
+    else
+        shift
+        cmd_to_save="$*"
+    fi
 elif [[ -z "$1" ]]; then
     cmd_to_save="${$(fc -ln -1)## #}"
 else
     cmd_to_save="$*"
 fi
 
+# Clean up any remaining double spaces or weird formatting
 cmd_to_save="${(j: :)${(z)cmd_to_save}}"
 
 if [[ -f "$vault_file" ]] && grep -q "^${cmd_to_save} ->" "$vault_file"; then
