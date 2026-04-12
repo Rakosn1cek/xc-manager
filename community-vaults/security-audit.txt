@@ -1,5 +1,50 @@
-sudo rkhunter --check -> Scan for Rootkits and local exploits
-sudo lynis audit system -> Perform a comprehensive Linux Security Audit
-sudo ufw status numbered -> List Firewall rules with ID numbers for easy deletion
-find / -perm -4000 2>/dev/null -> Find all SUID files (Potential privilege escalation vectors)
+sudo rkhunter --check -> Scan for rootkits and local exploits
+sudo lynis audit system -> Perform a comprehensive Linux security audit
+sudo ufw status numbered -> List firewall rules with ID numbers for easy deletion
+find / -perm -4000 2>/dev/null -> Find all SUID files (potential privilege escalation vectors)
 last -a | head -n 10 -> Check the last 10 logged-in users and their IP addresses
+sudo logwatch --detail High --service all --range today -> Generate a high-detail security report for today's services
+sudo chkrootkit -> Check the system for locally installed rootkits
+sudo clamscan -r -i /home -> Scan home directories for viruses and display only infected files
+sudo debsums -s -> Verify the integrity of installed package files (Debian/Ubuntu)
+sudo aide --check -> Perform an Advanced Intrusion Detection Environment integrity check
+find / -perm -2 -type f 2>/dev/null -> Locate all world-writable files on the system
+find / -nouser -o -nogroup 2>/dev/null -> Find files that do not belong to any valid user or group
+sudo ausearch -m avc -ts today -> Search audit logs for SELinux/AppArmor denial messages
+sudo journalctl -t sshd -p err -> View only error-level logs from the SSH daemon
+sudo netstat -tulpn -> Audit all active network connections and listening ports
+sudo ss -lntu -> Display all numerical listening ports for security review
+sudo lsof -nP -iTCP -sTCP:LISTEN -> List all processes listening for TCP connections without resolving names
+sudo fail2ban-client status sshd -> Check the status of the SSH jail and currently banned IPs
+cat /etc/shadow | cut -d: -f1,2 -> Check for accounts with encrypted password strings
+sudo find /root /home -name "._history" -> Audit shell history files for sensitive commands
+sudo find / -name ".ssh" -type d -> Locate all .ssh directories to audit authorised keys
+grep -vE '^#|^$' /etc/ssh/sshd_config -> View the active SSH server configuration without comments
+sudo awk -F: '($3 == "0") {print $1}' /etc/passwd -> List all accounts with UID 0 (root privileges)
+sudo find /dev -type f -> Search the /dev directory for regular files (potential hidden backdoors)
+sudo ps -eo user,pid,ppid,cmd --forest -> Visualise the process tree to identify suspicious parent-child relations
+sudo tiger -> Run the Tiger security tool to check for local vulnerabilities
+sudo openssl s_client -connect {{host}}:443 -> Audit the SSL/TLS certificate and cipher suite of a server
+sudo nmap -sV --script vuln {{target}} -> Scan a target for known vulnerabilities using Nmap scripts
+sudo nikto -h {{host}} -> Perform a web server security scan for dangerous files and outdated software
+sudo snort -v -i {{interface}} -> Initialise Snort in sniffer mode to monitor network traffic
+sudo strings /usr/bin/{{binary}} | grep -i "http" -> Search a binary for hardcoded URLs or suspicious strings
+sudo tail -f /var/log/auth.log -> Monitor authentication logs in real-time for brute-force attempts
+sudo checksec --file={{path_to_binary}} -> Check the security features (PIE, NX, Canary) of an executable
+sudo sysctl -a | grep -E "icmp_echo_ignore_all|accept_redirects" -> Audit kernel network security parameters
+sudo apparmor_status -> Show the current status of AppArmor profiles and enforced binaries
+sudo sestatus -> Verify the status and policy mode of SELinux
+sudo firewall-cmd --get-active-zones -> Check active firewalld zones and assigned interfaces
+sudo aa-unconfined -> List processes that have network sockets but no AppArmor profile
+sudo lsattr -R /etc 2>/dev/null -> List file attributes in /etc to check for immutable files
+sudo find /var/log -type f -mtime -1 -> List all log files modified within the last 24 hours
+sudo stat /etc/shadow /etc/passwd /etc/sudoers -> Verify the permissions and ownership of critical system files
+sudo cryptsetup status {{encrypted_volume}} -> Check the status and cipher of an active encrypted volume
+sudo dmidecode -t bios -> Audit the BIOS/Firmware version for known security updates
+sudo bumblebee -s -> Scan for hardware devices that might be vulnerable to DMA attacks
+sudo usermod -L {{username}} -> Manually lock a suspicious user account immediately
+sudo faillog -a -> Display a report of all failed login attempts for all users
+sudo lastlog -u {{username}} -> Check the most recent login metadata for a specific user
+sudo dpkg --get-selections | grep -v deinstall -> Audit all currently installed packages for unauthorised software
+sudo grep -r "NOPASSWD" /etc/sudoers -> Find all users who can run commands without a password
+sudo service --status-all -> List all system services to identify unnecessary active daemons

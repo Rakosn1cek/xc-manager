@@ -1,7 +1,56 @@
-:%s/old/new/g -> Search and Replace "old" with "new" in the entire file
-:set relativepnu -> Enable Relative Line Numbers (Essential for motions)
-:vsplit -> Split the window Vertically
+:%s/old/new/g -> Search and replace "old" with "new" in the entire file
+:set relativenumber -> Enable relative line numbers (essential for motions)
+:vsplit -> Split the window vertically
 :checkhealth -> Run Neovim health check for provider/plugin issues
-:Tutor -> Open the built-in Vim Tutorial
+:Tutor -> Open the built-in Vim tutorial
 :g/pattern/d -> Delete all lines matching a specific pattern
-:qa! -> Force Quit all open buffers and exit without saving
+:qa! -> Force quit all open buffers and exit without saving
+:w -> Save (write) the current buffer
+:x -> Save and close the current window
+:u -> Undo the last change
+ -> Redo the last undone change
+gg -> Jump to the first line of the file
+G -> Jump to the last line of the file
+0 -> Move cursor to the absolute start of the line
+^ -> Move cursor to the first non-blank character of the line
+$ -> Move cursor to the end of the line
+w -> Move cursor forward to the start of the next word
+b -> Move cursor backward to the start of the previous word
+e -> Move cursor forward to the end of the word
+i -> Enter insert mode before the cursor
+a -> Enter insert mode after the cursor
+o -> Open a new line below the current line and enter insert mode
+O -> Open a new line above the current line and enter insert mode
+v -> Enter visual mode to select text character by character
+V -> Enter visual line mode to select entire lines
+ -> Enter visual block mode for rectangular selections
+y -> Yank (copy) the selected text
+d -> Delete (cut) the selected text
+p -> Paste (put) the yanked or deleted text after the cursor
+x -> Delete the character under the cursor
+r -> Replace the character under the cursor
+dd -> Delete the entire current line
+yy -> Yank the entire current line
+cc -> Change the entire current line (delete and enter insert mode)
+/pattern -> Search forward for a pattern
+?pattern -> Search backward for a pattern
+n -> Repeat the search in the same direction
+N -> Repeat the search in the opposite direction
+:set hlsearch -> Enable highlighting of all search matches
+:nohlsearch -> Clear the current search highlights
+:set wrap! -> Toggle line wrapping
+:set spell -> Enable the built-in spell checker
+:set list -> Show invisible characters (tabs, end of lines)
+:bn -> Switch to the next buffer
+:bp -> Switch to the previous buffer
+:bd -> Delete (close) the current buffer
+:ls -> List all open buffers
+:sp -> Split the window horizontally
+w -> Cycle focus between open windows
+q -> Close the current window split
+:tabnew -> Open a new tab page
+:tabnext -> Move to the next tab page
+:tabprevious -> Move to the previous tab page
+:source % -> Execute the current file as a Vim script (reload config)
+:!{{command}} -> Execute an external shell command
+K -> Open the manual page for the word under the cursor

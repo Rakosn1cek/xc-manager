@@ -1,13 +1,20 @@
 arch:Essential maintenance and pacman commands for Arch Linux.
+cloud:Common utilities for managing multi-cloud environments and CLI sessions.
 debian:Apt repository tracking, kernel upgrades, and package maintenance.
+digital-ocean:Droplet lifecycle, block storage, and Kubernetes cluster management.
 docker-dev:Container orchestration, development environments, and cleanup.
 fedora:DNF transaction history, security updates, and repository management.
 general-nix:Universal Nix/Linux utilities for file management and system info.
 git-pro:Advanced version control workflows, stashing, and remote management.
 hyprland:Window manager binds, monitor configurations, and workspace tweaks.
-macos:High-utility BSD maintenance, Gatekeeper fixes, and hidden system tweaks
-networking:IP scanning, SSH tunneling, and API testing tools.
+linux-mint:Mint-specific update management and desktop environment tools.
+macos:High-utility BSD maintenance, Gatekeeper fixes, and hidden system tweaks.
+networking:IP scanning, SSH tunnelling, and API testing tools.
+oracle-cloud:Compute instance launching, VCN networking, and object storage.
 opensuse:Zypper distribution upgrades, process tracking, and system repair.
+pentesting:Web fuzzing, exploit database searches, and network enumeration.
 security-audit:Security scanning, permissions checking, and basic hardening.
+sysadmin:System load monitoring, user management, and log filtering.
 templates:Interactive snippets using placeholders for Git, SSH, and more.
+ubuntu:Snap package management, PPA handling, and HWE support status.
 vim-neovim:Quick configurations and plugin management for terminal editors.

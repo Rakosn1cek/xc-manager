@@ -1,20 +1,62 @@
-sudo pacman -Sy archlinux-keyring && sudo pacman-key --refresh-keys -> Fix PGP Keyring / Signature Errors
+sudo pacman -Sy archlinux-keyring && sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys -> Comprehensive PGP Keyring Reset
 reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syu -> Update System and Sync Mirrors
-sudo pacman -Rs $(pacman -Qdtq) -> Cleanup Orphaned Packages (Save Space)
 systemctl --user restart pipewire pipewire-pulse wireplumber -> Reset Pipewire Audio Services
 sudo rm -rf /var/cache/pacman/pkg/* && sudo pacman -Sc -> Clear Corrupted Pacman Cache
-sudo grub-mkconfig -o /boot/grub/grub.cfg -> Fix Dual Boot / Windows Not Showing in GRUB
 expac "%u %n" | sort -n | tail -n 10 -> List Top 10 Largest Installed Packages
-sudo mkinitcpio -P -> Rebuild Initramfs (Kernel Update Fix)
-sudo pacman -Sy archlinux-keyring && sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys -> Comprehensive PGP Keyring Reset
 find /etc -name "*.pacnew" -> Locate all .pacnew files (Manual merge required)
 sudo DIFFPROG=meld pacdiff -> Interactively manage and merge .pacnew files
-journalctl -p 3 -xb -> View only high-priority Errors (Level 3) from current boot
 paccache -r -k 2 -> Clean Pacman cache (Keep only the 2 most recent versions)
-sudo systemctl --failed -> List all Systemd services that failed to start
 sudo cat /var/log/Xorg.0.log | grep EE -> Check Xorg logs for critical errors
-lsblk -f -> List all partitions with UUIDs and File System types
 cat /proc/cmdline -> Check current Kernel Boot Parameters
 sudo ntpdate pool.ntp.org -> Manual Time Sync (Fixes SSL/Handshake errors)
 yay -S $(yay -Sl | fzf -m --preview="yay -Si {2}" | awk '{print $2}') -> Interactive package search and install with a live metadata preview window.
 sudo pacman -S $(pacman -Sl | fzf -m --preview="pacman -Si {2}" | awk '{print $2}') -> Native interactive search and install for official repositories using fzf previews.
+sudo pacman -Syu -> Synchronise with repositories and update all system packages
+sudo pacman -S {{package}} -> Install a specific package from the official repositories
+sudo pacman -Rns {{package}} -> Remove a package along with its unused dependencies and configuration files
+pacman -Qi {{package}} -> Display detailed information about an installed package
+pacman -Ql {{package}} -> List all files owned by a specific package
+pacman -Qs {{pattern}} -> Search for a keyword within the list of locally installed packages
+pacman -Ss {{pattern}} -> Search for a keyword in the remote package databases
+pacman -F {{file}} -> Find which package owns a specific file on the system
+sudo pacman -U {{path}} -> Install a local package file from the disk
+sudo pacman -Rns $(pacman -Qdtq) -> Recursively remove all orphan packages from the system
+pacman -Qetq | fzf -m --header "Select packages to PURGE" --preview 'pacman -Qi {}' --preview-window=right:60% | xargs -ro sudo pacman -Rns -> [TUI] Select and purge explicitly installed orphans with metadata preview
+checkupdates -> Safely check for available updates without syncing the main database
+pacman -Qe -> List all packages explicitly installed by the user
+pacman -Qm -> List all packages installed from the AUR or third-party sources
+sudo journalctl -p 3 -xb -> Display emergency, alert, and critical system logs from the current boot
+systemctl list-units --type=service --state=failed -> Show all systemd services that failed to start
+sudo localectl set-x11-keymap {{layout}} -> Set the keyboard layout for the X11 windowing system
+sudo timedatectl set-ntp true -> Enable Network Time Protocol for automatic clock synchronisation
+sudo bootctl status -> Check the status and configuration of the systemd-boot manager
+sudo genfstab -U /mnt >> /mnt/etc/fstab -> Generate an fstab file using UUIDs during system installation
+sudo arch-chroot /mnt -> Change the root directory to a newly mounted partition for maintenance
+sudo mkinitcpio -P -> Rebuild Initramfs (Kernel Update Fix)
+sudo grub-mkconfig -o /boot/grub/grub.cfg -> Regenerate the GRUB bootloader configuration file
+sudo useradd -m -G wheel {{username}} -> Create a new user with a home directory and administrative group access
+sudo passwd {{username}} -> Set or change the password for a specific user account
+sudo visudo -> Edit the sudoers file safely to manage administrative privileges
+sudo hostnamectl set-hostname {{new_hostname}} -> Permanently change the system hostname
+sudo ip link set {{interface}} up -> Enable a specific network interface manually
+iwctl station {{device}} connect {{SSID}} -> Connect to a Wi-Fi network using the iwd utility
+bluetoothctl devices -> List all paired or discovered Bluetooth devices
+sudo rfkill list -> Show the status of wireless radio switches on the system
+lsblk -f -> Display block devices with their filesystem types and UUIDs
+sudo mount {{device}} {{mountpoint}} -> Attach a filesystem to a specific point in the directory tree
+sudo umount {{mountpoint}} -> Detach a filesystem from the directory tree
+sudo cryptsetup luksOpen {{device}} {{name}} -> Open an encrypted LUKS partition for access
+sudo swapon {{device}} -> Activate a specific partition or file for swap space
+df -hT -> Show disk usage including the filesystem type for each partition
+du -sh /var/cache/pacman/pkg/ -> Check the total size of the pacman package cache
+sudo reflector --latest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist -> Update the mirrorlist with the 5 fastest HTTPS mirrors
+makepkg -si -> Build and install a package from a PKGBUILD file in the current directory
+yay -S {{package}} -> Install a package from the AUR using the yay helper
+yay -Sua -> Update all installed AUR packages without touching official ones
+flatpak update -> Update all installed Flatpak applications and runtimes
+fwupdmgr get-updates -> Check for available firmware updates for system hardware
+sensors -> Display real time hardware temperature and fan speed statistics
+sudo dmesg | grep -i {{keyword}} -> Search the kernel ring buffer for specific hardware messages
+lsmod -> List all currently loaded kernel modules
+sudo modprobe {{module_name}} -> Manually load a specific kernel module into memory
+sudo rmmod {{module_name}} -> Remove a specific kernel module from the running system

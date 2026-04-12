@@ -1,4 +1,4 @@
-sudo dnf history list {{package}} && sudo dnf history rollback {{id}} -> View package transaction history and rollback to a specific state.
+sudo dnf history list {{package}} && sudo dnf history rollback {{id}} -> View package transaction history and roll back to a specific state.
 sudo dnf repoquery --requires --resolve {{package}} -> List all resolved dependencies required by a specific package.
 sudo dnf autoremove -> Interactively remove all orphaned packages and unused dependencies.
 sudo dnf config-manager --set-enabled {{repo_id}} -> Enable a specific repository from the command line.
@@ -11,5 +11,54 @@ sudo dnf upgrade-minimal -> Apply only the specific updates that fix bugs or sec
 ostree remote refs fedora | grep {{variant:silverblue}} -> Check all available rebase targets (Silverblue/Kinoite)
 rpm-ostree rebase fedora:fedora/{{version:40}}/x86_64/{{variant:silverblue}} -> Rebase to a specific Fedora version
 sudo ostree admin pin {{index:0}} -> Unpin a specific deployment index
-rpm-ostree rollback -> Rollback to the previous working deployment
+rpm-ostree rollback -> Roll back to the previous working deployment
 rpm-ostree status -> List all pending and active deployments
+sudo dnf check-update -> Refresh the package database and check for available updates
+sudo dnf upgrade -> Download and install all available system updates
+sudo dnf install {{package}} -> Install a specific package from the Fedora repositories
+sudo dnf remove {{package}} -> Uninstall a package and remove its associated files
+dnf info {{package}} -> Display detailed metadata and description for a package
+dnf repoquery -l {{package}} -> List all files contained within a specific package
+dnf search {{pattern}} -> Search for a keyword or package name in the repositories
+dnf history -> View a list of all past DNF transactions
+sudo dnf history undo {{id}} -> Roll back a specific DNF transaction using its ID
+sudo dnf group install "{{group_name}}" -> Install a predefined group of packages like a desktop environment
+sudo dnf install {{path/to/package.rpm}} -> Install a local RPM file and resolve dependencies
+dnf provides {{file_path}} -> Find which package provides a specific command or file
+sudo dnf clean all -> Clear the DNF cache including metadata and downloaded packages
+sudo dnf config-manager --add-repo {{url}} -> Add a new repository to the system configuration
+sudo dnf install dnf-plugins-core -> Install essential plugins for advanced repository management
+sudo dnf install [https://www.google.com/search?q=https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm](https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm) -E %fedora).noarch.rpm -> Enable the RPM Fusion Free repository
+sudo dnf install akmod-nvidia -> Install the NVIDIA proprietary driver via the akmod system
+sudo dnf system-upgrade download --releasever={{version}} -> Download packages for a major Fedora version upgrade
+sudo dnf system-upgrade reboot -> Reboot the system to finalise a major version upgrade
+sudo systemctl start {{service}} -> Start a systemd service immediately
+sudo systemctl enable --now {{service}} -> Enable a service to start at boot and start it now
+systemctl status {{service}} -> Check the current running status and logs of a service
+sudo journalctl -u {{service}} -f -> Follow the real-time log output for a specific service
+sudo journalctl -b -p err -> List all error-level messages from the current boot
+sudo hostnamectl set-hostname {{new_name}} -> Update the system hostname permanently
+sudo firewall-cmd --add-port={{port}}/tcp --permanent -> Open a specific TCP port in the firewall permanently
+sudo firewall-cmd --reload -> Apply firewall changes without restarting the service
+sudo firewall-cmd --list-all -> Display all active firewall rules and allowed services
+sudo setenforce {{0|1}} -> Switch SELinux between Permissive (0) and Enforcing (1) mode
+sestatus -> Check the current status and policy of SELinux
+sudo restorecon -Rv {{path}} -> Restore the default SELinux security contexts for a directory
+sudo semanage port -a -t {{type}} -p tcp {{port}} -> Assign a specific SELinux type to a network port
+rpm -qa -> List every RPM package currently installed on the system
+rpm -V {{package}} -> Verify the integrity of a package against the original RPM metadata
+sudo grbuyb2-mkconfig -o /boot/grub2/grub.cfg -> Regenerate the GRUB2 configuration file
+sudo dracut --force -> Rebuild the initramfs image for the current kernel
+flatpak install flathub {{app_id}} -> Install an application from the Flathub repository
+flatpak list -> List all installed Flatpak applications
+sudo resolvectl status -> Show current DNS servers and resolver settings
+sudo nmcli connection up {{id}} -> Manually activate a specific network connection profile
+sudo authselect select {{profile}} -> Configure the system authentication stack
+sudo lvm lvs -> List all logical volumes on the system
+sudo lvextend -L +{{size}} {{lv_path}} -> Extend a logical volume by a specified size
+sudo btrfs filesystem show -> Display the status and layout of Btrfs filesystems
+sudo btrfs subvolume list {{path}} -> List all subvolumes within a Btrfs partition
+sudo btrfs scrub start {{path}} -> Start a background check for data corruption on a Btrfs mount
+sudo dnf groupupdate core -> Update the core system package group
+sudo dnf upgrade --security -> Install only the packages marked as security updates
+sudo dnf remove $(dnf repoquery --extras --exclude=kernel*) -> Remove packages no longer found in any active repository

@@ -1,3 +1,4 @@
+
 ## XC Manager
 **Version: 0.8.0**
 
@@ -19,6 +20,7 @@ A high-performance, minimal dependency Zsh vault for managing complex commands.
 
 **Recent Fixes** [0.8.0]
 - **Raw Input Capture**: Added `xc add --raw` to handle complex commands. This bypasses shell evaluation, allowing you to save curl, jq, and nested subshells exactly as they are written without the shell stripping quotes or expanding variables.
+- **Community-Vaults**: Added a few more curated community-vaults. All vaults now have at least 50 usefull commands and strings.
 
 ---
 
@@ -56,22 +58,29 @@ zstyle ':xc:*' fzf_colors "fg:7,hl:4,fg+:15,hl+:12,info:2,prompt:5,pointer:12"
 ---
 
 **Community Sync:**
-Pull curated, Arch Wiki-verified "Problem-Solution" vaults directly from the repository.
+Pull any curated, Arch Wiki-verified "Problem-Solution" vaults directly from the repository.
 
 | Vault | Command | Description |
 | :--- | :--- | :--- |
 | **Arch Linux** | `xc sync arch` | Fixes for PGP keyrings, .pacnew merges, and kernel maintenance. |
+| **Cloud** | `xc sync cloud` | Multi-cloud session handling and general CLI authentication tools. |
 | **Debian** | `xc sync debian` | Apt repository tracking, kernel upgrades, and package maintenance. |
+| **Digital Ocean** | `xc sync digital-ocean` | Droplet lifecycle, block storage, and Kubernetes cluster management. |
 | **Docker Dev** | `xc sync docker-dev` | Container lifecycle management and aggressive resource cleanup. |
 | **Fedora** | `xc sync fedora` | DNF transaction history, security updates, and repository management. |
 | **General Nix** | `xc sync general-nix` | Essential POSIX utilities for permissions, disk usage, and IO. |
 | **Git Pro** | `xc sync git-pro` | Advanced recovery, reflog navigation, and surgical commit tools. |
 | **Hyprland** | `xc sync hyprland` | Wayland specific fixes for NVIDIA, portals, and window rules. |
-| **MacOS** | `xc sync macos` | High-utility BSD maintenance, Gatekeeper fixes, and hidden system tweaks |
+| **Linux Mint** | `xc sync linux-mint` | Mint-specific update management and desktop environment tools. |
+| **MacOS** | `xc sync macos` | High-utility BSD maintenance, Gatekeeper fixes, and hidden system tweaks. |
 | **Networking** | `xc sync networking` | Connectivity diagnostics, DNS lookups, and interface auditing. |
 | **OpenSUSE** | `xc sync opensuse` | Zypper distribution upgrades, process tracking, and system repair. |
+| **Oracle Cloud** | `xc sync oracle-cloud` | Compute instance launching, VCN networking, and object storage. |
+| **Pentesting** | `xc sync pentesting` | Web fuzzing, exploit database searches, and network enumeration. |
 | **Security Audit** | `xc sync security-audit` | Local hardening, SUID discovery, and system integrity logs. |
+| **Sysadmin** | `xc sync sysadmin` | System load monitoring, user management, and log filtering. |
 | **Templates** | `xc sync templates` | Interactive snippets using placeholders for Git, SSH, and more. |
+| **Ubuntu** | `xc sync ubuntu` | Snap package management, PPA handling, and HWE support status. |
 | **Vim/Neovim** | `xc sync vim-neovim` | High-speed motions, global search/replace, and health checks. |
 
 ---

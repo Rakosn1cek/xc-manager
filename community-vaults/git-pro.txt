@@ -1,12 +1,50 @@
-git reflog -> View all recent actions (The "Undo" button for lost commits)
+git reflog -> View all recent actions (the "undo" button for lost commits)
 git checkout - -> Switch back to the previous branch instantly
 git commit --amend --no-edit -> Add staged changes to the last commit without changing the message
 git reset --soft HEAD~1 -> Undo the last commit but keep your changes staged
-git restore --staged <file> -> Unstage a specific file but keep your local changes
-git cherry-pick <commit-hash> -> Apply a specific commit from another branch to the current one
+git restore --staged  -> Unstage a specific file but keep your local changes
+git cherry-pick  -> Apply a specific commit from another branch to the current one
 git stash pop -> Apply the last stashed changes and remove them from the stash list
 git clean -fd -> Interactively remove all untracked files and directories
 git branch -D <branch_name> -> Force delete a branch (even if not merged)
 git diff --staged -> View changes that are staged for the next commit
 git remote prune origin -> Remove local references to branches that were deleted on GitHub/GitLab
-git shortlog -sn -> View contribution stats (Who committed how many times)
+git shortlog -sn -> View contribution stats (who committed how many times)
+git init -> Initialise a new local Git repository
+git clone {{url}} -> Clone a repository into a new directory
+git status -> Show the working tree status
+git add {{file}} -> Add file contents to the index (stage changes)
+git add . -> Stage all changes in the current directory and subdirectories
+git commit -m "{{message}}" -> Record changes to the repository with a descriptive message
+git log --oneline --graph --decorate -> View a compressed, graphical representation of commit history
+git branch -> List all local branches in the current repository
+git branch -a -> List both local and remote-tracking branches
+git checkout -b {{branch_name}} -> Create a new branch and switch to it immediately
+git switch {{branch_name}} -> Switch to a different branch (modern alternative to checkout)
+git merge {{branch_name}} -> Join two or more development histories together
+git rebase {{branch_name}} -> Reapply commits on top of another base tip
+git rebase -i HEAD~{{n}} -> Start an interactive rebase for the last n commits
+git pull -> Fetch from and integrate with another repository or a local branch
+git push origin {{branch_name}} -> Update remote refs along with associated objects
+git fetch -> Download objects and refs from another repository
+git remote -v -> Show the URLs of the remote repositories
+git stash -> Stash the changes in a dirty working directory away
+git stash list -> List the contents of the stash
+git stash drop -> Remove a single stashed state from the stash list
+git rm {{file}} -> Remove files from the working tree and from the index
+git mv {{old}} {{new}} -> Move or rename a file, a directory, or a symlink
+git diff -> Show changes between commits, commit and working tree, etc
+git show {{commit_hash}} -> Show various types of objects (details of a specific commit)
+git tag -a {{version}} -m "{{message}}" -> Create a software tag for release management
+git push origin --tags -> Push all local tags to the remote repository
+git config --global user.name "{{name}}" -> Set the name to be used with your commits
+git config --global user.email "{{email}}" -> Set the email to be used with your commits
+git config --list -> List all variables set in the config file
+git blame {{file}} -> Show what revision and author last modified each line of a file
+git revert {{commit_hash}} -> Revert some existing commits by creating a new commit
+git reset --hard HEAD -> Reset working tree and index to the last commit (discard all changes)
+git bisect start -> Use binary search to find the commit that introduced a bug
+git grep "{{term}}" -> Print lines matching a pattern in the tracked files
+git archive -o {{latest.zip}} HEAD -> Create a zip archive of the current HEAD
+git remote add origin {{url}} -> Connect the local repository to a remote server
+git branch -m {{new_name}} -> Rename the current branch

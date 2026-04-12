@@ -3,21 +3,91 @@ git commit -m "{{message}}" -> Commit changes with a custom message
 git push origin {{branch}} -> Push current work to a specific remote branch
 git checkout -b {{new_feature}} -> Create and switch to a new branch
 git tag -a v{{version}} -m "{{release_notes}}" -> Create a signed release tag
+git clone {{url}} -> Clone a repository into a new directory
+git pull origin {{branch}} -> Fetch from and integrate with another repository or a local branch
+git branch -d {{branch_name}} -> Delete a local branch that has been merged
+git stash push -m "{{label}}" -> Stash current changes with a descriptive label
+git remote add origin {{url}} -> Connect the local repository to a remote server
+git checkout {{commit_hash}} -> Switch the working tree to a specific point in history
+git reset --soft HEAD~1 -> Undo the last commit while keeping changes staged
+git rebase -i HEAD~{{count}} -> Start an interactive rebase for the last N commits
+git ammend --no-edit -> Add staged changes to the previous commit without changing the message
 
 # --- DOCKER & CONTAINERS ---
 docker exec -it {{container_id}} /bin/bash -> Drop into a running container's shell
 docker stop {{name}} && docker rm {{name}} -> Stop and completely remove a container
 docker logs -f --tail {{lines}} {{container}} -> Follow the last N lines of container logs
 docker build -t {{image_name}}:{{tag}} . -> Build a local image with custom tagging
+docker run -d --name {{name}} -p {{host_port}}:{{container_port}} {{image}} -> Run a container in detached mode with port mapping
+docker volume create {{volume_name}} -> Create a persistent data volume
+docker network create {{network_name}} -> Create a custom bridge network for containers
+docker inspect {{id}} -> View detailed metadata of a container or image in JSON format
+docker system prune -a -> Remove all unused containers, networks, and images
+docker-compose up -d -> Start a multi-container application in the background
+docker-compose down --volumes -> Stop and remove containers, networks, and associated volumes
+docker stats -> View real-time resource usage statistics for all containers
 
 # --- NETWORKING & SSH ---
 ssh {{user}}@{{host}} -p {{port}} -> Connect to a remote server on a custom port
 scp {{file}} {{user}}@{{host}}:{{path}} -> Securely copy a file to a remote server
 nmap -sV {{ip_range}} -> Scan a range of IPs for service versions
 curl -X {{METHOD}} -H "Content-Type: application/json" -d '{{json_data}}' {{url}} -> Test a REST API endpoint
+ssh-copy-id -i ~/.ssh/id_rsa.pub {{user}}@{{host}} -> Install your public key on a remote server for passwordless login
+ip addr show {{interface}} -> Display the IP address and status of a specific interface
+mtr {{host}} -> Run a continuous combined ping and traceroute diagnostic
+ss -tunlp -> List all active TCP and UDP listening ports with process IDs
+dig {{domain}} +short -> Perform a quick DNS lookup for a specific domain
+nc -zv {{host}} {{port}} -> Check if a specific remote port is open and reachable
+iperf3 -c {{server_ip}} -> Run a network throughput test against a remote server
+nmcli device wifi connect {{SSID}} password {{password}} -> Connect to a Wi-Fi network via the command line
 
 # --- ARCH LINUX & SYSTEM ---
 sudo pacman -S {{package}} -> Install a specific package from the repos
 paccache -rk {{keep_count}} -> Clean the pacman cache, keeping only N versions
 tar -cvzf {{archive_name}}.tar.gz {{folder}} -> Create a compressed gzip archive
-find {{path}} -name "*{{extension}}*" -> Find files by extension in a specific path
+find {{path}} -name "{{extension}}" -> Find files by extension in a specific path
+sudo pacman -Syu -> Synchronise with repositories and update all system packages
+sudo pacman -Rns {{package}} -> Remove a package along with its unused dependencies
+pacman -Qi {{package}} -> Display detailed information about an installed package
+pacman -Qs {{pattern}} -> Search for a keyword within locally installed packages
+yay -S {{aur_package}} -> Install a package from the AUR using the yay helper
+sudo journalctl -p 3 -xb -> View only high-priority errors from the current boot
+systemctl status {{service}} -> Check the current running status and logs of a service
+sudo systemctl enable --now {{service}} -> Enable a service to start at boot and start it immediately
+lsblk -f -> List all block devices with their filesystem types and UUIDs
+df -hT -> Show disk space usage with human-readable sizes and filesystem types
+du -sh {{directory}} -> Calculate the total size of a specific directory
+sudo mkinitcpio -P -> Rebuild the initial ramdisk environment for all kernels
+sudo grub-mkconfig -o /boot/grub/grub.cfg -> Regenerate the GRUB bootloader configuration
+checkupdates -> List available updates without syncing the main database
+sudo localectl set-x11-keymap {{layout}} -> Set the system-wide keyboard layout for X11
+
+# --- CLOUD & INFRASTRUCTURE ---
+oci compute instance launch --compartment-id {{cid}} --image-id {{image}} --shape {{shape}} -> Provision a new cloud instance with specific hardware specs
+doctl compute droplet create {{name}} --region {{region}} --size {{size}} --image {{image}} -> Deploy a new VPS droplet in a specific data centre
+oci os object put --bucket-name {{bucket}} --file {{local_path}} -> Upload a local backup or file to object storage
+doctl kubernetes cluster kubeconfig save {{cluster_name}} -> Synchronise local credentials with a managed cluster
+
+# --- ADVANCE SYSTEM & KERNEL ---
+sudo dracut --force {{initramfs_path}} {{kernel_version}} -> Manually generate a specific initramfs image
+sudo sysctl -w {{parameter}}={{value}} -> Apply a kernel parameter change immediately without a reboot
+sudo dmesg -T --level={{err,warn}} -> Filter kernel logs for specific priority levels with timestamps
+sudo modprobe -v {{module_name}} -> Load a kernel module with verbose output for troubleshooting
+
+# --- SECURITY & AUDIT ---
+sudo auditctl -w {{path}} -p wa -k {{key_name}} -> Set a watch on a file to audit all write and attribute changes
+sudo lynis audit system --quick -> Run a fast-path security audit of the entire system
+sudo ufw allow from {{ip_address}} to any port {{port}} -> Create a highly specific firewall allow rule
+sudo openssl x509 -in {{cert_path}} -noout -text -> Decode a certificate to verify expiry and issuer details
+
+# --- DEVELOPER & ENVIRONMENT ---
+docker-compose run --rm {{service_name}} {{command}} -> Run a one-off command in a service container and remove it afterwards
+git log --all --decorate --oneline --graph -> View a complete visual history of all branches and merges
+nvim --headless "+Lazy! sync" +qa -> Update all Neovim plugins from the command line
+python3 -m venv {{venv_name}} && source {{venv_name}}/bin/activate -> Initialise and enter a clean Python virtual environment
+
+# --- NETWORK DIAGNOSTIC ---
+sudo tcpdump -i {{interface}} host {{ip_address}} -> Capture traffic limited to a specific host for cleaner debugging
+nmap -p {{port_range}} --open {{target}} -> Scan for open ports within a specific range on a target
+speedtest-cli --server {{server_id}} -> Run a speed test against a specific geographical node
+curl -v -H "Authorization: Bearer {{token}}" {{url}} -> Test a protected API endpoint with custom headers

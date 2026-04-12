@@ -1,12 +1,29 @@
-docker ps -a -> List all containers (Including stopped ones)
+docker ps -a -> List all containers (including stopped ones)
 docker images -> List all locally stored images and their sizes
-docker exec -it <container_id> /bin/bash -> Open an interactive Shell inside a running container
-docker logs -f <container_id> -> Follow container logs in real-time (Live Debugging)
-docker system prune -a --volumes -> The "Nuclear Option": Remove all unused containers, networks, and volumes
+docker exec -it <container_id> /bin/bash -> Open an interactive shell inside a running container
+docker logs -f <container_id> -> Follow container logs in real-time (live debugging)
+docker system prune -a --volumes -> The "nuclear option": remove all unused containers, networks, and volumes
 docker stop $(docker ps -q) -> Stop all currently running containers
 docker rm $(docker ps -a -q) -> Remove all stopped containers
 docker rmi $(docker images -f "dangling=true" -q) -> Remove all "ghost" (dangling) images
-docker inspect <container_id> -> View detailed JSON configuration (IPs, Mounts, Env Vars)
-docker-compose up -d -> Start a multi-container app in the Background
-docker-compose down -> Stop and remove containers/networks defined in a Compose file
-docker stats -> Real-time CPU, Memory, and Network usage for all containers
+docker inspect <container_id> -> View detailed JSON configuration (IPs, mounts, env vars)
+docker-compose up -d -> Start a multi-container app in the background
+docker-compose down -> Stop and remove containers/networks defined in a compose file
+docker stats -> Real-time CPU, memory, and network usage for all containers
+docker build -t {{image_name}} . -> Build an image from a Dockerfile in the current directory
+docker run -d --name {{name}} -p {{host_port}}:{{container_port}} {{image}} -> Run a new container in detached mode with port mapping
+docker cp {{container_id}}:{{src_path}} {{dest_path}} -> Copy files or folders between a container and the local filesystem
+docker volume ls -> List all managed volumes
+docker network ls -> List all networks established by Docker
+docker login -> Authenticate with a remote Docker registry
+docker push {{image_name}} -> Upload a local image to a registry
+docker pull {{image_name}} -> Download an image from a registry without running it
+docker top <container_id> -> Display the running processes of a container
+docker port <container_id> -> List port mappings or a specific mapping for the container
+docker events -> Get real-time events from the Docker server
+docker save -o {{path.tar}} {{image}} -> Save one or more images to a tar archive
+docker load -i {{path.tar}} -> Load an image from a tar archive or STDIN
+docker-compose logs -f {{service_name}} -> View real-time log output for a specific service in a compose stack
+docker-compose ps -> List the status of containers managed by the current compose file
+docker-compose exec {{service_name}} {{command}} -> Execute a command in a running service container via compose
+docker-compose build --no-cache -> Rebuild services from scratch without using cached layers

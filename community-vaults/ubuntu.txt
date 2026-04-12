@@ -1,0 +1,50 @@
+sudo apt update -> Synchronise the local package index with the remote repositories
+sudo apt upgrade -> Install the newest versions of all currently installed packages
+sudo do-release-upgrade -> Start the interactive process for a major Ubuntu version upgrade
+sudo apt install {{package}} -> Install a specific package and its required dependencies
+sudo apt remove {{package}} -> Uninstall a package while leaving its configuration files intact
+sudo apt autoremove -> Remove packages that were automatically installed and are no longer required
+ubuntu-drivers devices -> List all hardware devices that require proprietary drivers
+sudo ubuntu-drivers autoinstall -> Automatically install the recommended proprietary drivers
+snap find {{search_term}} -> Search the Snap Store for available containerised applications
+sudo snap install {{package}} -> Download and install a specific Snap package
+sudo snap remove {{package}} -> Uninstall a Snap package and its data
+snap list -> List all Snap packages currently installed on the system
+sudo snap refresh -> Update all installed Snap packages to their latest versions
+sudo add-apt-repository ppa:{{user/repo}} -> Add a Personal Package Archive (PPA) to the system sources
+sudo add-apt-repository --remove ppa:{{user/repo}} -> Remove a previously added PPA from the system
+hwe-support-status --verbose -> Check the support status of the Hardware Enablement kernel
+sudo ua status -> Check the status of Ubuntu Advantage (Ubuntu Pro) subscriptions
+sudo ua attach {{token}} -> Attach the machine to an Ubuntu Pro subscription
+sudo ufw enable -> Turn on the Uncomplicated Firewall (standard on Ubuntu)
+sudo ufw allow {{port}}/tcp -> Open a specific TCP port through the firewall
+sudo ufw status numbered -> List all firewall rules with their corresponding IDs
+sudo systemctl restart {{service}} -> Stop and then start a systemd service immediately
+systemctl status {{service}} -> Check the current running status and logs of a service
+sudo journalctl -u {{service}} -f -> Follow the real-time log output for a specific service
+sudo journalctl -b -p err -> List all error-level messages from the current boot
+sudo hostnamectl set-hostname {{new_name}} -> Update the system hostname permanently
+sudo apt-mark hold {{package}} -> Prevent a specific package from being automatically updated
+sudo apt-mark unhold {{package}} -> Allow a previously held package to be updated again
+sudo dpkg -i {{path/to/package.deb}} -> Install a local Debian package file manually
+dpkg -l -> List all packages known to the system and their current status
+dpkg -L {{package}} -> List every file installed on the system by a specific package
+sudo dpkg-reconfigure {{package}} -> Re-run the post-installation configuration for a package
+sudo apt clean -> Clear out the local repository of retrieved package files
+sudo adduser {{username}} -> Create a new user account with administrative prompts
+sudo usermod -aG sudo {{user}} -> Grant a specific user administrative privileges via the sudo group
+sudo update-grub -> Automatically find kernels and update the GRUB bootloader menu
+lsb_release -a -> Display the specific Ubuntu release version and codename
+sudo tasksel -> Open an interactive menu to install entire software stacks or desktops
+sudo apt-file update -> Update the database used to find packages containing specific files
+apt-file search {{filename}} -> Find which package contains a specific file or binary
+sudo netstat -plnt -> List all processes currently listening on network ports
+sudo tail -f /var/log/syslog -> Monitor the main system log in real-time
+sudo fdisk -l -> List all partitions and storage devices attached to the system
+sudo blkid -> Show the UUIDs and filesystem types for all disk partitions
+sudo mount -a -> Mount all filesystems listed in the /etc/fstab file
+sudo sysctl -p -> Apply changes to the kernel parameters without a reboot
+sudo apt install -f -> Attempt to fix a system with broken or missing dependencies
+systemd-analyze blame -> List which services are slowing down the system boot time
+nmcli dev wifi rescan -> Force the network manager to look for new Wi-Fi signals
+sudo apt-cache policy {{package}} -> Check the installation priority and source of a package

@@ -1,23 +1,82 @@
-sudo chown -R $USER:$USER . -> Take Ownership of current directory and subfolders
+sudo chown -R $USER:$USER . -> Take ownership of current directory and subfolders
 chmod +x filename.sh -> Make script executable
-du -ah --max-depth=1 | sort -rh -> Find what is eating your Disk Space (Current Folder)
-df -h -> Check Disk Space and Partition Mount Points
-ps aux --sort=-%mem | head -n 10 -> List Top 10 Memory-Hungry Processes
+du -ah --max-depth=1 | sort -rh -> Find what is eating your disk space (current folder)
+df -h -> Check disk space and partition mount points
+ps aux --sort=-%mem | head -n 10 -> List top 10 memory-hungry processes
 tar -cvzf archive.tar.gz /path/to/folder -> Compress folder into a .tar.gz archive
 tar -xvzf archive.tar.gz -> Decompress .tar.gz archive
-ip addr show -> Check Local IP and Network Interface status
-ssh-keygen -t ed25519 -C "your_email@example.com" -> Generate secure SSH Key
-sudo lsof -i :8080 -> Find which process is using Port 8080
-ln -s /path/to/target /path/to/link -> Create a Symbolic Link (Symlink)
-grep -r "search_term" . -> Recursive Search for text in all files in current folder
-tail -f /var/log/syslog -> Follow System Logs in real-time (Live Debugging)
-watch -n 1 nvidia-smi -> Monitor GPU Usage every second
-ss -tulpn -> List all active Network Connections and Listening Ports
-sudo fuser -v /dev/snd/* -> Find which process is locking the Audio Device
-rsync -ahP --info=progress2 source/ dest/ -> Sync folders with Resume and Progress Bar
-ls -lhS | head -n 20 -> List Top 20 Largest Files in current directory
+ip addr show -> Check local IP and network interface status
+ssh-keygen -t ed25519 -C "your_email@example.com" -> Generate secure SSH key
+sudo lsof -i :8080 -> Find which process is using port 8080
+ln -s /path/to/target /path/to/link -> Create a symbolic link (symlink)
+grep -r "search_term" . -> Recursive search for text in all files in current folder
+tail -f /var/log/syslog -> Follow system logs in real-time (live debugging)
+watch -n 1 nvidia-smi -> Monitor GPU usage every second
+ss -tulpn -> List all active network connections and listening ports
+sudo fuser -v /dev/snd/* -> Find which process is locking the audio device
+rsync -ahP --info=progress2 source/ dest/ -> Sync folders with resume and progress bar
+ls -lhS | head -n 20 -> List top 20 largest files in current directory
 find . -type f -mtime -1 -> Find all files modified in the last 24 hours
-history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 10 -> Show your Top 10 most used Terminal Commands
-curl -I https://google.com -> Fetch HTTP Headers only (Check Website Status)
-echo "text" | sudo tee -a /etc/file.conf -> Append text to a Root-protected file
+history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 10 -> Show your top 10 most used terminal commands
+curl -I https://google.com -> Fetch HTTP headers only (check website status)
+echo "text" | sudo tee -a /etc/file.conf -> Append text to a root-protected file
 grep -Eir " os |áis |éis | vosotr| vuestr|abaís |íais |asteis |isteis " {{path}} -> Detect if Spanish text files use European (Peninsular) or Latin-American dialect.
+top -> Display real-time system tasks and resource usage
+htop -> Interactive and colourful process viewer
+uptime -> Show how long the system has been running
+uname -a -> Print detailed system and kernel information
+lsblk -> List information about all available block devices
+mount | column -t -> View mounted filesystems in a clean table format
+sudo blkid -> Locate or print block device attributes (UUIDs)
+free -h -> Show amount of free and used memory in human-readable format
+sudo dmesg -T | tail -n 50 -> View the last 50 kernel messages with human-readable timestamps
+sudo journalctl -p 3 -xb -> View only high-priority errors from the current boot
+stat {{filename}} -> Display detailed status and metadata of a file or directory
+file {{filename}} -> Determine the file type of a specific file
+cat /proc/cpuinfo -> View detailed information about the CPU
+cat /proc/meminfo -> View detailed information about system memory
+lsmod -> List all currently loaded kernel modules
+sudo modprobe {{module}} -> Add or remove a module from the Linux kernel
+sudo sysctl -a -> Display all kernel parameters available at runtime
+crontab -l -> List all scheduled cron jobs for the current user
+groups {{user}} -> Show which groups a specific user belongs to
+id -> Print real and effective user and group IDs
+sudo visudo -c -> Check the sudoers file for syntax errors
+alias -> List all currently defined command aliases
+env -> Display all exported environment variables
+which {{command}} -> Locate the binary executable for a specific command
+type -a {{command}} -> Show the type of a command (alias, function, or binary)
+nc -zv {{host}} {{port}} -> Check if a specific port is open on a remote host
+dig {{domain}} -> Perform a DNS lookup and display detailed results
+whois {{domain}} -> Retrieve WHOIS information for a domain
+traceroute {{host}} -> Trace the network path to a remote host
+ping -c 4 {{host}} -> Send four ICMP echo requests to a host
+sudo tcpdump -i any -> Capture and display all network traffic on all interfaces
+sudo nft list ruleset -> View the current firewall ruleset (nftables)
+sudo ufw status -> Show the status of the Uncomplicated Firewall
+systemctl list-unit-files --type=service -> List all available systemd services and their states
+systemctl --failed -> List all systemd units that failed to start
+ls -la -> List all files including hidden ones with detailed permissions
+cp -i {{source}} {{dest}} -> Copy files with an interactive prompt before overwriting
+mv -i {{source}} {{dest}} -> Move or rename files with an interactive prompt
+rm -I {{file}} -> Prompt once before removing more than three files
+mkdir -p /path/to/nested/folder -> Create a directory and any necessary parent directories
+shred -u {{file}} -> Securely overwrite and delete a file
+sudo find / -name "*.log" -size +100M -> Find all log files larger than 100MB on the system
+diff -u {{file1}} {{file2}} -> Compare two files and show the differences in unified format
+sed -i 's/old/new/g' {{file}} -> Search and replace text within a file in-place
+awk '{print $1}' {{file}} -> Extract and print the first column of a text file
+cut -d':' -f1 /etc/passwd -> Extract usernames from the system password file
+sort -u {{file}} -> Sort lines and remove duplicate entries
+wc -l {{file}} -> Count the number of lines in a file
+man {{command}} -> Display the manual page for a specific command
+tldr {{command}} -> Show simplified, community-driven cheat sheets for commands
+lscpu -> Display information about the CPU architecture
+lsusb -> List all connected USB devices
+lspci -> List all PCI devices and controllers
+sudo dmidecode -t system -> View hardware information from the BIOS/DMI
+sudo hdparm -I /dev/sdX -> Display detailed information about a SATA hard drive
+sudo smartctl -a /dev/sdX -> Check the SMART status and health of a drive
+history -c -> Clear the command history for the current session
+exec $SHELL -> Restart the current shell without logging out
+exit -> Terminate the current terminal session

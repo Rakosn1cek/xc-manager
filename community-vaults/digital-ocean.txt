@@ -1,0 +1,37 @@
+doctl auth init -> Initialise the doctl CLI with your API token
+doctl compute droplet list -> List all droplets in your account with ID and IP address
+doctl compute droplet create {{name}} --region {{region}} --size {{size}} --image {{image}} -> Create a new droplet with specific specifications
+doctl compute droplet delete {{id}} -> Permanently delete a specific droplet
+doctl compute droplet actions {{id}} -> List recent actions performed on a specific droplet
+doctl compute droplet-action power-off {{id}} -> Power off a specific droplet safely
+doctl compute droplet-action power-on {{id}} -> Power on a specific droplet
+doctl compute droplet-action rebuild {{id}} --image {{image}} -> Rebuild a droplet using a specific image
+doctl compute droplet-action resize {{id}} --size {{size}} -> Resize a droplet to a different plan
+doctl compute volume list -> List all block storage volumes
+doctl compute volume create {{name}} --region {{region}} --size {{size}} -> Create a new block storage volume
+doctl compute volume attach {{volume_id}} {{droplet_id}} -> Attach a volume to a specific droplet
+doctl compute snapshot list -> List all available droplets and volume snapshots
+doctl compute image list-user -> List all custom images and backups in your account
+doctl compute firewalls list -> List all cloud firewalls and their rules
+doctl compute load-balancer list -> List all active load balancers
+doctl compute domain list -> List all domains managed in your DigitalOcean account
+doctl compute domain records list {{domain}} -> List all DNS records for a specific domain
+doctl kubernetes cluster list -> List all Managed Kubernetes clusters
+doctl kubernetes cluster kubeconfig save {{cluster_name}} -> Update your local kubeconfig with cluster credentials
+doctl databases list -> List all managed database clusters
+doctl apps list -> List all App Platform applications
+doctl account get -> Display details for the current DigitalOcean account
+doctl compute droplet list --tag-name {{tag}} -> Filter droplets by a specific tag
+doctl compute droplet-action snapshot {{id}} --snapshot-name {{name}} -> Take a live snapshot of a running droplet
+doctl compute droplet-action shutdown {{id}} -> Attempt a graceful shutdown of a droplet via ACPI
+doctl compute ssh {{name}} -> Establish an SSH connection to a droplet by name
+doctl compute region list -> List all available DigitalOcean regions and their status
+doctl compute size list -> List all available droplet sizes and pricing
+doctl compute image list-distribution -> List all available public distribution images
+doctl compute volume detach {{volume_id}} {{droplet_id}} -> Safely detach a volume from a droplet
+doctl compute domain create {{domain}} --ip-address {{ip}} -> Add a new domain and initial A record
+doctl compute domain records create {{domain}} --record-type {{type}} --record-name {{name}} --record-data {{data}} -> Create a new DNS record for a domain
+doctl kubernetes cluster node-pool list {{cluster_id}} -> List node pools within a specific Kubernetes cluster
+doctl databases maintenance-window get {{cluster_id}} -> View the scheduled maintenance window for a database
+doctl apps logs {{app_id}} -> View the real-time log output for an App Platform application
+doctl account ratelimit -> Check your current API rate limit status and remaining requests

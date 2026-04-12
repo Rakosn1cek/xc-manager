@@ -1,10 +1,50 @@
-systemctl --user stop pipewire pipewire-pulse wireplumber && systemctl --user start pipewire pipewire-pulse wireplumber -> Hard Reset Wayland Audio Stack
-killall xdg-desktop-portal-hyprland; killall xdg-desktop-portal; /usr/lib/xdg-desktop-portal-hyprland & -> Force Restart Portals (Fixes Screen Sharing)
-hyprctl monitors all -> Detailed Monitor Specs (Resolution, Refresh Rate, Reserved Space)
-hyprctl activewindow -> Get Class and Title of focused window (Essential for Window Rules)
-hyprctl keyword monitor DP-1,1920x1080@144,0x0,1 -> Live Update Monitor Config (No Restart Needed)
-hyprctl reload -> Force Reload Config and Multi-Monitor Layouts
-export WLR_NO_HARDWARE_CURSORS=1 -> Fix Invisible Cursor on NVIDIA/Wayland
-hyprctl setcursor Bibata-Modern-Classic 24 -> Force Update Cursor Theme and Size
-hyprctl layers -> List all active Layer Shell surfaces (Bars, Notifications, Wallpapers)
-hyprctl instances -> List active Hyprland sessions and their Socket addresses
+systemctl --user stop pipewire pipewire-pulse wireplumber && systemctl --user start pipewire pipewire-pulse wireplumber -> Hard reset Wayland audio stack
+killall xdg-desktop-portal-hyprland; killall xdg-desktop-portal; /usr/lib/xdg-desktop-portal-hyprland & -> Force restart portals (fixes screen sharing)
+hyprctl monitors all -> Detailed monitor specs (resolution, refresh rate, reserved space)
+hyprctl activewindow -> Get class and title of focused window (essential for window rules)
+hyprctl keyword monitor DP-1,1920x1080@144,0x0,1 -> Live update monitor config (no restart needed)
+hyprctl reload -> Force reload config and multi-monitor layouts
+export WLR_NO_HARDWARE_CURSORS=1 -> Fix invisible cursor on NVIDIA/Wayland
+hyprctl setcursor Bibata-Modern-Classic 24 -> Force update cursor theme and size
+hyprctl layers -> List all active layer shell surfaces (bars, notifications, wallpapers)
+hyprctl instances -> List active Hyprland sessions and their socket addresses
+hyprctl clients -> List all open windows with their addresses and properties
+hyprctl workspaces -> Show all active workspaces and their monitor assignments
+hyprctl dispatch exec {{command}} -> Execute a program via the Hyprland dispatcher
+hyprctl dispatch killactive -> Close the currently focused window
+hyprctl dispatch movefocus {{l,r,u,d}} -> Shift focus to a neighbouring window
+hyprctl dispatch movewindow {{l,r,u,d}} -> Move the focused window in a specific direction
+hyprctl dispatch togglefloating -> Switch a window between tiled and floating states
+hyprctl dispatch fullscreen {{0,1}} -> Toggle fullscreen mode for the active window
+hyprctl dispatch workspace {{id}} -> Switch to a specific workspace by ID
+hyprctl dispatch movetoworkspace {{id}} -> Move the focused window to a specific workspace
+hyprctl dispatch splitratio {{float}} -> Adjust the split ratio of the current tiling pair
+hyprctl dispatch cyclenext -> Focus the next window in the stack
+hyprctl dispatch pin -> Pin a floating window to remain visible across all workspaces
+hyprctl dispatch togglespecialworkspace {{name}} -> Toggle a scratchpad or special workspace
+hyprctl dispatch movetoworkspacesilent {{id}} -> Move a window to a workspace without switching focus
+hyprctl dispatch centerwindow -> Centre a floating window on the screen
+hyprctl dispatch resizeactive {{x y}} -> Resize the active window by a specific pixel amount
+hyprctl version -> Display the current Hyprland version and build information
+hyprctl systeminfo -> Provide a detailed report of system environment and graphics drivers
+hyprctl devices -> List all connected input devices (keyboards, mice, touchpads)
+hyprctl notify {{icon}} {{time}} {{color}} {{message}} -> Send a native Hyprland system notification
+hyprctl cursorpos -> Get the current X and Y coordinates of the mouse cursor
+hyprctl keyword general:gaps_in {{value}} -> Adjust inner gaps between windows in real-time
+hyprctl keyword general:gaps_out {{value}} -> Adjust outer gaps between windows and monitor edges
+hyprctl keyword decoration:blur:enabled {{true,false}} -> Enable or disable background blur effects
+hyprctl keyword decoration:drop_shadow {{true,false}} -> Toggle window shadows live
+hyprctl keyword input:sensitivity {{float}} -> Update mouse sensitivity on the fly
+hyprctl setprop address:{{addr}} {{property}} {{value}} -> Set a specific property for a window (e.g. opaque, float)
+hyprctl getoption {{option}} -> Retrieve the current value of a configuration option
+hyprctl batch {{commands}} -> Execute multiple hyprctl commands in a single batch
+hyprctl splash -> Print the current Hyprland splash message
+hyprctl kill -> Enter an interactive mode to kill a specific window by clicking it
+hyprctl seterror {{color}} {{message}} -> Display a custom error message in the Hyprland bar
+hyprctl activeworkspace -> Show details about the currently active workspace
+hyprctl configerrors -> List any syntax errors found in the current configuration file
+hyprctl decoration {{name}} -> List active decorations for a specific window
+hyprctl animations -> Show all active animations and their current progress
+hyprctl dispatch swapnext -> Swap the active window with the next one in the stack
+hyprctl dispatch alterzorder {{top,bottom}} -> Change the Z-order of a floating window
+hyprctl dispatch focusmonitor {{name}} -> Shift focus to a different physical monitor

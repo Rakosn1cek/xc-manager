@@ -1,0 +1,51 @@
+uptime -> Show how long the system has been running and load averages
+top -> Display real-time system processes and resource usage
+htop -> Interactive process viewer and manager
+free -h -> Display amount of free and used memory in human-readable format
+df -h -> Show disk space usage of file systems
+du -sh {{directory}} -> Estimate file space usage for a specific directory
+iostat -xz 1 -> Report detailed CPU and input/output statistics for devices
+vmstat 1 -> Report virtual memory statistics at one-second intervals
+lsof -i :{{port}} -> List processes holding a specific network port open
+ps aux --sort=-%mem | head -n 10 -> List the top 10 processes consuming the most memory
+ip addr show -> Display all network interfaces and assigned IP addresses
+ip route show -> Show the current routing table
+ping -c 4 {{host}} -> Send four ICMP echo requests to a host to check connectivity
+dig {{domain}} +short -> Perform a quick DNS lookup for a domain
+nmcli device status -> Show the status of network devices managed by NetworkManager
+ss -tunlp -> Display active TCP and UDP listening ports with process IDs
+mtr {{host}} -> Combine ping and traceroute into a live network diagnostic tool
+curl -I {{url}} -> Fetch only the HTTP headers from a specific URL
+nmap -sP {{subnet}} -> Perform a ping scan to find live hosts on a network
+tcpdump -i {{interface}} port {{port}} -> Capture and display packets on a specific interface and port
+ls -lah -> List all files in a directory with detailed information and sizes
+cp -rv {{source}} {{destination}} -> Copy files recursively while showing verbose output
+mv {{old_name}} {{new_name}} -> Rename or move a file or directory
+rm -rf {{path}} -> Recursively and forcibly remove a directory
+find {{path}} -name "{{filename}}" -> Search for files by name within a specific path
+grep -r "{{pattern}}" {{directory}} -> Search for a string recursively within a directory
+chmod {{octal}} {{file}} -> Change the access permissions of a file
+chown {{user}}:{{group}} {{file}} -> Change the owner and group of a file
+tar -cvzf {{archive}}.tar.gz {{directory}} -> Create a compressed tarball of a directory
+rsync -avz --progress {{source}} {{destination}} -> Sync files between locations efficiently with compression
+whoami -> Display the current effective username
+id {{user}} -> Show the user and group IDs for a specific account
+last -> List the last logged-in users
+sudo -u {{user}} {{command}} -> Execute a command as a different user
+useradd -m {{username}} -> Create a new user and generate their home directory
+usermod -aG {{group}} {{user}} -> Add an existing user to a supplemental group
+passwd {{user}} -> Change the password for a specific user
+visudo -> Safely edit the sudoers file to manage administrative privileges
+tail -f {{logfile}} | grep --line-buffered "{{error}}" -> Follow a log file live and filter for specific errors
+find {{path}} -type f -mtime +{{days}} -exec rm {} ; -> Find and delete files older than a specific number of days
+journalctl -u {{service}} --since "1 hour ago" -> View systemd logs for a specific service from the last hour
+grep -oE "\b([0-9]{1,3}.){3}[0-9]{1,3}\b" {{file}} | sort | uniq -c -> Extract all IP addresses from a file and count occurrences
+du -ah {{path}} | sort -rh | head -n 20 -> Find the 20 largest files or folders in a specific directory
+netstat -ant | awk '{print $6}' | sort | uniq -c | sort -n -> Count network connections grouped by state
+find {{path}} -name ".{{ext}}" -exec grep -l "{{old}}" {} + | xargs sed 's/{{old}}/{{new}}/g' -> Dry Run: Preview text replacements without modifying files
+find {{path}} -name ".{{ext}}" -exec sed -i 's/{{old}}/{{new}}/g' {} + -> [CAUTION] Execute: Irreversible in-place text replacement across multiple files
+openssl x509 -in {{cert}}.crt -text -noout -> Decode and read the contents of an SSL certificate
+ssh-copy-id -i ~/.ssh/id_rsa.pub {{user}}@{{host}} -> Copy your public SSH key to a remote server for passwordless login
+watch -n {{seconds}} 'cat /proc/loadavg' -> Run a command repeatedly at an interval to monitor system load
+echo "{{message}}" | mail -s "{{subject}}" {{email}} -> Send a quick email from the command line
+history | awk '{print $2}' | sort | uniq -c | sort -rn | head -10 -> List your top 10 most frequently used commands

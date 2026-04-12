@@ -2,7 +2,7 @@ chflags hidden {{target}} -> Hide a file or folder from the Finder and UI.
 chflags nohidden {{target}} -> Reveal a previously hidden file or folder.
 sudo xattr -rd com.apple.quarantine {{app_path}} -> Strip Gatekeeper quarantine attribute to fix "App is damaged" errors.
 sudo xattr -cr {{target_path}} -> Recursively clear all extended attributes from a file or application.
-sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder -> Flush the System DNS cache (macOS Ventura and later).
+sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder -> Flush the system DNS cache (macOS Ventura and later).
 sudo mdutil -E {{volume_path}} -> Erase and rebuild the Spotlight search index for a specific volume (use / for boot).
 sudo mdutil -i {{state}} {{volume_path}} -> Toggle Spotlight indexing on or off for a specific volume (on/off).
 sudo purge -> Force the OS to flush inactive memory and disk caches to reclaim resources.
@@ -15,11 +15,41 @@ defaults write com.apple.finder ShowPathbar -bool {{state}} && killall Finder ->
 defaults write com.apple.Safari AutoFillPasswords -bool {{state}} -> Toggle Safari password autofill via CLI (true/false).
 atsutil databases -removeUser && killall ATSServer -> Remove user-level font databases and restart the font server.
 lsappinfo list -> List every front-end and back-end process currently registered with the UI server.
-diskutil apfs listUsers {{volume}} -> List all cryptographic users authorized for an APFS volume.
-sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z -> Disassociate from the current Wi-Fi network (Force disconnect).
-defaults write NSGlobalDomain NSWindowResizeTime -float {{speed}} -> Adjust window resize speed (Note: More effective on Intel/Legacy AppKit windows).
-defaults write com.apple.dock expose-animation-duration -float {{speed}} && killall Dock -> Adjust Mission Control speed (Varying results on modern macOS).
+diskutil apfs listUsers {{volume}} -> List all cryptographic users authorised for an APFS volume.
+sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z -> Disassociate from the current Wi-Fi network (force disconnect).
+defaults write NSGlobalDomain NSWindowResizeTime -float {{speed}} -> Adjust window resize speed (note: more effective on Intel/legacy AppKit windows).
+defaults write com.apple.dock expose-animation-duration -float {{speed}} && killall Dock -> Adjust Mission Control speed (varying results on modern macOS).
 defaults write com.apple.finder DisableAllAnimations -bool {{state}} && killall Finder -> Toggle all Finder animations for a faster UI (true/false).
-defaults write -g NSWindowShouldDragOnGesture -bool true -> Enable "Command+Control+Click" anywhere to drag windows (Requires log-out).
+defaults write -g NSWindowShouldDragOnGesture -bool true -> Enable "Command+Control+Click" anywhere to drag windows (requires log-out).
 defaults delete -g NSWindowShouldDragOnGesture -> Disable the "Click anywhere to drag" window gesture and return to default.
-sudo scutil --set HostName {{name}}; sudo scutil --set LocalHostName {{name}}; sudo scutil --set ComputerName {{name}}; dscacheutil -flushcache -> Force a complete system-wide hostname and broadcast name reset (Requires reboot).
+sudo scutil --set HostName {{name}}; sudo scutil --set LocalHostName {{name}}; sudo scutil --set ComputerName {{name}}; dscacheutil -flushcache -> Force a complete system-wide hostname and broadcast name reset (requires reboot).
+softwareupdate -l -> List all available system software updates.
+softwareupdate -ia --verbose -> Install all available updates with verbose output.
+diskutil list -> List all available disks, partitions, and APFS containers.
+diskutil verifyVolume {{id}} -> Check the file system data structures of a volume for errors.
+diskutil repairVolume {{id}} -> Attempt to fix file system errors on a specific volume.
+tmutil listbackups -> List all available Time Machine backups on the connected drive.
+tmutil startbackup -> Manually initiate a Time Machine backup.
+tmutil thinlocalsnapshots / {{size}} {{priority}} -> Delete local Time Machine snapshots to reclaim disk space.
+tmutil localsnapshot -> Create a new local Time Machine snapshot manually.
+sudo opensnoop -> Track file access across the system in real-time (requires SIP disabled/DTrace).
+sudo dtruss -p {{pid}} -> Attach DTrace to a running process to monitor system calls.
+top -o mem -> Display real-time processes sorted by memory usage.
+lsbom /var/db/receipts/{{pkg_id}}.bom -> List all files installed by a specific .pkg installer.
+pkgutil --pkg-info {{pkg_id}} -> View version and installation date for a registered package.
+sudo profiles show -type configuration -> List all installed MDM or configuration profiles.
+networksetup -listallhardwareports -> Display all physical network interfaces and their MAC addresses.
+networksetup -getgateway "Wi-Fi" -> View the current default gateway (router IP) for Wi-Fi.
+system_profiler SPHardwareDataType -> Get a detailed hardware summary (serial number, model, CPU).
+system_profiler SPSoftwareDataType -> Get a detailed system software summary (kernel, boot mode, uptime).
+sw_vers -> Display the macOS version, build number, and product name.
+sudo nvram -p -> List all current NVRAM (non-volatile RAM) variables.
+sudo nvram -c -> Clear all NVRAM variables (resetting PRAM-related settings).
+hdiutil attach {{image.dmg}} -> Mount a disk image from the terminal.
+hdiutil detach /Volumes/{{name}} -> Unmount a disk image or external volume.
+brew doctor -> Check the health of the Homebrew package manager installation.
+brew cleanup -> Remove outdated downloads and old versions of Homebrew formulae.
+sysctl -n hw.ncpu -> Return the number of logical CPU cores.
+sysctl -n hw.memsize -> Return the total physical memory in bytes.
+sudo kickstart -restart -agent -> Force a restart of the macOS GUI infrastructure (WindowServer).
+sudo lsof -iTCP -sTCP:LISTEN -> List all processes currently listening for TCP network connections.

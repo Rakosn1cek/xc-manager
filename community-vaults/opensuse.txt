@@ -3,8 +3,55 @@ sudo zypper se --provides {{file_path}} -> Search the repositories for which pac
 sudo zypper ps -s -> List all running processes still using deleted files from a previous update.
 sudo zypper purge-kernels -> Remove old, unused kernel versions to reclaim space in the boot partition.
 sudo zypper ll -> List all active package locks that are currently preventing updates or removals.
-zypper info {{package}} -> View detailed package metadata, including repository source and installation status.
 zypper search --requires {{package}} -> Identify all available packages that depend on a specific library or binary.
 zypper search {{terms}} | fzf -m --preview "zypper info {1} | head -n 20" -> Interactive search with a live preview pane for package details.
-sudo zypper verify -> Check the system for broken dependencies and suggest repairs for installed packages.
-zypper patches -> List all available formal patches for the current distribution version.
+sudo zypper refresh -> Synchronise the local repositories with the remote servers
+sudo zypper update -> Update all installed packages to their newest available versions
+sudo zypper install {{package}} -> Install a specific package from the enabled repositories
+sudo zypper remove {{package}} -> Uninstall a specific package from the system
+sudo zypper remove -u {{package}} -> Uninstall a package and its unused dependencies
+zypper info {{package}} -> Display detailed information and metadata for a package
+zypper search {{pattern}} -> Search for a package or keyword in the repositories
+zypper what-provides {{capability}} -> Find which package provides a specific file or feature
+sudo zypper dist-upgrade -> Perform a full distribution upgrade to a new version or snapshot
+sudo zypper install -t pattern {{pattern_name}} -> Install a predefined set of packages like a desktop environment
+sudo zypper addrepo {{url}} {{alias}} -> Add a new software repository to the system
+sudo zypper removerepo {{alias}} -> Remove an existing repository from the configuration
+sudo zypper modifyrepo -d {{alias}} -> Disable a specific repository without removing it
+sudo zypper modifyrepo -e {{alias}} -> Re-enable a previously disabled repository
+zypper repos -u -> List all configured repositories along with their URIs
+sudo zypper clean -> Clear the local cache of downloaded package files
+sudo zypper verify -> Check for and fix broken package dependencies
+sudo zypper patch -> Install only the officially released security and bugfix patches
+zypper patches -> List all available patches for the current system
+sudo zypper ps -> List running processes that are using deleted files after an update
+sudo zypper lifecycle -> Show the support end dates for all installed packages
+sudo zypper source-install {{package}} -> Install the source code for a specific package
+sudo zypper locks -> List all packages that are currently locked from updates
+sudo zypper addlock {{package}} -> Prevent a specific package from being updated or removed
+sudo zypper removelock {{package}} -> Remove the update lock from a specific package
+sudo yast2 -> Launch the graphical YaST control centre for system administration
+sudo yast2 user -> Open the YaST user and group management module
+sudo yast2 network -> Configure network interfaces and settings via YaST
+sudo yast2 firewall -> Manage firewall zones and rules using the YaST interface
+sudo yast2 disk -> Open the YaST partitioner to manage disks and filesystems
+sudo snapper list -> Show all available Btrfs filesystem snapshots
+sudo snapper create --description "{{description}}" -> Create a new manual filesystem snapshot
+sudo snapper rollback {{number}} -> Revert the entire system to a specific previous snapshot
+sudo snapper delete {{number}} -> Permanently remove a specific filesystem snapshot
+sudo systemctl status {{service}} -> Check the current status and logs for a systemd service
+sudo journalctl -b -0 -> View all system logs since the last boot
+sudo journalctl -f -> Follow the global system log output in real-time
+sudo hwinfo --short -> Display a concise summary of all detected hardware
+sudo firewall-cmd --state -> Check if the firewalld service is currently active
+sudo firewall-cmd --get-active-zones -> List all network zones that are currently in use
+sudo nmcli device wifi list -> Scan for and list available Wi-Fi networks
+sudo ip addr -> Display all network interfaces and assigned IP addresses
+sudo lscpu -> Show detailed information about the CPU architecture
+sudo lsblk -> List all block devices and their mount points
+sudo df -hT -> Show disk space usage with filesystem types in human-readable format
+sudo du -h --max-depth=1 {{path}} -> Check the size of top-level directories in a path
+sudo zypper search -i {{pattern}} -> Search only within the list of installed packages
+sudo zypper info -t pattern {{pattern}} -> Show details about a specific installation pattern
+sudo zypper search -s {{package}} -> Show all available versions of a package across repositories
+sudo zypper dup --from {{alias}} -> Upgrade packages specifically from a single repository

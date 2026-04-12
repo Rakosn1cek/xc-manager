@@ -1,10 +1,58 @@
 sudo apt -dy upgrade -> Download all available updates without performing the installation.
-sudo apt autoclean -> Clear the local apt cache of out-of-date package files.
 dpkg --search $(which {{binary}}) -> Locate the specific package that owns a binary or command.
 apt-cache policy $(dpkg --search $(which {{binary}}) | cut -f1 -d:) -> Identify the repository origin and version status for a specific command.
 sudo apt-mark showmanual | grep -vP '^(ubuntu-desktop|gnome-desktop)' | xargs -r sudo apt-get purge -y {{package_name}} -> Identify manually installed packages and purge a specific one with its config files.
 sudo apt update && sudo apt full-upgrade -> Perform a complete system and kernel upgrade.
 sudo apt autoremove --purge -> Remove unused dependency packages and their configuration files.
-sudo apt-cache search {{terms}} -> Search for packages in the repository using specific keywords.
 dpkg -l | grep '^rc' | awk '{print $2}' | xargs -r sudo apt-get purge -> Purge all 'rc' (removed but configured) packages from the system.
 apt-cache search {{terms}} | fzf -m --preview "apt-cache show {1} | grep -E '^(Package|Version|Description|Section):'" | awk '{print $1}' | xargs -r sudo apt-get install -y -> Interactive package search and install with a clean metadata preview.
+sudo apt update -> Synchronise the local package index with the remote repositories
+sudo apt upgrade -> Install the newest versions of all currently installed packages
+sudo apt full-upgrade -> Perform an upgrade while handling changing dependencies with new packages
+sudo apt install {{package}} -> Install a specific package and its required dependencies
+sudo apt remove {{package}} -> Uninstall a package while leaving its configuration files intact
+sudo apt purge {{package}} -> Completely remove a package along with all configuration files
+sudo apt autoremove -> Remove packages that were automatically installed and are no longer required
+apt show {{package}} -> Display detailed information including version and description for a package
+apt list --installed -> List every package currently installed on the system
+apt search {{pattern}} -> Search for a specific keyword in the package descriptions
+sudo apt edit-sources -> Open the sources.list file in the default editor to manage repositories
+sudo apt-add-repository {{ppa_or_repo}} -> Add a new software repository to the system
+sudo apt-mark hold {{package}} -> Prevent a specific package from being automatically updated
+sudo apt-mark unhold {{package}} -> Allow a previously held package to be updated again
+apt-cache depends {{package}} -> Show a listing of all dependencies for a specific package
+apt-cache rdepends {{package}} -> List all packages that depend on a specific package
+sudo dpkg -i {{path/to/package.deb}} -> Install a local Debian package file manually
+dpkg -l -> List all packages known to the system and their current status
+dpkg -L {{package}} -> List every file installed on the system by a specific package
+sudo dpkg-reconfigure {{package}} -> Re-run the post-installation configuration for a package
+sudo apt update && apt list --upgradable -> Refresh the index and show exactly which packages can be updated
+sudo apt clean -> Clear out the local repository of retrieved package files
+sudo apt autoclean -> Remove only package files that can no longer be downloaded
+sudo journalctl -xe -> Open the system journal to the end with explanatory help text
+sudo systemctl restart {{service}} -> Stop and then start a systemd service immediately
+sudo systemctl stop {{service}} -> Shut down a running systemd service
+systemctl is-active {{service}} -> Check if a specific service is currently running
+sudo ufw enable -> Turn on the Uncomplicated Firewall for basic system protection
+sudo ufw allow {{port}} -> Open a specific port through the firewall
+sudo ufw status numbered -> List all firewall rules with their corresponding IDs
+sudo adduser {{username}} -> Create a new user account with interactive prompts for details
+sudo deluser --remove-home {{username}} -> Delete a user account and wipe their home directory
+sudo usermod -aG sudo {{user}} -> Grant a specific user administrative privileges via the sudo group
+cat /etc/debian_version -> Display the specific version number of the Debian release
+sudo update-alternatives --config {{command}} -> Switch between different versions of a command like java or python
+sudo update-grub -> Automatically find kernels and update the GRUB bootloader menu
+lsb_release -a -> Display detailed information about the Linux distribution
+sudo tasksel -> Open an interactive menu to install entire software stacks or desktops
+sudo apt-get install --no-install-recommends {{package}} -> Install a package without its recommended but non-essential extras
+sudo apt-file update -> Update the database used to find packages containing specific files
+apt-file search {{filename}} -> Find which package contains a specific file or binary
+sudo netstat -plnt -> List all processes currently listening on network ports
+sudo tail -f /var/log/auth.log -> Monitor system authentication and login attempts in real-time
+sudo dmesg -T | grep -i "error" -> Search the kernel buffer for errors with human-readable timestamps
+sudo fdisk -l -> List all partitions and storage devices attached to the system
+sudo blkid -> Show the UUIDs and filesystem types for all disk partitions
+sudo mount -a -> Mount all filesystems listed in the /etc/fstab file
+sudo sysctl -p -> Apply changes to the kernel parameters without a reboot
+sudo apt install -f -> Attempt to fix a system with broken or missing dependencies
+dpkg-query -W -f='${Installed-Size;10}  ${Package}\n' | sort -nr | head -n 20 -> List the 20 largest installed packages by size

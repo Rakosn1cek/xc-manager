@@ -1,9 +1,50 @@
-nmcli device wifi list -> Scan for available WiFi networks
-nmcli device wifi connect "SSID" password "PASSWORD" -> Connect to WiFi via terminal
-ip -brief addr show -> Quick overview of all Network Interfaces and IPs
-mtr google.com -> Combined Ping and Traceroute (Live Network Diagnostics)
+nmcli device wifi list -> Scan for available Wi-Fi networks
+nmcli device wifi connect "SSID" password "PASSWORD" -> Connect to Wi-Fi via terminal
+ip -brief addr show -> Quick overview of all network interfaces and IPs
+mtr google.com -> Combined ping and traceroute (live network diagnostics)
 dig +short google.com -> Quick DNS lookup for an A record
-sudo nmap -sn 192.168.1.0/24 -> Scan Local Network for active devices
-sudo tcpdump -i any icmp -> Monitor all incoming/outgoing Ping requests
-curl ifconfig.me -> Get your Public IP address instantly
-speedtest-cli --simple -> Run a quick Internet Speed Test from terminal
+sudo nmap -sn 192.168.1.0/24 -> Scan local network for active devices
+sudo tcpdump -i any icmp -> Monitor all incoming/outgoing ping requests
+curl ifconfig.me -> Get your public IP address instantly
+speedtest-cli --simple -> Run a quick internet speed test from terminal
+ip route show -> Display the current routing table and default gateway
+ss -tulpn -> List all active listening ports and their associated processes
+ip neigh show -> View the ARP cache (neighbouring devices on the local link)
+ping -c 5 google.co.uk -> Send five ICMP echo requests to a host
+traceroute google.co.uk -> Map the network path packets take to a remote host
+nslookup google.co.uk -> Query DNS servers for domain and IP information
+dig {{domain}} ANY -> Retrieve all available DNS records for a domain
+whois {{domain}} -> Check domain registration and ownership details
+sudo tcpdump -i {{interface}} -w {{file}}.pcap -> Capture network traffic to a file for later analysis
+sudo tcpdump -r {{file}}.pcap -> Read and filter a captured packet file
+nmcli connection show -> List all configured network connection profiles
+nmcli connection up {{id}} -> Manually activate a specific network connection
+nmcli connection modify {{id}} ipv4.dns "{{dns_ip}}" -> Set manual DNS servers for a specific connection
+sudo iftop -i {{interface}} -> Monitor bandwidth usage on an interface in real-time
+sudo nload -u M -> View incoming and outgoing network traffic volume in MB/s
+sudo netstat -plnt -> List all processes currently listening on TCP ports
+ethtool {{interface}} -> View or modify hardware-level settings of a network card
+iperf3 -c {{server_ip}} -> Run a network throughput test against a remote server
+sudo lsof -i -P -n -> List all open network sockets and files
+host {{domain}} -> Perform a simple DNS lookup for a hostname
+ip link set {{interface}} up -> Enable a specific network interface
+ip link set {{interface}} down -> Disable a specific network interface
+rfkill list -> Check the status of wireless radio switches (hard/soft blocks)
+sudo nmap -sV {{target}} -> Scan for open ports and attempt to identify service versions
+sudo nmap -O {{target}} -> Attempt to determine the operating system of a remote host
+nc -zv {{host}} {{port}} -> Check if a specific port is open on a remote server
+sudo route add default gw {{ip}} {{interface}} -> Manually set the default gateway
+sudo iptables -L -n -v -> View all active IPv4 firewall rules in detail
+sudo nft list ruleset -> View the modern nftables firewall configuration
+cat /etc/resolv.conf -> Check the current DNS resolver configuration
+cat /etc/hosts -> View local static hostname-to-IP mappings
+sudo tcpdump port 80 or port 443 -> Monitor only HTTP and HTTPS traffic
+arping -I {{interface}} {{ip}} -> Send ARP requests to a neighbour to verify local reachability
+sudo iw dev {{interface}} scan -> Low-level scan for wireless access points and capabilities
+bluetoothctl devices -> List all paired or discovered Bluetooth devices
+nmcli general status -> Check the overall status of the NetworkManager daemon
+ip -6 addr show -> Display all IPv6 addresses and interface statuses
+wget --spider {{url}} -> Check if a web resource exists without downloading it
+curl -v {{url}} -> Fetch a URL with verbose output to debug the HTTP handshake
+ssh -v {{user}}@{{host}} -> Establish an SSH connection with verbose debugging enabled
+sudo lsof -i :{{port}} -> Find exactly which process is occupying a specific port

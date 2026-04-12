@@ -1,0 +1,56 @@
+oci session authenticate -> Launch a browser to authorise the OCI CLI session
+oci compute instance list --compartment-id {{compartment_id}} -> List all instances within a specific compartment
+oci compute instance launch --compartment-id {{cid}} --availability-domain {{ad}} --shape {{shape}} --image-id {{image}} -> Launch a new compute instance
+oci compute instance action --instance-id {{id}} --action STOP -> Stop a specific OCI compute instance
+oci compute instance action --instance-id {{id}} --action START -> Start a specific OCI compute instance
+oci compute instance get --instance-id {{id}} -> Get detailed metadata for a specific instance
+oci network vcn list --compartment-id {{compartment_id}} -> List all Virtual Cloud Networks in a compartment
+oci network subnet list --compartment-id {{cid}} --vcn-id {{vcn_id}} -> List all subnets within a specific VCN
+oci network nsg list --compartment-id {{compartment_id}} -> List all Network Security Groups
+oci os bucket list --compartment-id {{compartment_id}} -> List all Object Storage buckets
+oci os object list --bucket-name {{bucket_name}} -> List all objects stored in a specific bucket
+oci os object put --bucket-name {{bucket}} --file {{local_path}} -> Upload a local file to OCI Object Storage
+oci os object get --bucket-name {{bucket}} --name {{object_name}} --file {{output_path}} -> Download an object from a bucket
+oci iam user list -> List all users in the OCI tenancy
+oci iam group list -> List all IAM groups
+oci iam compartment list -> List all compartments in the tenancy
+oci db node list --compartment-id {{cid}} --db-system-id {{sys_id}} -> List database nodes in a specific DB system
+oci lb load-balancer list --compartment-id {{compartment_id}} -> List all load balancers in a compartment
+oci ce cluster list --compartment-id {{compartment_id}} -> List all OKE (Kubernetes) clusters
+oci ce cluster create-kubeconfig --cluster-id {{id}} -> Download kubeconfig for an OKE cluster
+oci limits resource-availability get --service {{service}} --limit-name {{name}} -> Check availability and limits for a specific resource
+oci audit event list --compartment-id {{cid}} --start-time {{iso_date}} -> List audit events starting from a specific time
+oci search resource structured-search --query-text "query instance resources" -> Perform a complex structured search for resources
+oci compute vnic-attachment list --instance-id {{id}} -> Find the VNIC and private/public IP details for an instance
+oci compute image list --compartment-id {{cid}} --operating-system "Oracle Linux" -> List available Oracle Linux images
+oci compute instance action --instance-id {{id}} --action SOFTRESET -> Perform a graceful reboot of a compute instance
+oci network public-ip list --compartment-id {{cid}} --scope REGION -> List all reserved public IP addresses in a region
+oci os object delete --bucket-name {{bucket}} --name {{object_name}} -> Permanently remove an object from a bucket
+oci iam region list -> View all regions available to the tenancy and their subscription status
+oci vault secret list --compartment-id {{cid}} -> List secrets managed within a specific OCI Vault
+oci ann announcement list --compartment-id {{tenancy_ocid}} -> Check for scheduled maintenance or service announcements
+oci compute shape list --compartment-id {{cid}} -> List all available instance shapes in a specific compartment
+oci budget budget list --compartment-id {{tenancy_ocid}} -> Review configured budgets and actual spending
+oci usage-api usage-summary request --tenant-id {{tid}} --time-usage-started {{date}} -> Generate a detailed usage and cost summary
+oci setup config -> Initialise the CLI configuration file and API key pair locally
+oci compute instance terminate --instance-id {{id}} --preserve-boot-volume {{true/false}} -> Permanently delete an instance and optionally keep its boot volume
+oci compute boot-volume-attachment list --availability-domain {{ad}} --compartment-id {{cid}} -> List all boot volume attachments in a specific area
+oci network vcn get --vcn-id {{vcn_id}} -> Retrieve detailed information about a specific VCN
+oci network security-list list --compartment-id {{cid}} --vcn-id {{vcn_id}} -> List all security lists (firewall rules) for a VCN
+oci network private-ip list --subnet-id {{subnet_id}} -> List all private IP addresses assigned within a subnet
+oci os bucket get --bucket-name {{bucket_name}} -> Get detailed metadata and statistics for a specific bucket
+oci os object head --bucket-name {{bucket}} --name {{object_name}} -> Retrieve metadata for an object without downloading the content
+oci iam policy list --compartment-id {{cid}} -> List all IAM policies defined in a compartment
+oci iam region-subscription list -> List all regions that the tenancy is currently subscribed to
+oci db system list --compartment-id {{cid}} -> List all database systems in a specific compartment
+oci ce cluster get --cluster-id {{cluster_id}} -> Get detailed status and configuration for an OKE cluster
+oci ce node-pool list --compartment-id {{cid}} --cluster-id {{cluster_id}} -> List node pools within a specific Kubernetes cluster
+oci load-balancer health get --load-balancer-id {{lb_id}} -> Check the overall health status of a load balancer
+oci autoscaling configuration list --compartment-id {{cid}} -> List all autoscaling configurations for compute resources
+oci streaming admin stream list --compartment-id {{cid}} -> List all active message streams
+oci fn application list --compartment-id {{cid}} -> List all serverless function applications
+oci artifacts container repository list --compartment-id {{cid}} -> List all container repositories in the OCI Registry
+oci health-checks http-monitor list --compartment-id {{cid}} -> List all active HTTP health monitors
+oci kms key list --compartment-id {{cid}} -> List all master encryption keys in a vault
+oci logging log list --log-group-id {{group_id}} -> List all logs within a specific log group
+oci waas policy list --compartment-id {{cid}} -> List all Web Application Firewall (WAF) policies

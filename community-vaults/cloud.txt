@@ -1,0 +1,51 @@
+aws sts get-caller-identity -> Return account and user details for the current IAM identity
+aws s3 ls -> List all S3 buckets in the current account
+aws s3 ls s3://{{bucket_name}} --recursive --human-readable -> List all files in a bucket with human readable sizes
+aws s3 cp {{local_file}} s3://{{bucket_name}}/ -> Upload a local file to a specific S3 bucket
+aws s3 sync {{local_dir}} s3://{{bucket_name}}/ --dryrun -> Dry Run: Preview S3 sync and potential deletions
+aws s3 sync {{local_dir}} s3://{{bucket_name}}/ --delete -> [CAUTION] Execute: Sync local to S3 and permanently delete remote-only files
+aws ec2 describe-instances --query 'Reservations[].Instances[].[InstanceId,State.Name,PublicIpAddress]' --output table -> List all EC2 instances with ID, state, and public IP in a table
+aws ec2 start-instances --instance-ids {{instance_id}} -> Start a specific stopped EC2 instance
+aws ec2 stop-instances --instance-ids {{instance_id}} -> Stop a specific running EC2 instance
+aws ec2 describe-images --owners self -> List all custom AMIs owned by your account
+aws lambda list-functions --max-items 10 -> List the first 10 Lambda functions in the region
+aws iam list-users -> List all IAM users in the account
+aws iam change-password --old-password {{old}} --new-password {{new}} -> Change the IAM password for the current user
+aws logs tail {{log_group}} --follow -> Stream CloudWatch logs for a specific group to the terminal
+aws ec2 describe-vpcs -> List all VPCs and their CIDR blocks
+aws rds describe-db-instances --query 'DBInstances[].[DBInstanceIdentifier,DBInstanceStatus,Endpoint.Address]' -> List RDS instances with their status and endpoints
+gcloud auth login -> Authenticate the gcloud CLI with a Google account
+gcloud config set project {{project_id}} -> Set the active project for GCP commands
+gcloud compute instances list -> List all Compute Engine instances in the current project
+gcloud compute instances stop {{instance_name}} --zone {{zone}} -> Stop a specific GCP VM instance
+gcloud storage ls --recursive gs://{{bucket_name}} -> List all objects in a GCP bucket recursively
+gcloud container clusters get-credentials {{cluster_name}} --region {{region}} -> Fetch credentials for a GKE cluster to use with kubectl
+gcloud logging read "resource.type=gce_instance AND severity>=ERROR" --limit 10 -> Fetch the last 10 error logs from Compute Engine
+gcloud sql instances list -> List all Cloud SQL instances in the project
+gcloud iam service-accounts list -> List all service accounts in the project
+gcloud pubsub topics list -> List all Pub/Sub topics
+az login -> Interactive login to Azure CLI
+az account show --output table -> Show the currently active Azure subscription
+az vm list --output table -> List all Azure virtual machines in a table
+az vm start --resource-group {{rg}} --name {{vm_name}} -> Start a specific Azure virtual machine
+az group list -> List all resource groups in the subscription
+az storage blob list --container-name {{container}} --account-name {{account}} -> List blobs in an Azure storage container
+az network vnet list -> List all virtual networks in the subscription
+az ad user list -> List all users in the Azure Active Directory
+az webapp list --query "[].{hostName: defaultHostName, state: state}" -> List Azure Web Apps with their URLs and states
+kubectl get pods -A -> List all pods across all namespaces in a Kubernetes cluster
+kubectl logs -f {{pod_name}} -> Follow logs for a specific Kubernetes pod
+kubectl exec -it {{pod_name}} -- /bin/bash -> Open an interactive shell inside a running pod
+kubectl get events --sort-by='.metadata.creationTimestamp' -> List cluster events sorted by time
+kubectl describe node {{node_name}} -> Show detailed resource usage and status of a cluster node
+kubectl top pod -> Display CPU and memory usage for all pods in the current namespace
+kubectl apply -f {{manifest}}.yaml -> Deploy or update resources defined in a YAML file
+kubectl delete pod {{pod_name}} --grace-period=0 --force -> Forcibly delete a stuck pod immediately
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[].Instances[*].InstanceId" --output text -> Get IDs of all currently running EC2 instances
+aws s3api list-objects-v2 --bucket {{bucket_name}} --query 'sort_by(Contents, &Size)[-10:].{Key:Key,Size:Size}' -> List the 10 largest files in an S3 bucket
+gcloud compute instances list --filter="status:RUNNING" --format="value(name)" -> List names of all running GCP instances
+kubectl get pods --field-selector=status.phase!=Running -> Find all pods that are not in a 'Running' state
+aws iam list-access-keys --user-name {{username}} -> List access keys for a specific IAM user to check for rotation
+az vm get-instance-view --name {{vm_name}} --resource-group {{rg}} --query instanceView.statuses -> Check the power state and agent status of an Azure VM
+kubectl get secret {{secret_name}} -o jsonpath='{.data.password}' | base64 --decode -> Retrieve and decode a specific password from a K8s secret
+aws cloudformation describe-stack-resources --stack-name {{stack_name}} -> List all physical resources created by a CloudFormation stack
