@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-04-16
+### Added
+- Vault Encryption. Symmetric GPG support for sensitive data.
+- New commands `xc lock` and `xc unlock` for vault security.
+- Security Gates. Global pre-flight checks to prevent accidental leaks of encrypted data.
+- Extension Awareness. The system now seamlessly handles both .txt and .gpg files.
+- Visual Feedback. Added warnings and status labels for locked vaults in the list view.
+
+### Changed
+- Refined fzf-vault-widget to respect vault lock states.
+- Hardened placeholder logic to prevent execution on empty inputs.
+- Improved `xc use` logic to handle switching between mixed-format vaults.
+
+---
+
 ## [0.8.0] - 2026-04-10
 ### Added
 - Raw Input Mode: Implemented `xc add --raw` to allow capturing complex commands via stdin. This prevents the shell from evaluating subshells or stripping quotes during the saving process.

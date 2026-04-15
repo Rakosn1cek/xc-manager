@@ -7,7 +7,7 @@
 # File: ~/arch-projects/XC-Manager/autoload/xc
 # ==============================================================================
 
-readonly XC_VERSION="0.8.0"
+readonly XC_VERSION="0.9.0"
 setopt EXTENDED_GLOB
 
 # ==============================================================================
@@ -22,6 +22,7 @@ local active_name="main"
 [[ -f "$state_file" ]] && active_name=$(<"$state_file")
 
 local vault_file="$vault_dir/${active_name}.txt"
+[[ -f "$vault_dir/${active_name}.gpg" ]] && vault_file="$vault_dir/${active_name}.gpg"
 
 # --- Placeholder Processor Helper ---
 __xc_fill_placeholders() {
@@ -57,14 +58,17 @@ A functional vault for command execution and alias management.
 Usage: xc <command> [arguments]
 
 Commands:
-  add        Vault a new command or one-liner.
-  add --raw  Paste raw text (use for curl, jq). Finish with Enter then Ctrl+D.
-  list       List of available vaults with current vault in use marked with *.
-  select     Open fzf to vault a command from your history.
-  clean      Interactively remove entries with a safety lock.
-  use        Switch between different vault files.
-  sync       Interactive "Package Manager" for community vaults.
-  alias      Promote a vaulted command to a permanent Zsh alias.
+  add               Vault a new command or one-liner.
+  add --raw         Paste raw text (use for curl, jq). Finish with Enter then Ctrl+D.
+  list              List of available vaults with current vault in use marked with *.
+  select            Open fzf to vault a command from your history.
+  clean             Interactively remove entries with a safety lock.
+  use               Switch between different vault files.
+  lock              Encrypt a vault currently in use with GPG (requires passphrase).
+  lock <vault-name> Encrypt any vault specified by the user.
+  unlock            Decrypt a locked vault back to plain text.
+  sync              Interactive "Package Manager" for community vaults.
+  alias             Promote a vaulted command to a permanent Zsh alias.
 
 Templating:
   Use {{var}} in your commands to create interactive prompts.
@@ -94,14 +98,63 @@ elif [[ "$1" == "init" ]]; then
 # List Available Vaults (Inventory Check)
 elif [[ "$1" == "list" ]]; then
     echo "Available Vaults in $vault_dir:"
-    for f in "$vault_dir"/*.txt(N); do
+    for f in "$vault_dir"/*.(txt|gpg)(N); do
         local v_name="${f:t:r}"
+        local v_ext="${f:e}"
+        local lock_label=""
+        [[ "$v_ext" == "gpg" ]] && lock_label=" [LOCKED]"
+
         if [[ "$v_name" == "$active_name" ]]; then
-            echo "  * $v_name (active)"
+            echo "  * $v_name (active)$lock_label"
         else
-            echo "    $v_name"
+            echo "    $v_name$lock_label"
         fi
     done
+    return 0
+
+# --- Lock Vault (Symmetric Encryption) ---
+elif [[ "$1" == "lock" ]]; then
+    local target_name="${2:-$active_name}"
+    local target_file="$vault_dir/${target_name}.txt"
+    local encrypted_file="$vault_dir/${target_name}.gpg"
+
+    if [[ ! -f "$target_file" ]]; then
+        echo "Error: Vault '$target_name' not found or already encrypted."
+        return 1
+    fi
+
+    echo "Encrypting vault: $target_name"
+    # gpg --symmetric handles the passphrase prompt via pinentry
+    if gpg --symmetric --output "$encrypted_file" "$target_file"; then
+        rm "$target_file"
+        echo "Success: Vault '$target_name' is now locked (.gpg)."
+        echo "The original .txt file has been removed."
+    else
+        echo "Error: Encryption failed."
+        return 1
+    fi
+    return 0
+
+# --- Unlock Vault (Decryption) ---
+elif [[ "$1" == "unlock" ]]; then
+    local target_name="${2:-$active_name}"
+    local target_file="$vault_dir/${target_name}.txt"
+    local encrypted_file="$vault_dir/${target_name}.gpg"
+
+    if [[ ! -f "$encrypted_file" ]]; then
+        echo "Error: Encrypted vault '$target_name.gpg' not found."
+        return 1
+    fi
+
+    echo "Decrypting vault: $target_name"
+    if gpg --decrypt --output "$target_file" "$encrypted_file"; then
+        rm "$encrypted_file"
+        echo "Success: Vault '$target_name' is now unlocked (.txt)."
+        echo "The .gpg file has been removed."
+    else
+        echo "Error: Decryption failed. Incorrect passphrase or GPG error."
+        return 1
+    fi
     return 0
 
 # Clean Vault
@@ -143,14 +196,20 @@ elif [[ "$1" == "use" ]]; then
     if [[ -z "$2" ]]; then
         echo "Active Vault: [${active_name}]"
         echo "Available Vaults:"
-        for f in "$vault_dir"/*.txt(N); do
+        for f in "$vault_dir"/*.(txt|gpg)(N); do
             local v_name="${f:t:r}"
-            [[ "$v_name" == "$active_name" ]] && echo "  * $v_name (active)" || echo "    $v_name"
+            local v_ext="${f:e}"
+            local lock_label=""
+            [[ "$v_ext" == "gpg" ]] && lock_label=" [LOCKED]"
+            [[ "$v_name" == "$active_name" ]] && echo "  * $v_name (active)$lock_label" || echo "    $v_name$lock_label"
         done
     else
         echo "$2" > "$state_file"
         echo "Switched to vault: $2"
-        [[ ! -f "$vault_dir/$2.txt" ]] && touch "$vault_dir/$2.txt"
+        # Check if either .txt OR .gpg exists. If neither, create a new .txt.
+        if [[ ! -f "$vault_dir/$2.txt" && ! -f "$vault_dir/$2.gpg" ]]; then
+            touch "$vault_dir/$2.txt"
+        fi
     fi
     return 0
 
@@ -244,7 +303,16 @@ fi
 # ==============================================================================
 # SECTION 3: PRE-FLIGHT CHECK
 # ==============================================================================
-if [[ ! -f "$vault_file" ]]; then
+# 1. Check if the vault is locked (extension is .gpg)
+if [[ "$vault_file" == *.gpg ]]; then
+    # If the command is empty (Ctrl+G) or not a management command, block it
+    if [[ -z "$1" || ( "$1" != "unlock" && "$1" != "use" && "$1" != "list" && "$1" != "lock" ) ]]; then
+        print -P "%F{yellow}Vault [${active_name}] is currently locked (.gpg).%f"
+        print -P "Run 'xc unlock' to access or add commands to this vault."
+        return 1
+    fi
+# 2. If it's not locked, check if the file actually exists
+elif [[ ! -f "$vault_file" ]]; then
     echo "Vault not found. Please run 'xc init' first."
     return 1
 fi

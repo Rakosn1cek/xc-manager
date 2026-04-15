@@ -1,9 +1,18 @@
 #!/usr/bin/env zsh
+
+# ==============================================================================
+# XC-Manager: A functional vault for command execution.
+# Copyright (c) 2026 Lukas Grumlik - (Rakosn1cek)
+# License: MIT
+# Part of the Awesome-Zsh-Plugins collection.
 # File: ~/arch-projects/XC-Manager/autoload/fzf-vault-widget
+# ==============================================================================
+
 
 # --- 1. User Configuration ---
 local alias_target="${XC_ALIAS_TARGET:-$HOME/.zsh_aliases}"
 local marker="# --- XC-Manager Aliases ---"
+autoload -U colors && colors
 
 # --- 2. Helper Function: The Alias Engine ---
 _xc_add_alias() {
@@ -39,9 +48,17 @@ local vault_dir="${XC_VAULT_DIR:-$HOME/.local/share/xc}"
 local state_file="$HOME/.cache/xc_active_vault"
 local active_name="main"
 [[ -f "$state_file" ]] && active_name=$(<"$state_file")
-local vault_file="$vault_dir/${active_name}.txt"
 
-if [[ ! -f "$vault_file" ]]; then
+# Check for both extensions
+local vault_file="$vault_dir/${active_name}.txt"
+[[ -f "$vault_dir/${active_name}.gpg" ]] && vault_file="$vault_dir/${active_name}.gpg"
+
+# If the file we found is a GPG file, show the locked warning
+if [[ "$vault_file" == *.gpg ]]; then
+    zle -M "Vault '$active_name' is locked. Run 'xc unlock' to use it."
+    return 1
+# If neither .txt nor .gpg exists
+elif [[ ! -f "$vault_file" ]]; then
     zle -M "Vault '$active_name' not found."
     return 1
 fi
