@@ -6,6 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Shell](https://img.shields.io/badge/shell-zsh-brightgreen.svg)](https://github.com/Rakosn1cek/xc-manager)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Rakosn1cek/xc-manager)](https://github.com/Rakosn1cek/xc-manager/releases)
+![GitHub stars](https://img.shields.io/github/stars/Rakosn1cek/xc-manager?style=flat&color=gold)
+[![Discord](https://img.shields.io/badge/Discord-Join%20the%20Hub-7289da?style=flat&logo=discord&logoColor=white)](https://discord.gg/GFk45RdS)
 
 ![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
 
@@ -154,22 +156,11 @@ View Script: on GitHub [Show-Aliases Script](https://github.com/Rakosn1cek/dotfi
 
 ---
 
-**Roadmap**
-
-[x] Community Sync Engine
-
-[x] Dynamic Placeholders
-
-[x] Encrypted Vaults (GPG/age support)
-
 **Long-term research**
 
 [ ] Cross-Shell Research (Bash/Fish wrappers)
 
 > **Note:** I have reached the original goals for this project and will not be personally pursuing cross-shell support. If you are interested in implementing Bash or Fish wrappers, contributions and PRs are welcome.
-
-**License**
-Distributed under the MIT License. See LICENSE for more information.
 
 **Support & Feedback**
 - Bug Reports: If something isn't working, please open an [Issue](https://github.com/Rakosn1cek/XC-Manager/issues).
@@ -179,3 +170,11 @@ Distributed under the MIT License. See LICENSE for more information.
 If XC-Manager has made your CLI life easier, consider giving it a star on GitHub! It helps other developers find the tool.
 
 [⭐ Star XC on GitHub](https://github.com/Rakosn1cek/XC-Manager)
+
+Tired of hostile Linux forums? Join the Discord server. A focused, friendly space to discuss XC with the developer and other users. No gatekeeping, just Linux tools.
+
+[![Discord](https://img.shields.io/badge/Discord-Join%20the%20Hub-7289da?style=flat&logo=discord&logoColor=white)](https://discord.gg/GFk45RdS)
+
+
+**License**
+Distributed under the MIT License. See LICENSE for more information.
