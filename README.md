@@ -9,7 +9,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Rakosn1cek/xc-manager?style=flat&color=gold)
 [![Discord](https://img.shields.io/badge/Discord-Join%20the%20Hub-7289da?style=flat&logo=discord&logoColor=white)](https://discord.gg/GFk45RdS)
 
-![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/preview-2.png)
+![XC-Manager TUI](https://github.com/Rakosn1cek/xc-manager/blob/main/XC-GitPro-vault-screenshot.png)
 
 **XC in Action:**
 <p align="center">
