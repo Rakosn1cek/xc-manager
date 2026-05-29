@@ -178,3 +178,18 @@ Tired of hostile Linux forums? Join the Discord server. A focused, friendly spac
 
 **License**
 Distributed under the MIT License. See LICENSE for more information.
+
+## Status: Stable / Maintenance Mode
+XC has officially reached its design goals and is now considered feature-complete. The core logic, including the template engine, global search, and GPG symmetric encryption is stable, reliable, and thoroughly tested.
+As there are no outstanding bugs or required feature expansions, active development has transitioned into a dedicated maintenance and discovery phase.
+The focus moving forward is strictly on ensuring long-term compatibility with future Zsh updates, maintaining repository security, and curating community vault submissions.
+
+**What this means for users**:
+
+The tool is safe, dependable, and production-ready. No breaking changes or disruptive feature creep will alter your established workflows.
+
+**Bug Reports & Security**:
+
+If a future shell update breaks compatibility or an issue is discovered, please open a ticket on the GitHub Issues tab. These will be addressed promptly.
+
+**Contributions**: While the core codebase is frozen, contributions to the community vaults via Discussions are highly encouraged. Please share your useful command templates and one-liners in the GitHub Discussions area or over on the Discord server. 
