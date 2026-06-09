@@ -1,4 +1,3 @@
-
 ## XC - command vault manager
 **Version: 0.9.0**
 
@@ -55,7 +54,7 @@ setopt appendhistory
 ```
 **Optional UI Customisation**
 ```zsh
-zstyle ':xc:*' separator "->" 
+zstyle ':xc:*' separator "->"
 zstyle ':xc:*' fzf_colors "fg:7,hl:4,fg+:15,hl+:12,info:2,prompt:5,pointer:12"
 ```
 
@@ -128,12 +127,12 @@ Pull any curated, Arch Wiki-verified "Problem-Solution" vaults directly from the
 - List Vaults: Run `xc list` to see your available vault files.
 - Delete Entry: Press `Alt+D` inside the TUI.
 - Global Search: Press `Ctrl+A` to search across all vaults inside the TUI.
-- Create Aliases: Select command to export -> press `Alt+E` -> Enter alias name -> Save 
+- Create Aliases: Select command to export -> press `Alt+E` -> Enter alias name -> Save
 - Sync Vaults: Run `xc sync` to browse the community index.
 - Save Command: Run `xc` after successful command -> Enter descriptions -> Save
 - Select Command from History: Run `xc select` -> choose command to save -> Enter descriptions -> Save
 - Capture Raw Text: Run `xc add --raw` -> paste complex command -> Press Enter -> then `Ctrl+D` to enter descriptions -> Save
-- Check Version: Run `xc -v` 
+- Check Version: Run `xc -v`
 
 **Security & Encryption**
 - For vaults containing sensitive environment variables, API keys, or internal IPs, XC now supports symmetric encryption via GPG.
@@ -192,4 +191,4 @@ The tool is safe, dependable, and production-ready. No breaking changes or disru
 
 If a future shell update breaks compatibility or an issue is discovered, please open a ticket on the GitHub Issues tab. These will be addressed promptly.
 
-**Contributions**: While the core codebase is frozen, contributions to the community vaults via Discussions are highly encouraged. Please share your useful command templates and one-liners in the GitHub Discussions area or over on the Discord server. 
+**Contributions**: While the core codebase is frozen, contributions to the community vaults via Discussions are highly encouraged. Please share your useful command templates and one-liners in the GitHub Discussions area or over on the Discord server.
